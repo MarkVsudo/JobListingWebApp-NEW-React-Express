@@ -5,7 +5,9 @@ https://10web-site.ai/57/safe-labrador/
 
 tech stack: React.js, Material UI, Node.js
 
-Websites to take design inspirations from: 
+color palette: https://colorhunt.co/palette/f8f0e5eadbc8dac0a3102c57
+
+Websites to take design inspirations from:
 
 https://www.guitarlessons.com/
 
