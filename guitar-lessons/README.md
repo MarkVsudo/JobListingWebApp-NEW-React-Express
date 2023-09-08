@@ -1,5 +1,7 @@
 # Guitar Lessons Website
 
+[Figma Design File](https://www.figma.com/file/L7XPqAUN93dxMx7jeCwwWs/Guitar-Website?type=design&node-id=0%3A1&mode=design&t=ioTFfHgWRtD1CoiJ-1 "double click")
+
 A guitar lessons website aimed at showcasing talented instructors and their expertise, providing a platform for aspiring guitarists to find the perfect mentor for their musical journey.
 https://10web-site.ai/57/safe-labrador/
 
