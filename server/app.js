@@ -11,7 +11,6 @@ const DOMAIN = process.env.DOMAIN;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Start your Express server
 app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT} | ${DOMAIN} |`);
+  console.log(`🚀 Server is running at | ${DOMAIN} |`);
 });
