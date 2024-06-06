@@ -1,0 +1,9 @@
+@keyframes shrinkAndEnlarge {
+  0% {
+    transform: scale(10);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}

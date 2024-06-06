@@ -5,7 +5,7 @@ import AuthNavbarLogo from "../assets/website_logo_bright.svg";
 
 const AuthNavbar = () => {
   return (
-    <Flex p="1rem 3.5rem">
+    <Flex p="1rem 5rem">
       <ChakraLink as={ReactRouterLink} to="/">
         <Img src={AuthNavbarLogo} alt="Navigation bar logo" />
       </ChakraLink>
