@@ -1,76 +1,3 @@
-// import {
-//   Box,
-//   Flex,
-//   Avatar,
-//   Button,
-//   Menu,
-//   MenuButton,
-//   MenuList,
-//   MenuItem,
-//   MenuDivider,
-//   useDisclosure,
-//   Img,
-//   Stack,
-//   Center,
-// } from "@chakra-ui/react";
-// import { Link as ReactRouterLink } from "react-router-dom";
-// import { Link as ChakraLink } from "@chakra-ui/react";
-// import { IoLogInOutline } from "react-icons/io5";
-// import { IoLogOutOutline } from "react-icons/io5";
-// import NavLogo from "../assets/website_logo.svg";
-
-// export default function Navbar() {
-//   const { isOpen, onOpen, onClose } = useDisclosure();
-//   return (
-//     <>
-//       <Box bg="transparent" px={4}>
-//         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-//           <ChakraLink as={ReactRouterLink} to="/">
-//             <Img src={NavLogo} alt="Navigation Bar Logo" />
-//           </ChakraLink>
-
-//           <Flex alignItems={"center"}>
-//             <Stack direction={"row"} spacing={7}>
-//               <Menu>
-//                 <MenuButton
-//                   as={Button}
-//                   rounded={"full"}
-//                   variant={"link"}
-//                   cursor={"pointer"}
-//                   minW={0}
-//                 >
-//                   <Avatar
-//                     size={"sm"}
-//                     src={"https://avatars.dicebear.com/api/male/username.svg"}
-//                   />
-//                 </MenuButton>
-//                 <MenuList alignItems={"center"}>
-//                   <br />
-//                   <Center>
-//                     <Avatar
-//                       size={"2xl"}
-//                       src={"https://avatars.dicebear.com/api/male/username.svg"}
-//                     />
-//                   </Center>
-//                   <br />
-//                   <Center>
-//                     <p>Username</p>
-//                   </Center>
-//                   <br />
-//                   <MenuDivider />
-//                   <MenuItem>Your Servers</MenuItem>
-//                   <MenuItem>Account Settings</MenuItem>
-//                   <MenuItem>Logout</MenuItem>
-//                 </MenuList>
-//               </Menu>
-//             </Stack>
-//           </Flex>
-//         </Flex>
-//       </Box>
-//     </>
-//   );
-// }
-
 import {
   Box,
   Flex,
@@ -87,6 +14,13 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  Menu,
+  MenuButton,
+  Avatar,
+  MenuList,
+  Center,
+  MenuDivider,
+  MenuItem,
   Img,
 } from "@chakra-ui/react";
 import {
@@ -97,10 +31,15 @@ import {
 } from "@chakra-ui/icons";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
+import { RxDashboard } from "react-icons/rx";
+import { IoLogOutOutline } from "react-icons/io5";
 import NavLogo from "../assets/website_logo.svg";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
+
+  let loggedIn = true;
+  let isRecruiter = true;
 
   return (
     <Box>
@@ -108,8 +47,8 @@ export default function WithSubnavigation() {
         bg={useColorModeValue("white", "gray.800")}
         color={useColorModeValue("gray.600", "white")}
         minH={"60px"}
-        py={{ base: 2 }}
-        px={{ base: 4 }}
+        py={{ base: 2, xl: "1rem" }}
+        px={{ base: 4, xl: "3.5rem" }}
         borderBottom={1}
         borderStyle={"solid"}
         borderColor={useColorModeValue("gray.200", "gray.900")}
@@ -130,15 +69,9 @@ export default function WithSubnavigation() {
           />
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <Text
-            textAlign={useBreakpointValue({ base: "center", md: "left" })}
-            fontFamily={"heading"}
-            color={useColorModeValue("gray.800", "white")}
-          >
-            <ChakraLink as={ReactRouterLink} to="/">
-              <Img src={NavLogo} alt="Navigation Bar Logo" />
-            </ChakraLink>
-          </Text>
+          <ChakraLink as={ReactRouterLink} to="/">
+            <Img src={NavLogo} alt="Navigation Bar Logo" />
+          </ChakraLink>
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
             <DesktopNav />
@@ -150,30 +83,84 @@ export default function WithSubnavigation() {
           justify={"flex-end"}
           direction={"row"}
           spacing={6}
+          align="center"
         >
-          <Button
-            as={"a"}
-            fontSize={"sm"}
-            fontWeight={400}
-            variant={"link"}
-            href={"#"}
-          >
-            Sign In
-          </Button>
-          <Button
-            as={"a"}
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize={"sm"}
-            fontWeight={600}
-            color={"white"}
-            bg={"pink.400"}
-            href={"#"}
-            _hover={{
-              bg: "pink.300",
-            }}
-          >
-            Sign Up
-          </Button>
+          {loggedIn ? (
+            <Stack direction={"row"} spacing={7}>
+              <Button>{isRecruiter ? "Post Jobs" : "Find Jobs"}</Button>
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  rounded={"full"}
+                  variant={"link"}
+                  cursor={"pointer"}
+                  minW={0}
+                >
+                  <Avatar
+                    size={"sm"}
+                    src={"https://avatars.dicebear.com/api/male/username.svg"}
+                  />
+                </MenuButton>
+                <MenuList alignItems={"center"}>
+                  <br />
+                  <Center>
+                    <Avatar
+                      size={"2xl"}
+                      src={"https://avatars.dicebear.com/api/male/username.svg"}
+                    />
+                  </Center>
+                  <br />
+                  <Center>
+                    <p>Username</p>
+                  </Center>
+                  <br />
+                  <MenuDivider />
+                  <MenuItem gap=".5rem">
+                    <RxDashboard />
+                    Dashboard
+                  </MenuItem>
+                  <MenuItem gap=".5rem">
+                    <IoLogOutOutline />
+                    Logout
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </Stack>
+          ) : (
+            <>
+              <ChakraLink as={ReactRouterLink} to="/login" align="center">
+                <Button
+                  as="a"
+                  fontSize="sm"
+                  fontWeight={400}
+                  variant="link"
+                  href="#"
+                >
+                  Sign In
+                </Button>
+              </ChakraLink>
+              <ChakraLink
+                as={ReactRouterLink}
+                to="/register"
+                _hover={{ textDecoration: "none" }}
+              >
+                <Button
+                  as="a"
+                  display={{ base: "none", md: "inline-flex" }}
+                  fontSize="sm"
+                  fontWeight={600}
+                  color="white"
+                  bg="pink.400"
+                  href="#"
+                  _hover={{
+                    bg: "pink.300",
+                  }}
+                >
+                  Sign Up
+                </Button>
+              </ChakraLink>
+            </>
+          )}
         </Stack>
       </Flex>
 
@@ -190,7 +177,7 @@ const DesktopNav = () => {
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
 
   return (
-    <Stack direction={"row"} spacing={4}>
+    <Stack direction={"row"} spacing={4} align="center">
       {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label}>
           <Popover trigger={"hover"} placement={"bottom-start"}>
