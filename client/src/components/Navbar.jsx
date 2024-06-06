@@ -38,7 +38,7 @@ import NavLogo from "../assets/website_logo.svg";
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
 
-  let loggedIn = true;
+  let loggedIn = false;
   let isRecruiter = true;
 
   return (
