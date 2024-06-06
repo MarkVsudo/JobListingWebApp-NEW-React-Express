@@ -2,7 +2,7 @@
 
 1. 🏗 Download all dependencies
    ```
-   cd client && npm install && cd ../server
+   cd client && npm i && cd ../server && npm i
    ```
 2. 🏁 Run project
    ```
