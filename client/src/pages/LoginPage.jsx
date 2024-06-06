@@ -127,12 +127,6 @@ const LoginPage = () => {
               _focus={{ borderColor: "var(--cyan)" }}
             />
             <FormLabel>Password</FormLabel>
-
-            <FormHelperText color="white">
-              Your password must be 8-20 characters long, contain letters and
-              numbers, and must not contain spaces, special characters, or
-              emoji.
-            </FormHelperText>
             <Button
               style={{ all: "unset", cursor: "pointer" }}
               onClick={onOpen}
