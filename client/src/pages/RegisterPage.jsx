@@ -1,5 +1,4 @@
 import "../styles/AuthPages.css";
-import { useRef } from "react";
 import { Helmet } from "react-helmet";
 import {
   ChakraProvider,
@@ -11,9 +10,7 @@ import {
   FormHelperText,
   FormErrorMessage,
   extendTheme,
-  Button,
   Text,
-  useDisclosure,
   Checkbox,
   Img,
 } from "@chakra-ui/react";
@@ -62,18 +59,14 @@ export const theme = extendTheme({
 });
 
 const RegisterPage = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const initialRef = useRef(null);
-  const finalRef = useRef(null);
-
   return (
     <ChakraProvider theme={theme}>
       <Flex
-        px="5rem"
+        p={{ base: "0 1rem", md: "2rem 2rem", lg: "0 5rem" }}
         color="var(--light-blue)"
         direction="column"
         overflow="hidden"
+        alignItems={{ base: "center", md: "unset" }}
       >
         <Helmet>
           <title>JobConqueror - Register</title>
@@ -81,26 +74,56 @@ const RegisterPage = () => {
         <Img
           src={EllipseDesktop}
           alt="Ellipse desktop svg"
-          style={{
-            position: "absolute",
-            right: "0",
-            top: "0",
-            height: "100vh",
-            width: "50%",
-            animation: "shrinkAndEnlarge 1s ease-in-out",
-            zIndex: "5",
-          }}
+          position="absolute"
+          right="0"
+          top="0"
+          height="100%"
+          width="50%"
+          animation="shrinkAndEnlarge 1s ease-in-out"
+          zIndex="5"
+          display={{ base: "none", xl: "block" }}
+        />
+
+        <Img
+          src={EllipseTablet}
+          alt="Ellipse tablet svg"
+          position="absolute"
+          right="0"
+          top="0"
+          height="100%"
+          width="50%"
+          animation="shrinkAndEnlarge 1s ease-in-out"
+          zIndex="5"
+          display={{ base: "none", md: "block", xl: "none" }}
+        />
+
+        <Img
+          src={EllipseMobile}
+          alt="Ellipse mobile svg"
+          position="absolute"
+          left="0"
+          bottom="0"
+          height="max-content"
+          width="100%"
+          animation="shrinkAndEnlarge 1s ease-in-out"
+          zIndex="5"
+          display={{ base: "block", md: "none" }}
         />
         <Heading
           as="h1"
-          size="3xl"
-          noOfLines={1}
-          paddingBlock="1rem 8rem"
+          size={{ base: "xl", md: "2xl", lg: "3xl" }}
+          paddingBlock={{ base: " 0", md: "1rem 8rem" }}
           fontWeight="600"
+          textAlign={{ base: "center", md: "left" }}
         >
           Create your account
         </Heading>
-        <Flex direction="column" mt={8} maxW="md" gap="1rem">
+        <Flex
+          direction="column"
+          mt={8}
+          maxW={{ base: "md", md: "sm", lg: "md" }}
+          gap="1rem"
+        >
           <FormControl variant="floating" id="email" isRequired>
             <Input
               type="email"
@@ -135,15 +158,9 @@ const RegisterPage = () => {
               numbers, and must not contain spaces, special characters, or
               emoji.
             </FormHelperText>
-            <Button
-              style={{ all: "unset", cursor: "pointer" }}
-              onClick={onOpen}
-            >
-              Forgot your password?
-            </Button>
             <FormErrorMessage>Your password is invalid</FormErrorMessage>
           </FormControl>
-          <Checkbox defaultChecked>Register as recruiter?</Checkbox>
+          <Checkbox>Register as recruiter?</Checkbox>
           <Checkbox defaultChecked>
             Email me about job offers and news. If this box is checked,
             JobConqueror will occasionally send helpful and relevant emails. You

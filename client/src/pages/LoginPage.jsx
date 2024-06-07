@@ -8,7 +8,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  FormHelperText,
   FormErrorMessage,
   extendTheme,
   Button,
@@ -77,10 +76,11 @@ const LoginPage = () => {
   return (
     <ChakraProvider theme={theme}>
       <Flex
-        px="5rem"
+        p={{ base: "0 1rem", md: "2rem 2rem", lg: "0 5rem" }}
         color="var(--light-blue)"
         direction="column"
         overflow="hidden"
+        alignItems={{ base: "center", md: "unset" }}
       >
         <Helmet>
           <title>JobConqueror - Login</title>
@@ -88,26 +88,56 @@ const LoginPage = () => {
         <Img
           src={EllipseDesktop}
           alt="Ellipse desktop svg"
-          style={{
-            position: "absolute",
-            right: "0",
-            top: "0",
-            height: "100vh",
-            width: "50%",
-            animation: "shrinkAndEnlarge 1s ease-in-out",
-            zIndex: "5",
-          }}
+          position="absolute"
+          right="0"
+          top="0"
+          height="100%"
+          width="50%"
+          animation="shrinkAndEnlarge 1s ease-in-out"
+          zIndex="5"
+          display={{ base: "none", xl: "block" }}
+        />
+
+        <Img
+          src={EllipseTablet}
+          alt="Ellipse tablet svg"
+          position="absolute"
+          right="0"
+          top="0"
+          height="100%"
+          width="50%"
+          animation="shrinkAndEnlarge 1s ease-in-out"
+          zIndex="5"
+          display={{ base: "none", md: "block", xl: "none" }}
+        />
+
+        <Img
+          src={EllipseMobile}
+          alt="Ellipse mobile svg"
+          position="absolute"
+          left="0"
+          bottom="0"
+          height="max-content"
+          width="100%"
+          animation="shrinkAndEnlarge 1s ease-in-out"
+          zIndex="5"
+          display={{ base: "block", md: "none" }}
         />
         <Heading
           as="h1"
-          size="3xl"
-          noOfLines={1}
-          paddingBlock="1rem 8rem"
+          size={{ base: "xl", md: "2xl", lg: "3xl" }}
+          paddingBlock={{ base: "1rem 5rem", md: "1rem 8rem" }}
           fontWeight="600"
+          textAlign={{ base: "center", md: "left" }}
         >
           Sign in to your account
         </Heading>
-        <Flex direction="column" mt={8} maxW="md" gap="1rem">
+        <Flex
+          direction="column"
+          mt={8}
+          maxW={{ base: "md", md: "sm", lg: "md" }}
+          gap="1rem"
+        >
           <FormControl variant="floating" id="email" isRequired>
             <Input
               type="email"
@@ -115,9 +145,6 @@ const LoginPage = () => {
               _focus={{ borderColor: "var(--cyan)" }}
             />
             <FormLabel>Email address</FormLabel>
-            <FormHelperText color="white">
-              We'll never share your email.
-            </FormHelperText>
             <FormErrorMessage>Your email is invalid</FormErrorMessage>
           </FormControl>
           <FormControl variant="floating" id="password" isRequired>
@@ -135,7 +162,7 @@ const LoginPage = () => {
             </Button>
             <FormErrorMessage>Your password is invalid</FormErrorMessage>
           </FormControl>
-          <Checkbox defaultChecked>Stay signed in (30 days)</Checkbox>
+          <Checkbox>Stay signed in (30 days)</Checkbox>
           <AuthButton
             title="Continue"
             onClick={() => console.log("Continue")}
