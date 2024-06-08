@@ -43,14 +43,10 @@ export default function WithSubnavigation() {
   return (
     <Box>
       <Flex
-        bg={useColorModeValue("white", "gray.800")}
-        color={useColorModeValue("gray.600", "white")}
+        color="var(--dark-blue)"
         minH={"60px"}
         py={{ base: 2, xl: "1rem" }}
         px={{ base: 4, xl: "3.5rem" }}
-        borderBottom={1}
-        borderStyle={"solid"}
-        borderColor={useColorModeValue("gray.200", "gray.900")}
         align={"center"}
       >
         <Flex
@@ -149,10 +145,10 @@ export default function WithSubnavigation() {
                   fontSize="sm"
                   fontWeight={600}
                   color="white"
-                  bg="pink.400"
+                  bg="var(--dark-blue)"
                   href="#"
                   _hover={{
-                    bg: "pink.300",
+                    bg: "var(--blue-gray)",
                   }}
                 >
                   Sign Up
@@ -171,8 +167,6 @@ export default function WithSubnavigation() {
 }
 
 const DesktopNav = () => {
-  const linkColor = useColorModeValue("gray.600", "gray.200");
-  const linkHoverColor = useColorModeValue("gray.800", "white");
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
 
   return (
@@ -184,12 +178,12 @@ const DesktopNav = () => {
               <Link
                 p={2}
                 href={navItem.href ?? "#"}
-                fontSize={"sm"}
+                fontSize={".9rem"}
                 fontWeight={500}
-                color={linkColor}
+                color="var(--dark-blue)"
                 _hover={{
                   textDecoration: "none",
-                  color: linkHoverColor,
+                  color: "var(--cyan)",
                 }}
               >
                 {navItem.label}
@@ -227,13 +221,13 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
       display={"block"}
       p={2}
       rounded={"md"}
-      _hover={{ bg: useColorModeValue("pink.50", "gray.900") }}
+      _hover={{ bg: "var(--light-blue)" }}
     >
       <Stack direction={"row"} align={"center"}>
         <Box>
           <Text
             transition={"all .3s ease"}
-            _groupHover={{ color: "pink.400" }}
+            _groupHover={{ color: "var(--blue-gray)" }}
             fontWeight={500}
           >
             {label}
@@ -249,7 +243,7 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
           align={"center"}
           flex={1}
         >
-          <Icon color={"pink.400"} w={5} h={5} as={ChevronRightIcon} />
+          <Icon color="var(--blue-gray)" w={5} h={5} as={ChevronRightIcon} />
         </Flex>
       </Stack>
     </Link>
@@ -328,13 +322,13 @@ const NAV_ITEMS = [
     label: "Inspiration",
     children: [
       {
-        label: "Explore Design Work",
-        subLabel: "Trending Design to inspire you",
+        label: "Recommendations",
+        subLabel: "Learn the skills you need",
         href: "#",
       },
       {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
+        label: "Webinars",
+        subLabel: "Watch some of the best",
         href: "#",
       },
     ],
@@ -344,22 +338,18 @@ const NAV_ITEMS = [
     children: [
       {
         label: "Job Board",
-        subLabel: "Find your dream design job",
-        href: "#",
+        subLabel: "Find your dream job",
+        href: "/job-listings",
       },
       {
-        label: "Freelance Projects",
-        subLabel: "An exclusive list for contract work",
-        href: "#",
+        label: "Companies",
+        subLabel: "Find hiring companies",
+        href: "/company-overview",
       },
     ],
   },
   {
-    label: "Learn Design",
-    href: "#",
-  },
-  {
-    label: "Hire Designers",
-    href: "#",
+    label: "Who we are",
+    href: "/who-we-are",
   },
 ];

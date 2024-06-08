@@ -21,7 +21,7 @@ import {
 } from "react-icons/fa";
 import { BiMailSend } from "react-icons/bi";
 import { Link as ReactRouterLink } from "react-router-dom";
-import NavLogo from "../assets/website_logo.svg";
+import NavLogo from "../assets/website_logo_bright.svg";
 
 const SocialButton = ({ children, label, href }) => {
   return (
@@ -59,10 +59,7 @@ export default function Footer() {
   let currentYear = new Date().getFullYear();
 
   return (
-    <Box
-      bg={useColorModeValue("gray.50", "gray.900")}
-      color={useColorModeValue("gray.700", "gray.200")}
-    >
+    <Box bg="var(--dark-blue)" color="white">
       <Container as={Stack} maxW={"6xl"} py={10}>
         <SimpleGrid
           templateColumns={{ sm: "1fr 1fr", md: "2fr 1fr 1fr 2fr" }}
@@ -113,17 +110,18 @@ export default function Footer() {
             <Stack direction={"row"}>
               <Input
                 placeholder={"Your email address"}
-                bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
+                bg="var(--blue-gray)"
                 border={0}
                 _focus={{
                   bg: "whiteAlpha.300",
                 }}
               />
               <IconButton
-                bg="var(--dark-blue)"
-                color="var(--light-blue)"
+                bg="var(--light-blue)"
+                color="var(--dark-blue)"
                 _hover={{
                   bg: "var(--blue-gray)",
+                  color: "var(--light-blue)",
                 }}
                 aria-label="Subscribe"
                 icon={<BiMailSend />}
