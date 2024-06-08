@@ -192,9 +192,10 @@ const LoginPage = () => {
         >
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Reset password</ModalHeader>
+            <ModalHeader pb={0}>Reset password</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={3}>
+              <Text pb={2}>You'll get an email with a reset link</Text>
               <FormControl>
                 <FormLabel>Email</FormLabel>
                 <Input
@@ -207,7 +208,7 @@ const LoginPage = () => {
 
             <ModalFooter>
               <Button colorScheme="blue" mr={3}>
-                Send reset email
+                Request Reset
               </Button>
               <Button onClick={onClose}>Cancel</Button>
             </ModalFooter>

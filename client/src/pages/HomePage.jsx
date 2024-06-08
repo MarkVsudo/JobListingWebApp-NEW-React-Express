@@ -4,7 +4,7 @@ function HomePage() {
   return (
     <div>
       <Helmet>
-        <title>Home Page </title>
+        <title>JobConqueror - Home</title>
       </Helmet>
       <h1>Welcome to the Home Page</h1>
     </div>
