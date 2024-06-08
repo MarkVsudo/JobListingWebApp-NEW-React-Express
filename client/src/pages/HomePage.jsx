@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet";
+import Hero from "../components/HomeComponents/Hero";
 
 function HomePage() {
   return (
@@ -6,7 +7,7 @@ function HomePage() {
       <Helmet>
         <title>JobConqueror - Home</title>
       </Helmet>
-      <h1>Welcome to the Home Page</h1>
+      <Hero />
     </div>
   );
 }
