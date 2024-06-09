@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet";
 import Hero from "../components/HomeComponents/Hero";
 import JobCategories from "../components/HomeComponents/JobCategories";
 import Process from "../components/HomeComponents/Process";
+import Companies from "../components/HomeComponents/Companies";
 
 function HomePage() {
   return (
@@ -12,6 +13,7 @@ function HomePage() {
       <Hero />
       <JobCategories />
       <Process />
+      <Companies />
     </div>
   );
 }
