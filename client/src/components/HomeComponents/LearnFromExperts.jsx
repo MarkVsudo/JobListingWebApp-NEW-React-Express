@@ -56,7 +56,7 @@ const LearnFromExperts = () => {
       </Heading>
 
       <Grid templateColumns="repeat(4, 1fr)" gap="2rem">
-        <GridItem colSpan={4} borderRadius="12px" boxShadow="var(--box-shadow)">
+        <GridItem colSpan={4} borderRadius="12px">
           <Img
             src={LearnFromExpertsImg}
             alt="Learn from experts image"

@@ -4,6 +4,7 @@ import JobCategories from "../components/HomeComponents/JobCategories";
 import Process from "../components/HomeComponents/Process";
 import Companies from "../components/HomeComponents/Companies";
 import LearnFromExperts from "../components/HomeComponents/LearnFromExperts";
+import OurMission from "../components/HomeComponents/OurMission";
 
 function HomePage() {
   return (
@@ -16,6 +17,7 @@ function HomePage() {
       <Process />
       <Companies />
       <LearnFromExperts />
+      <OurMission />
     </>
   );
 }
