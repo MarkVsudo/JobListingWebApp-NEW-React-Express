@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   Heading,
   Img,
@@ -8,12 +8,12 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Button,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import HeroSectionSvg from "../../assets/home-page-svg.svg";
 import EllipseHome from "../../assets/ellipse-background-home.svg";
+import HomeButton from "./HomeButton";
 import { gsap } from "gsap";
 
 const Hero = () => {
@@ -90,9 +90,7 @@ const Hero = () => {
               />
             </InputGroup>
           </Flex>
-          <Button colorScheme="teal" size="md" w="7rem">
-            Search
-          </Button>
+          <HomeButton title="Search" onClick={() => console.log("Search")} />
         </Flex>
         <Flex gap={10} color="var(--dark-blue)">
           <Flex direction="column">
