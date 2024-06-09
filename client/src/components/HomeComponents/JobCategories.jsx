@@ -84,10 +84,10 @@ const JobCategories = () => {
       color="var(--dark-blue)"
       pos="relative"
     >
-      <Heading as="h2" size="2xl" fontWeight={500} pb={3}>
+      <Heading as="h2" size="xl" fontWeight={500} pb={3}>
         Find the job which suits you the best
       </Heading>
-      <Heading as="h2" size="lg" fontWeight={200}>
+      <Heading as="h2" size="md" fontWeight={200}>
         There are 50+ job categories available
       </Heading>
       <Grid templateColumns="repeat(4, 1fr)" gap={10} p={5} my="2rem">
