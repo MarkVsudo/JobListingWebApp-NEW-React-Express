@@ -7,6 +7,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import WhoWeArePage from "./pages/WhoWeArePage";
+import RecommendationsPage from "./pages/RecommendationsPage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route index element={<HomePage />} />s
           <Route path="/" element={<HomePage />} />
           <Route path="/who-we-are" element={<WhoWeArePage />} />
+          <Route path="/recommendations" element={<RecommendationsPage />} />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />

@@ -324,7 +324,7 @@ const NAV_ITEMS = [
       {
         label: "Recommendations",
         subLabel: "Learn the skills you need",
-        href: "#",
+        href: "/recommendations",
       },
       {
         label: "Webinars",
