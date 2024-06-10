@@ -8,7 +8,6 @@ import {
   FormLabel,
   Input,
   FormErrorMessage,
-  extendTheme,
   FormHelperText,
   Img,
 } from "@chakra-ui/react";
@@ -16,43 +15,7 @@ import AuthButton from "../components/AuthButton";
 import EllipseDesktop from "../assets/ellipse-svg-desktop.svg";
 import EllipseTablet from "../assets/ellipse-svg-tablet.svg";
 import EllipseMobile from "../assets/ellipse-svg-mobile.svg";
-
-const activeLabelStyles = {
-  transform: "scale(0.85) translateY(-24px)",
-};
-
-export const theme = extendTheme({
-  components: {
-    Form: {
-      variants: {
-        floating: {
-          container: {
-            _focusWithin: {
-              label: {
-                ...activeLabelStyles,
-              },
-            },
-            "input:not(:placeholder-shown) + label, .chakra-select__wrapper + label, textarea:not(:placeholder-shown) ~ label":
-              {
-                ...activeLabelStyles,
-              },
-            label: {
-              top: 0,
-              left: 0,
-              zIndex: 2,
-              position: "absolute",
-              pointerEvents: "none",
-              mx: 3,
-              px: 1,
-              my: 2,
-              transformOrigin: "left top",
-            },
-          },
-        },
-      },
-    },
-  },
-});
+import { theme } from "../themes/InputTheme";
 
 const ResetPasswordPage = () => {
   return (
