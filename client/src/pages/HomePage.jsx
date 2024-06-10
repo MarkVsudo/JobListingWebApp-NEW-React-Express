@@ -5,6 +5,7 @@ import Process from "../components/HomeComponents/Process";
 import Companies from "../components/HomeComponents/Companies";
 import LearnFromExperts from "../components/HomeComponents/LearnFromExperts";
 import OurMission from "../components/HomeComponents/OurMission";
+import Vocation from "../components/HomeComponents/Vocation";
 
 function HomePage() {
   return (
@@ -18,6 +19,7 @@ function HomePage() {
       <Companies />
       <LearnFromExperts />
       <OurMission />
+      <Vocation />
     </>
   );
 }

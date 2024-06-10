@@ -9,7 +9,6 @@ import {
   FormLabel,
   Input,
   FormErrorMessage,
-  extendTheme,
   Button,
   Text,
   useDisclosure,
@@ -29,47 +28,10 @@ import AuthButton from "../components/AuthButton";
 import EllipseDesktop from "../assets/ellipse-svg-desktop.svg";
 import EllipseTablet from "../assets/ellipse-svg-tablet.svg";
 import EllipseMobile from "../assets/ellipse-svg-mobile.svg";
-
-const activeLabelStyles = {
-  transform: "scale(0.85) translateY(-24px)",
-};
-
-export const theme = extendTheme({
-  components: {
-    Form: {
-      variants: {
-        floating: {
-          container: {
-            _focusWithin: {
-              label: {
-                ...activeLabelStyles,
-              },
-            },
-            "input:not(:placeholder-shown) + label, .chakra-select__wrapper + label, textarea:not(:placeholder-shown) ~ label":
-              {
-                ...activeLabelStyles,
-              },
-            label: {
-              top: 0,
-              left: 0,
-              zIndex: 2,
-              position: "absolute",
-              pointerEvents: "none",
-              mx: 3,
-              px: 1,
-              my: 2,
-              transformOrigin: "left top",
-            },
-          },
-        },
-      },
-    },
-  },
-});
+import { theme } from "../themes/InputTheme";
 
 const LoginPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const initialRef = useRef(null);
   const finalRef = useRef(null);
 
@@ -97,7 +59,6 @@ const LoginPage = () => {
           zIndex="5"
           display={{ base: "none", xl: "block" }}
         />
-
         <Img
           src={EllipseTablet}
           alt="Ellipse tablet svg"
@@ -110,7 +71,6 @@ const LoginPage = () => {
           zIndex="5"
           display={{ base: "none", md: "block", xl: "none" }}
         />
-
         <Img
           src={EllipseMobile}
           alt="Ellipse mobile svg"
@@ -183,7 +143,6 @@ const LoginPage = () => {
             </ChakraLink>
           </Text>
         </Flex>
-
         <Modal
           initialFocusRef={initialRef}
           finalFocusRef={finalRef}
@@ -205,7 +164,6 @@ const LoginPage = () => {
                 />
               </FormControl>
             </ModalBody>
-
             <ModalFooter>
               <Button colorScheme="blue" mr={3}>
                 Request Reset
