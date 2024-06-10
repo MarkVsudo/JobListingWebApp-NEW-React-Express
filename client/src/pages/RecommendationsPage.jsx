@@ -19,7 +19,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalFooter,
-  border,
 } from "@chakra-ui/react";
 import CVWritingImg from "../assets/recommendations-article-1.jpg";
 import SoftSkillsImg from "../assets/recommendations-article-2.png";
@@ -117,6 +116,7 @@ const RecommendationsPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
   const [selectedArticle, setSelectedArticle] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const mainCategories = Object.keys(articles);
 
@@ -124,6 +124,14 @@ const RecommendationsPage = () => {
     setSelectedArticle(article);
     onOpen();
   };
+
+  const filterArticlesByCategory = (category) => {
+    setSelectedCategory(category);
+  };
+
+  const filteredArticles = selectedCategory
+    ? articles[selectedCategory].articles
+    : Object.values(articles).flatMap((category) => category.articles);
 
   return (
     <>
@@ -165,46 +173,54 @@ const RecommendationsPage = () => {
 
         <Flex direction="column" gap="3rem" py="3rem" mx="20rem">
           <HStack spacing={5}>
+            <Button
+              sx={sortBtnsStyle}
+              onClick={() => filterArticlesByCategory(null)}
+            >
+              All
+            </Button>
             {mainCategories.map((category, index) => (
-              <Button key={index} sx={sortBtnsStyle}>
+              <Button
+                key={index}
+                sx={sortBtnsStyle}
+                onClick={() => filterArticlesByCategory(category)}
+              >
                 {articles[category].title}
               </Button>
             ))}
           </HStack>
           <Grid templateColumns="repeat(3, 1fr)" gap={5}>
-            {mainCategories.map((category) =>
-              articles[category].articles.map((article, articleIndex) => (
-                <GridItem key={articleIndex}>
-                  <Flex direction="column">
-                    <Img
-                      src={article.img}
-                      alt="Article image"
-                      objectFit="cover"
-                      borderRadius="1rem"
-                      w="100%"
-                      aspectRatio="7/4"
-                    />
-                    <VStack align="flex-start">
-                      <Text fontWeight={500} fontSize="1.25rem" pt={1}>
-                        {article.title}
-                      </Text>
-                      <Text>
-                        {`${article.text.split(" ").slice(0, 25).join(" ")}...`}
-                      </Text>
-                      <Button
-                        variant="link"
-                        color="var(--cyan)"
-                        _hover={{ textDecoration: "none", opacity: "0.8" }}
-                        ref={btnRef}
-                        onClick={() => openModal(article)}
-                      >
-                        Learn more
-                      </Button>
-                    </VStack>
-                  </Flex>
-                </GridItem>
-              ))
-            )}
+            {filteredArticles.map((article, index) => (
+              <GridItem key={index}>
+                <Flex direction="column">
+                  <Img
+                    src={article.img}
+                    alt="Article image"
+                    objectFit="cover"
+                    borderRadius="1rem"
+                    w="100%"
+                    aspectRatio="7/4"
+                  />
+                  <VStack align="flex-start">
+                    <Text fontWeight={500} fontSize="1.25rem" pt={1}>
+                      {article.title}
+                    </Text>
+                    <Text>
+                      {`${article.text.split(" ").slice(0, 25).join(" ")}...`}
+                    </Text>
+                    <Button
+                      variant="link"
+                      color="var(--cyan)"
+                      _hover={{ textDecoration: "none", opacity: "0.8" }}
+                      ref={btnRef}
+                      onClick={() => openModal(article)}
+                    >
+                      Learn more
+                    </Button>
+                  </VStack>
+                </Flex>
+              </GridItem>
+            ))}
           </Grid>
         </Flex>
         <Modal onClose={onClose} isOpen={isOpen} scrollBehavior="inside">
@@ -224,4 +240,5 @@ const RecommendationsPage = () => {
     </>
   );
 };
+
 export default RecommendationsPage;
