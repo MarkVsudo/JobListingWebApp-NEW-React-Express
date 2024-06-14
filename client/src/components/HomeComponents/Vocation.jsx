@@ -1,5 +1,4 @@
 import {
-  Box,
   Flex,
   Heading,
   FormControl,
@@ -11,11 +10,48 @@ import {
   HStack,
   Img,
   ChakraProvider,
+  useToast,
 } from "@chakra-ui/react";
 import VocationImg from "../../assets/vocation-img.png";
 import { theme } from "../../themes/InputTheme";
 
 const Vocation = () => {
+  const toast = useToast();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const formData = new FormData(event.target);
+      const response = await fetch("/api/emailResume", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Email sent successfully",
+          description: "We will review your resume shortly.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        event.target.reset();
+      } else {
+        throw new Error("Failed to send email.");
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      toast({
+        title: "Failed to send email",
+        description: "Please try again later.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <ChakraProvider theme={theme}>
       <Flex
@@ -31,7 +67,8 @@ const Vocation = () => {
               Haven’t discovered your vocation yet?
             </Heading>
             <form
-              action="/form/process"
+              onSubmit={handleSubmit}
+              action="/api/emailResume"
               method="post"
               encType="multipart/form-data"
             >
@@ -47,20 +84,23 @@ const Vocation = () => {
               </Text>
               <HStack spacing={5} align="stretch">
                 <FormControl variant="floating" id="email" isRequired>
+                  <Input type="email" name="email" placeholder=" " />
                   <FormLabel>Email address</FormLabel>
-                  <Input type="email" name="email" />
                 </FormControl>
                 <FormControl variant="floating" id="resume" isRequired>
                   <Input
                     type="file"
                     name="resume"
-                    accept=".doc, .docx, .rtf ,.pdf"
+                    accept=".doc, .docx, .rtf, .pdf"
                     pt="3px"
                   />
                 </FormControl>
-                <FormLabel>Upload Resume (.doc(x)/.rtf/.pdf)</FormLabel>
+                <FormLabel htmlFor="resume">
+                  Upload Resume (.doc(x)/.rtf/.pdf)
+                </FormLabel>
               </HStack>
               <Button
+                type="submit"
                 width="max-content"
                 paddingInline="2rem"
                 fontWeight="500"
