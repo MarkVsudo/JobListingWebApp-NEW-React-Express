@@ -8,7 +8,7 @@ import RegisterPage from "./pages/RegisterPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import WhoWeArePage from "./pages/WhoWeArePage";
 import RecommendationsPage from "./pages/RecommendationsPage";
-
+import CompanyOverviewPage from "./pages/CompanyOverviewPage";
 function App() {
   return (
     <BrowserRouter>
@@ -18,6 +18,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/who-we-are" element={<WhoWeArePage />} />
           <Route path="/recommendations" element={<RecommendationsPage />} />
+          <Route path="/company-overview" element={<CompanyOverviewPage />} />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />
