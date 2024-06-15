@@ -1,5 +1,16 @@
 import { Helmet } from "react-helmet";
-import { Flex, Img, Heading, Text, Box, position } from "@chakra-ui/react";
+import {
+  Flex,
+  Img,
+  Heading,
+  Text,
+  Box,
+  Grid,
+  GridItem,
+} from "@chakra-ui/react";
+import { Link as ReactRouterLink } from "react-router-dom";
+import { Link as ChakraLink } from "@chakra-ui/react";
+import { IoMdPerson } from "react-icons/io";
 import HandGif from "../assets/hand-gif.gif";
 
 const rectangleStyles = {
@@ -45,7 +56,13 @@ const CompanyOverviewPage = () => {
           />
         </Flex>
 
-        <Flex position="relative" overflow="hidden" py="1rem" bg="white">
+        <Flex
+          direction="column"
+          position="relative"
+          overflow="hidden"
+          py="1rem"
+          bg="white"
+        >
           <Box
             style={{ ...rectangleStyles, left: "-15rem", top: "0rem" }}
           ></Box>
@@ -55,12 +72,18 @@ const CompanyOverviewPage = () => {
           <Box
             style={{ ...rectangleStyles, left: "-15rem", bottom: "-10rem" }}
           ></Box>
-          <Flex w="100%" direction="column" justify="center" align="center">
+          <Flex
+            w="100%"
+            direction="column"
+            justify="center"
+            align="center"
+            zIndex="1"
+          >
             <Text
               textAlign="center"
               fontSize="1.75rem"
               fontWeight={500}
-              pb="2rem"
+              pb="1.25rem"
             >
               Most sought for company of the month
             </Text>
@@ -98,6 +121,7 @@ const CompanyOverviewPage = () => {
                 top="60%"
                 transform="translate(-50%, -60%)"
               />
+
               <Flex
                 justify="space-evenly"
                 alignItems="center"
@@ -131,6 +155,68 @@ const CompanyOverviewPage = () => {
                 </Flex>
               </Flex>
             </Flex>
+          </Flex>
+          <Flex
+            direction="column"
+            px="15rem"
+            justify="center"
+            align="center"
+            zIndex="1"
+          >
+            <Text fontSize="1.75rem" fontWeight={500} py="1.25rem">
+              Bets companies on our platform
+            </Text>
+            <Grid templateColumns="repeat(3, 1fr)" gap="1.5rem">
+              <GridItem w="100%" bg="var(--light-blue)" borderRadius="1rem">
+                <Box position="relative">
+                  <Img
+                    src="https://media.dkcompany.com/sitecore-images/topbillder1537x550px_AO24.jpg?i=gMn1nVpc/18fea8bf-d710-45cb-b30c-3e23f8f38dff&mw=1440"
+                    alt="Separate company image"
+                    objectFit="cover"
+                    w="100%"
+                    h="12.5rem"
+                    borderRadius="1rem"
+                  />
+                  <Img
+                    src="https://media.dkcompany.com/sitecore-images/topbillder1537x550px_AO24.jpg?i=gMn1nVpc/18fea8bf-d710-45cb-b30c-3e23f8f38dff&mw=1440"
+                    alt="Separate company image"
+                    bg="white"
+                    objectFit="cover"
+                    w="35%"
+                    height="6rem"
+                    borderRadius="1rem"
+                    border="1px solid gray"
+                    position="absolute"
+                    right="5%"
+                    bottom="-25%"
+                  />
+                </Box>
+                <Flex direction="column" justify="center" align="start" p={2}>
+                  <Flex w="100%" direction="column" gap={2} align="start">
+                    <Text as="span" fontSize="1.25rem" fontWeight={500}>
+                      LinkedIn
+                    </Text>
+                    <Flex alignItems="center" gap={1}>
+                      <IoMdPerson />
+                      <Text as="span">100 employees</Text>
+                    </Flex>
+                    <Box w="100%" h="1px" bg="var(--dark-blue)" />
+                    <ChakraLink
+                      as={ReactRouterLink}
+                      to="/"
+                      fontSize="1.25rem"
+                      transition="all 250ms ease-in-out"
+                      _hover={{
+                        textDecoration: "none",
+                        color: "var(--dark-blue)",
+                      }}
+                    >
+                      45 offers listed
+                    </ChakraLink>
+                  </Flex>
+                </Flex>
+              </GridItem>
+            </Grid>
           </Flex>
         </Flex>
       </Flex>
