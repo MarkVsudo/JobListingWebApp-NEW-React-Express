@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import {
   Flex,
@@ -7,10 +8,11 @@ import {
   Box,
   Grid,
   GridItem,
+  Link as ChakraLink,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
-import { Link as ChakraLink } from "@chakra-ui/react";
 import { IoMdPerson } from "react-icons/io";
+import axios from "axios";
 import HandGif from "../assets/hand-gif.gif";
 
 const rectangleStyles = {
@@ -22,10 +24,25 @@ const rectangleStyles = {
 };
 
 const CompanyOverviewPage = () => {
+  const [companies, setCompanies] = useState([]);
+
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const response = await axios.get("/api/company-overview");
+        setCompanies(response.data);
+      } catch (error) {
+        console.error("Error fetching companies:", error);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
+
   return (
     <>
       <Helmet>
-        <title>CompanyOverviewPage </title>
+        <title>CompanyOverviewPage</title>
       </Helmet>
       <Flex direction="column" gap="4rem" mx="4rem" my="4rem">
         <Flex
@@ -37,7 +54,7 @@ const CompanyOverviewPage = () => {
         >
           <Heading as="h1" fontSize="4rem" color="var(--light-blue)" mb="1rem">
             <Text as="span" color="var(--cyan)" pr="1rem" fontSize="6rem">
-              2392
+              {companies.length}
             </Text>
             <Text as="span">companies</Text>
             <br />
@@ -164,58 +181,68 @@ const CompanyOverviewPage = () => {
             zIndex="1"
           >
             <Text fontSize="1.75rem" fontWeight={500} py="1.25rem">
-              Bets companies on our platform
+              Best companies on our platform
             </Text>
             <Grid templateColumns="repeat(3, 1fr)" gap="1.5rem">
-              <GridItem w="100%" bg="var(--light-blue)" borderRadius="1rem">
-                <Box position="relative">
-                  <Img
-                    src="https://media.dkcompany.com/sitecore-images/topbillder1537x550px_AO24.jpg?i=gMn1nVpc/18fea8bf-d710-45cb-b30c-3e23f8f38dff&mw=1440"
-                    alt="Separate company image"
-                    objectFit="cover"
-                    w="100%"
-                    h="12.5rem"
-                    borderRadius="1rem"
-                  />
-                  <Img
-                    src="https://media.dkcompany.com/sitecore-images/topbillder1537x550px_AO24.jpg?i=gMn1nVpc/18fea8bf-d710-45cb-b30c-3e23f8f38dff&mw=1440"
-                    alt="Separate company image"
-                    bg="white"
-                    objectFit="cover"
-                    w="35%"
-                    height="6rem"
-                    borderRadius="1rem"
-                    border="1px solid gray"
-                    position="absolute"
-                    right="5%"
-                    bottom="-25%"
-                  />
-                </Box>
-                <Flex direction="column" justify="center" align="start" p={2}>
-                  <Flex w="100%" direction="column" gap={2} align="start">
-                    <Text as="span" fontSize="1.25rem" fontWeight={500}>
-                      LinkedIn
-                    </Text>
-                    <Flex alignItems="center" gap={1}>
-                      <IoMdPerson />
-                      <Text as="span">100 employees</Text>
+              {companies.map((company) => (
+                <GridItem
+                  key={company.id}
+                  w="100%"
+                  bg="var(--light-blue)"
+                  borderRadius="1rem"
+                  boxShadow="0 0 25px #00000014"
+                  transition="all 0.2s ease-in-out"
+                  _hover={{ boxShadow: "0 0 25px #00000049" }}
+                >
+                  <Box position="relative">
+                    <Img
+                      src={company.banner}
+                      alt={`${company.name} banner`}
+                      objectFit="cover"
+                      w="100%"
+                      h="12.5rem"
+                      borderRadius="1rem"
+                    />
+                    <Img
+                      src={company.logo}
+                      alt={`${company.name} logo`}
+                      bg="white"
+                      objectFit="contain"
+                      w="35%"
+                      height="6rem"
+                      borderRadius="1rem"
+                      border="1px solid gray"
+                      position="absolute"
+                      right="5%"
+                      bottom="-25%"
+                    />
+                  </Box>
+                  <Flex direction="column" justify="center" align="start" p={2}>
+                    <Flex w="100%" direction="column" gap={2} align="start">
+                      <Text as="span" fontSize="1.25rem" fontWeight={500}>
+                        {company.name}
+                      </Text>
+                      <Flex alignItems="center" gap={1}>
+                        <IoMdPerson />
+                        <Text as="span">{company.num_employees} employees</Text>
+                      </Flex>
+                      <Box w="100%" h="1px" bg="var(--dark-blue)" />
+                      <ChakraLink
+                        as={ReactRouterLink}
+                        to="/"
+                        fontSize="1.25rem"
+                        transition="all 250ms ease-in-out"
+                        _hover={{
+                          textDecoration: "none",
+                          color: "var(--dark-blue)",
+                        }}
+                      >
+                        {company.count_offers} offers listed
+                      </ChakraLink>
                     </Flex>
-                    <Box w="100%" h="1px" bg="var(--dark-blue)" />
-                    <ChakraLink
-                      as={ReactRouterLink}
-                      to="/"
-                      fontSize="1.25rem"
-                      transition="all 250ms ease-in-out"
-                      _hover={{
-                        textDecoration: "none",
-                        color: "var(--dark-blue)",
-                      }}
-                    >
-                      45 offers listed
-                    </ChakraLink>
                   </Flex>
-                </Flex>
-              </GridItem>
+                </GridItem>
+              ))}
             </Grid>
           </Flex>
         </Flex>

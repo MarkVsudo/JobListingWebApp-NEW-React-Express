@@ -9,6 +9,8 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import WhoWeArePage from "./pages/WhoWeArePage";
 import RecommendationsPage from "./pages/RecommendationsPage";
 import CompanyOverviewPage from "./pages/CompanyOverviewPage";
+import CompanyPage from "./pages/CompanyPage";
+
 function App() {
   return (
     <BrowserRouter>
@@ -19,6 +21,7 @@ function App() {
           <Route path="/who-we-are" element={<WhoWeArePage />} />
           <Route path="/recommendations" element={<RecommendationsPage />} />
           <Route path="/company-overview" element={<CompanyOverviewPage />} />
+          <Route path="/company/:companyName" element={<CompanyPage />} />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />
