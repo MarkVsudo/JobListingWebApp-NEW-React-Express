@@ -21,10 +21,16 @@ router.get("/company/:companyName", async (req, res) => {
   const companyName = req.params.companyName;
 
   try {
-    const row = await db.query("SELECT * FROM companies WHERE name = ?", [
+    const rows = await db.query("SELECT * FROM companies WHERE name = ?", [
       companyName,
     ]);
-    res.json(row);
+
+    if (rows.length > 0) {
+      const company = rows[0]; // Get the first (and likely only) result
+      res.json({ company });
+    } else {
+      res.status(404).json({ error: "Company not found" });
+    }
   } catch (error) {
     console.error("Error fetching company:", error);
     res.status(500).json({ error: "An error occurred while fetching company" });

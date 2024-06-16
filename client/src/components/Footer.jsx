@@ -13,6 +13,7 @@ import {
   Img,
 } from "@chakra-ui/react";
 import { Link as ChakraLink } from "@chakra-ui/react";
+import { Link as ReactRouterLink } from "react-router-dom";
 import {
   FaInstagram,
   FaTwitter,
@@ -20,7 +21,6 @@ import {
   FaLinkedinIn,
 } from "react-icons/fa";
 import { BiMailSend } from "react-icons/bi";
-import { Link as ReactRouterLink } from "react-router-dom";
 import NavLogo from "../assets/website_logo_bright.svg";
 
 const SocialButton = ({ children, label, href }) => {

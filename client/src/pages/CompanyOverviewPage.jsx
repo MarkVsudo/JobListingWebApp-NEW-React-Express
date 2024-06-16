@@ -229,7 +229,7 @@ const CompanyOverviewPage = () => {
                       <Box w="100%" h="1px" bg="var(--dark-blue)" />
                       <ChakraLink
                         as={ReactRouterLink}
-                        to="/"
+                        to={`/company/${company.name.toLowerCase()}`}
                         fontSize="1.25rem"
                         transition="all 250ms ease-in-out"
                         _hover={{
