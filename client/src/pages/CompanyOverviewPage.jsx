@@ -11,7 +11,7 @@ import {
   Link as ChakraLink,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
-import { IoMdPerson } from "react-icons/io";
+import { CiUser } from "react-icons/ci";
 import axios from "axios";
 import HandGif from "../assets/hand-gif.gif";
 
@@ -42,7 +42,7 @@ const CompanyOverviewPage = () => {
   return (
     <>
       <Helmet>
-        <title>CompanyOverviewPage</title>
+        <title>JobConqueror - Companies</title>
       </Helmet>
       <Flex direction="column" gap="4rem" mx="4rem" my="4rem">
         <Flex
@@ -217,27 +217,33 @@ const CompanyOverviewPage = () => {
                       bottom="-25%"
                     />
                   </Box>
-                  <Flex direction="column" justify="center" align="start" p={2}>
+                  <Flex direction="column" justify="center" align="start" p={3}>
                     <Flex w="100%" direction="column" gap={2} align="start">
                       <Text as="span" fontSize="1.25rem" fontWeight={500}>
                         {company.name}
                       </Text>
                       <Flex alignItems="center" gap={1}>
-                        <IoMdPerson />
-                        <Text as="span">{company.num_employees} employees</Text>
+                        <CiUser fontSize="1.125rem" />
+                        <Text as="span">
+                          <Text as="span" fontWeight={600}>
+                            {company.num_employees}
+                          </Text>{" "}
+                          Employees
+                        </Text>
                       </Flex>
-                      <Box w="100%" h="1px" bg="var(--dark-blue)" />
+                      <Box w="100%" h="1px" bg="var(--cyan)" />
                       <ChakraLink
                         as={ReactRouterLink}
                         to={`/company/${company.name.toLowerCase()}`}
-                        fontSize="1.25rem"
+                        fontSize="1.5rem"
+                        fontWeight={600}
                         transition="all 250ms ease-in-out"
                         _hover={{
                           textDecoration: "none",
                           color: "var(--dark-blue)",
                         }}
                       >
-                        {company.count_offers} offers listed
+                        {company.count_offers} offers
                       </ChakraLink>
                     </Flex>
                   </Flex>
