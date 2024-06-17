@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import {
   Flex,
@@ -15,16 +15,18 @@ import {
   ModalBody,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
 import { FaRegShareFromSquare } from "react-icons/fa6";
 import { VscDebugDisconnect } from "react-icons/vsc";
 import { PiPlugsConnectedLight } from "react-icons/pi";
 import { IoBookmarkOutline } from "react-icons/io5";
 import { IoBookmark } from "react-icons/io5";
-import { Helmet } from "react-helmet";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Helmet } from "react-helmet";
 import axios from "axios";
 
 const CompanyPage = () => {
@@ -362,19 +364,28 @@ const CompanyPage = () => {
         </Flex>
       </Flex>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="6xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalBody>
+          <ModalBody p="0">
             <Swiper
-              spaceBetween={10}
-              slidesPerView={1}
-              navigation
-              pagination={{ clickable: true }}
+              navigation={true}
+              modules={[Autoplay, Navigation]}
+              autoplay={{
+                delay: 2500,
+                disableOnInteraction: false,
+              }}
+              effect="fade"
             >
               {images.map((image, index) => (
                 <SwiperSlide key={index}>
-                  <Img src={image} alt={`Company image ${index + 1}`} />
+                  <Box>
+                    <Img
+                      src={image}
+                      alt={`Company image ${index + 1}`}
+                      w="100%"
+                    />
+                  </Box>
                 </SwiperSlide>
               ))}
             </Swiper>
