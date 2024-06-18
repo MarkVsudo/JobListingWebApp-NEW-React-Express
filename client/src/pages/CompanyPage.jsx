@@ -36,6 +36,8 @@ import { GoGift } from "react-icons/go";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { FaRegStar } from "react-icons/fa6";
 import { RxDotsVertical } from "react-icons/rx";
+import { SlLocationPin } from "react-icons/sl";
+import { FiPhone } from "react-icons/fi";
 
 import { Helmet } from "react-helmet";
 import axios from "axios";
@@ -466,6 +468,7 @@ const CompanyPage = () => {
             </Box>
           </VStack>
           <VStack w="35%" spacing="2rem">
+            {/* People also view */}
             <Box w="100%">
               <Text pb={3} fontSize="1.5rem" fontWeight={700}>
                 People Also View
@@ -512,6 +515,53 @@ const CompanyPage = () => {
                     </Flex>
                   </ChakraLink>
                 ))}
+              </Flex>
+            </Box>
+            {/* Location */}
+            <Box w="100%">
+              <Text pb={3} fontSize="1.5rem" fontWeight={700}>
+                Location
+              </Text>
+              <Flex
+                direction="column"
+                borderRadius="1rem"
+                bg="white"
+                boxShadow="0 0 25px #00000049"
+                p="1rem"
+                gap="1.5rem"
+              >
+                <ChakraLink
+                  as={ReactRouterLink}
+                  to={company[0].google_maps_url}
+                  isExternal
+                  _hover={{ textDecoration: "none" }}
+                  display="flex"
+                  alignItems="center"
+                  gap="0.5rem"
+                >
+                  <SlLocationPin fontSize="1.125rem" />
+                  <Text>{company[0].headquarters}</Text>
+                </ChakraLink>
+                <iframe
+                  src={company[0].google_maps_iframe}
+                  width="fit-content"
+                  height="250"
+                  borderRadius="1rem"
+                  allowfullscreen=""
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                ></iframe>
+                <ChakraLink
+                  as={ReactRouterLink}
+                  to={`tel:${company[0].contact_phone}`}
+                  _hover={{ textDecoration: "none" }}
+                  display="flex"
+                  alignItems="center"
+                  gap="0.5rem"
+                >
+                  <FiPhone fontSize="1.125rem" />
+                  <Text>{company[0].contact_phone}</Text>
+                </ChakraLink>
               </Flex>
             </Box>
           </VStack>
