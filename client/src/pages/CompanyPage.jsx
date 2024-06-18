@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   Flex,
@@ -14,6 +14,9 @@ import {
   ModalContent,
   ModalBody,
   useDisclosure,
+  Grid,
+  GridItem,
+  Tooltip,
 } from "@chakra-ui/react";
 import { FaRegShareFromSquare } from "react-icons/fa6";
 import { VscDebugDisconnect } from "react-icons/vsc";
@@ -26,12 +29,21 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import { MdOutlineHealthAndSafety } from "react-icons/md";
+import { BsLungs } from "react-icons/bs";
+import { LuHeartPulse } from "react-icons/lu";
+import { GoGift } from "react-icons/go";
+import { BsGraphUpArrow } from "react-icons/bs";
+import { FaRegStar } from "react-icons/fa6";
+import { RxDotsVertical } from "react-icons/rx";
+
 import { Helmet } from "react-helmet";
 import axios from "axios";
 
 const CompanyPage = () => {
   const { companyName } = useParams();
   const [company, setCompany] = useState(null);
+  const [companies, setCompanies] = useState(null);
   const [followed, setFollowed] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -40,6 +52,7 @@ const CompanyPage = () => {
       try {
         const response = await axios.get(`/api/company/${companyName}`);
         setCompany(response.data.company);
+        setCompanies(response.data.companies);
       } catch (error) {
         console.error("Error fetching company data:", error);
       }
@@ -48,7 +61,8 @@ const CompanyPage = () => {
     fetchCompanyData();
   }, [companyName]);
 
-  if (!company) {
+  // Loading state if no response
+  if (!company || !companies) {
     return (
       <Flex direction="column" justify="center" align="center" minHeight="65vh">
         <Spinner
@@ -62,7 +76,42 @@ const CompanyPage = () => {
     );
   }
 
+  // Life at company section
   const images = company[0].company_images.split(", ");
+
+  // Perks section
+  const companyPerks = company[0].company_perks
+    .split(",")
+    .map((perk) => perk.trim());
+
+  const getIconForPerk = (perk) => {
+    switch (perk.toLowerCase()) {
+      case "healthcare benefits":
+        return (
+          <MdOutlineHealthAndSafety color="var(--cyan)" fontSize="1.75rem" />
+        );
+      case "wellness benefits":
+        return <BsLungs color="var(--cyan)" fontSize="1.75rem" />;
+      case "sick leave":
+        return <LuHeartPulse color="var(--cyan)" fontSize="1.75rem" />;
+      case "birthday salary":
+        return <GoGift color="var(--cyan)" fontSize="1.75rem" />;
+      case "careers growth":
+        return <BsGraphUpArrow color="var(--cyan)" fontSize="1.75rem" />;
+      default:
+        return <FaRegStar color="var(--cyan)" fontSize="1.75rem" />;
+    }
+  };
+
+  const maxPerksToShow = 5;
+  const visiblePerks = companyPerks.slice(0, maxPerksToShow);
+  const remainingPerks = companyPerks.slice(maxPerksToShow);
+
+  // People Also View section
+  const maxCompaniesListed = 6;
+  const listedCompanies = companies[0]
+    .slice(0, maxCompaniesListed)
+    .filter((item) => item.name !== companyName);
 
   return (
     <>
@@ -99,6 +148,7 @@ const CompanyPage = () => {
                 alt="Company logo"
                 objectFit="contain"
                 width="5rem"
+                height="5rem"
               />
               <Flex direction="column" justify="space-between">
                 <Text fontWeight={700} fontSize="1.5rem">
@@ -170,7 +220,7 @@ const CompanyPage = () => {
           </Flex>
         </Flex>
 
-        <Flex w={[300, 500, 1330]} justify="space-between">
+        <Flex w={[300, 500, 1330]} justify="space-between" pb="5rem">
           <VStack w="50%" spacing="2rem">
             {/* About */}
             <Box w="100%">
@@ -358,9 +408,113 @@ const CompanyPage = () => {
               <Text fontSize="1.5rem" fontWeight={700} pb={3}>
                 Perks and Benefits
               </Text>
+              <Grid
+                templateColumns="repeat(3, 1fr)"
+                gap="1rem"
+                p="1rem"
+                justifyContent="space-around"
+                bg="white"
+                boxShadow="0 0 25px #00000049"
+                borderRadius="1rem"
+              >
+                {visiblePerks.map((perk, index) => (
+                  <GridItem key={index}>
+                    <Flex align="center" gap="1rem">
+                      <Flex
+                        justify="center"
+                        align="center"
+                        bg="var(--light-blue)"
+                        p={2}
+                        w="3rem"
+                        h="3rem"
+                        borderRadius="1rem"
+                      >
+                        {getIconForPerk(perk)}
+                      </Flex>
+                      <Text noOfLines={2}>{perk}</Text>
+                    </Flex>
+                  </GridItem>
+                ))}
+                {remainingPerks.length > 0 && (
+                  <GridItem>
+                    <Flex align="center" gap="1rem">
+                      <Tooltip
+                        label={remainingPerks.join(", ")}
+                        fontSize="md"
+                        placement="top"
+                      >
+                        <Flex
+                          justify="center"
+                          align="center"
+                          bg="#f8f8f8"
+                          p={2}
+                          w="3rem"
+                          h="3rem"
+                          borderRadius="1rem"
+                          cursor="pointer"
+                        >
+                          <RxDotsVertical fontSize="1.75rem" color="grey" />
+                        </Flex>
+                      </Tooltip>
+                      <Text color="rgb(13,110,253)">
+                        +{remainingPerks.length} more
+                      </Text>
+                    </Flex>
+                  </GridItem>
+                )}
+              </Grid>
             </Box>
           </VStack>
-          <Box w="30%"></Box>
+          <VStack w="35%" spacing="2rem">
+            <Box w="100%">
+              <Text pb={3} fontSize="1.5rem" fontWeight={700}>
+                People Also View
+              </Text>
+              <Flex
+                direction="column"
+                borderRadius="1rem"
+                bg="white"
+                boxShadow="0 0 25px #00000049"
+                p="1rem"
+                gap="1.5rem"
+              >
+                {listedCompanies.map((company, index) => (
+                  <ChakraLink
+                    key={index}
+                    as={ReactRouterLink}
+                    to={`/company/${company.name}`}
+                    _hover={{ textDecoration: "none" }}
+                  >
+                    <Flex
+                      justify="space-between"
+                      position="relative"
+                      _hover={{
+                        ".innerFlex": { transform: "translateX(10px)" },
+                      }}
+                    >
+                      <Flex
+                        direction="column"
+                        align="flex-start"
+                        justify="space-between"
+                        className="innerFlex"
+                        transition="transform 0.3s"
+                      >
+                        <Text fontWeight={700}>{company.name}</Text>
+                        <Text>{company.headquarters}</Text>
+                      </Flex>
+                      <Img
+                        src={company.logo}
+                        alt={`${company.name} company logo`}
+                        w="3rem"
+                        h="3rem"
+                        objectFit="contain"
+                      />
+                    </Flex>
+                  </ChakraLink>
+                ))}
+              </Flex>
+            </Box>
+          </VStack>
         </Flex>
       </Flex>
 

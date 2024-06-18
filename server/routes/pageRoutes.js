@@ -25,15 +25,21 @@ router.get("/company/:companyName", async (req, res) => {
       companyName,
     ]);
 
+    const companies = await db.query(
+      "SELECT name, headquarters, logo FROM companies"
+    );
+
     if (rows.length > 0) {
-      const company = rows[0]; // Get the first (and likely only) result
-      res.json({ company });
+      const company = rows[0];
+      res.json({ company, companies });
     } else {
       res.status(404).json({ error: "Company not found" });
     }
   } catch (error) {
     console.error("Error fetching company:", error);
-    res.status(500).json({ error: "An error occurred while fetching company" });
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching the company" });
   }
 });
 
