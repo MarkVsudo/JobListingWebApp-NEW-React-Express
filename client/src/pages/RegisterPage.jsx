@@ -12,7 +12,6 @@ import {
   Text,
   Checkbox,
   Img,
-  useToast,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
@@ -32,9 +31,10 @@ const RegisterPage = () => {
     subscribed: true,
   });
 
+  const [errors, setErrors] = useState({});
+
   const { username, email, password, role, subscribed } = formData;
 
-  const toast = useToast();
   const navigate = useNavigate();
 
   const onChange = (e) => {
@@ -56,30 +56,11 @@ const RegisterPage = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/register", formData);
-      toast({
-        title: "Account created.",
-        description: res.data.msg,
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
+      await axios.post("/api/register", formData);
       navigate("/login");
     } catch (err) {
       console.error("Error:", err);
-      let errorMsg = "An unexpected error occurred";
-      if (err.response?.data?.errors) {
-        errorMsg = err.response.data.errors[0].msg; // Get the first error message
-      } else if (err.response?.data?.msg) {
-        errorMsg = err.response.data.msg;
-      }
-      toast({
-        title: "Error",
-        description: errorMsg,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      setErrors({ msg: err.response.data.msg || "Register failed" });
     }
   };
 
@@ -107,7 +88,6 @@ const RegisterPage = () => {
           zIndex="5"
           display={{ base: "none", xl: "block" }}
         />
-
         <Img
           src={EllipseTablet}
           alt="Ellipse tablet svg"
@@ -120,7 +100,6 @@ const RegisterPage = () => {
           zIndex="5"
           display={{ base: "none", md: "block", xl: "none" }}
         />
-
         <Img
           src={EllipseMobile}
           alt="Ellipse mobile svg"
@@ -150,7 +129,29 @@ const RegisterPage = () => {
           gap="1rem"
           onSubmit={onSubmit}
         >
-          <FormControl variant="floating" id="email" isRequired>
+          <FormControl
+            variant="floating"
+            id="username"
+            isInvalid={errors.username}
+            isRequired
+          >
+            <Input
+              type="text"
+              placeholder=" "
+              name="username"
+              value={username}
+              onChange={onChange}
+              _focus={{ borderColor: "var(--cyan)" }}
+            />
+            <FormLabel>Full name</FormLabel>
+            <FormErrorMessage>{errors.username}</FormErrorMessage>
+          </FormControl>
+          <FormControl
+            variant="floating"
+            id="email"
+            isInvalid={errors.email}
+            isRequired
+          >
             <Input
               type="email"
               placeholder=" "
@@ -163,21 +164,14 @@ const RegisterPage = () => {
             <FormHelperText color="white">
               We'll never share your email.
             </FormHelperText>
-            <FormErrorMessage>Your email is invalid</FormErrorMessage>
+            <FormErrorMessage>{errors.email}</FormErrorMessage>
           </FormControl>
-          <FormControl variant="floating" id="username" isRequired>
-            <Input
-              type="text"
-              placeholder=" "
-              name="username"
-              value={username}
-              onChange={onChange}
-              _focus={{ borderColor: "var(--cyan)" }}
-            />
-            <FormLabel>Full name</FormLabel>
-            <FormErrorMessage>Your name is invalid</FormErrorMessage>
-          </FormControl>
-          <FormControl variant="floating" id="password" isRequired>
+          <FormControl
+            variant="floating"
+            id="password"
+            isInvalid={errors.password}
+            isRequired
+          >
             <Input
               type="password"
               placeholder=" "
@@ -192,7 +186,7 @@ const RegisterPage = () => {
               numbers, and must not contain spaces, special characters, or
               emoji.
             </FormHelperText>
-            <FormErrorMessage>Your password is invalid</FormErrorMessage>
+            <FormErrorMessage>{errors.password}</FormErrorMessage>
           </FormControl>
           <Checkbox name="role" value="applicant" onChange={onChange}>
             Register as recruiter?
@@ -209,14 +203,12 @@ const RegisterPage = () => {
               as={ReactRouterLink}
               to="/"
               _hover={{ textDecoration: "none" }}
-              style={{
-                fontWeight: "500",
-                color: "white",
-              }}
+              style={{ fontWeight: "500", color: "white" }}
             >
               Privacy Policy
             </ChakraLink>
           </Checkbox>
+          {errors.msg && <Text color="red.500">{errors.msg}</Text>}
           <AuthButton title="Create account" onClick={onSubmit} />
           <Text>
             Already have an account?
@@ -224,10 +216,7 @@ const RegisterPage = () => {
               as={ReactRouterLink}
               to="/login"
               _hover={{ textDecoration: "none" }}
-              style={{
-                fontWeight: "500",
-                color: "white",
-              }}
+              style={{ fontWeight: "500", color: "white" }}
             >
               {" "}
               Sign in
