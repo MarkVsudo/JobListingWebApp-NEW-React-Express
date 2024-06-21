@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import formRoutes from "./routes/formRoutes.js";
 import pageRoutes from "./routes/pageRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(cookieParser());
 // Use the routes defined in routes.js
 app.use("/api", formRoutes);
 app.use("/api", pageRoutes);
+app.use("/api", authRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Server is running at | ${DOMAIN} |`);

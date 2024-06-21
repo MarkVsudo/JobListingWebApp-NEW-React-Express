@@ -1,4 +1,4 @@
-import "../styles/AuthPages.css";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import {
   ChakraProvider,
@@ -9,20 +9,80 @@ import {
   Input,
   FormHelperText,
   FormErrorMessage,
-  extendTheme,
   Text,
   Checkbox,
   Img,
+  useToast,
 } from "@chakra-ui/react";
-import { Link as ReactRouterLink } from "react-router-dom";
+import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import AuthButton from "../components/AuthButton";
 import EllipseDesktop from "../assets/ellipse-svg-desktop.svg";
 import EllipseTablet from "../assets/ellipse-svg-tablet.svg";
 import EllipseMobile from "../assets/ellipse-svg-mobile.svg";
 import { theme } from "../themes/InputTheme";
+import axios from "axios";
 
 const RegisterPage = () => {
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    role: "applicant",
+    subscribed: true,
+  });
+
+  const { username, email, password, role, subscribed } = formData;
+
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const onChange = (e) => {
+    const { name, value, checked, type } = e.target;
+
+    if (name === "role") {
+      setFormData({
+        ...formData,
+        role: checked ? "recruiter" : "applicant",
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: type === "checkbox" ? checked : value,
+      });
+    }
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("/api/register", formData);
+      toast({
+        title: "Account created.",
+        description: res.data.msg,
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate("/login");
+    } catch (err) {
+      console.error("Error:", err);
+      let errorMsg = "An unexpected error occurred";
+      if (err.response?.data?.errors) {
+        errorMsg = err.response.data.errors[0].msg; // Get the first error message
+      } else if (err.response?.data?.msg) {
+        errorMsg = err.response.data.msg;
+      }
+      toast({
+        title: "Error",
+        description: errorMsg,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <ChakraProvider theme={theme}>
       <Flex
@@ -83,15 +143,20 @@ const RegisterPage = () => {
           Create your account
         </Heading>
         <Flex
+          as="form"
           direction="column"
           mt={8}
           maxW={{ base: "md", md: "sm", lg: "md" }}
           gap="1rem"
+          onSubmit={onSubmit}
         >
           <FormControl variant="floating" id="email" isRequired>
             <Input
               type="email"
               placeholder=" "
+              name="email"
+              value={email}
+              onChange={onChange}
               _focus={{ borderColor: "var(--cyan)" }}
             />
             <FormLabel>Email address</FormLabel>
@@ -100,10 +165,13 @@ const RegisterPage = () => {
             </FormHelperText>
             <FormErrorMessage>Your email is invalid</FormErrorMessage>
           </FormControl>
-          <FormControl variant="floating" id="name" isRequired>
+          <FormControl variant="floating" id="username" isRequired>
             <Input
               type="text"
               placeholder=" "
+              name="username"
+              value={username}
+              onChange={onChange}
               _focus={{ borderColor: "var(--cyan)" }}
             />
             <FormLabel>Full name</FormLabel>
@@ -113,10 +181,12 @@ const RegisterPage = () => {
             <Input
               type="password"
               placeholder=" "
+              name="password"
+              value={password}
+              onChange={onChange}
               _focus={{ borderColor: "var(--cyan)" }}
             />
             <FormLabel>Password</FormLabel>
-
             <FormHelperText color="white">
               Your password must be 8-20 characters long, contain letters and
               numbers, and must not contain spaces, special characters, or
@@ -124,8 +194,14 @@ const RegisterPage = () => {
             </FormHelperText>
             <FormErrorMessage>Your password is invalid</FormErrorMessage>
           </FormControl>
-          <Checkbox>Register as recruiter?</Checkbox>
-          <Checkbox defaultChecked>
+          <Checkbox name="role" value="applicant" onChange={onChange}>
+            Register as recruiter?
+          </Checkbox>
+          <Checkbox
+            name="subscribed"
+            isChecked={subscribed}
+            onChange={onChange}
+          >
             Email me about job offers and news. If this box is checked,
             JobConqueror will occasionally send helpful and relevant emails. You
             can unsubscribe at any time.{" "}
@@ -141,10 +217,7 @@ const RegisterPage = () => {
               Privacy Policy
             </ChakraLink>
           </Checkbox>
-          <AuthButton
-            title="Create account"
-            onClick={() => console.log("Create account")}
-          />
+          <AuthButton title="Create account" onClick={onSubmit} />
           <Text>
             Already have an account?
             <ChakraLink

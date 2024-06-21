@@ -16,7 +16,7 @@ const buttonStyles = {
 
 const AuthButton = ({ title, onClick }) => {
   return (
-    <Button {...buttonStyles} onClick={onClick}>
+    <Button type="submit" {...buttonStyles} onClick={onClick}>
       {title}
     </Button>
   );
