@@ -15,13 +15,13 @@ const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 router.post(
   "/register",
   [
-    check("email", "Please include a valid email").isEmail(),
-    check("username", "Full name is required").not().isEmpty(),
     check("password")
       .matches(passwordRegex)
       .withMessage(
         "Password must be 8-20 characters long, contain at least one letter or number"
       ),
+    check("email", "Please include a valid email").isEmail(),
+    check("username", "Full name is required").not().isEmpty(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -72,7 +72,7 @@ router.post(
   "/login",
   [
     check("email", "Please include a valid email").isEmail(),
-    check("password", "Password is required").exists(),
+    check("password", "Password is required").not().isEmpty(),
   ],
   async (req, res) => {
     const errors = validationResult(req);

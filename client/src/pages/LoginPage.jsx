@@ -46,11 +46,23 @@ const LoginPage = () => {
 
     try {
       const response = await axios.post("/api/login", { email, password });
-      // Assuming the response contains the token
       localStorage.setItem("token", response.data.token);
-      navigate("/"); // Navigate to the dashboard or another page after successful login
+      navigate("/");
     } catch (err) {
-      setErrors({ msg: err.response.data.msg || "Login failed" });
+      console.error("Error:", err);
+      const validationErrors = {};
+      if (err.response) {
+        if (err.response.data.errors) {
+          // Handling validation errors
+          err.response.data.errors.forEach((error) => {
+            validationErrors[error.path] = error.msg;
+          });
+        } else if (err.response.data.msg) {
+          // Handling general error messages
+          validationErrors.msg = err.response.data.msg;
+        }
+      }
+      setErrors(validationErrors);
     }
   };
 
@@ -149,13 +161,13 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
             <FormLabel>Password</FormLabel>
+            <FormErrorMessage>{errors.password}</FormErrorMessage>
             <Button
               style={{ all: "unset", cursor: "pointer" }}
               onClick={onOpen}
             >
               Forgot your password?
             </Button>
-            <FormErrorMessage>{errors.password}</FormErrorMessage>
           </FormControl>
           {errors.msg && <Text color="red.500">{errors.msg}</Text>}
           <Checkbox>Stay signed in (30 days)</Checkbox>

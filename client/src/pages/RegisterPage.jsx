@@ -60,7 +60,19 @@ const RegisterPage = () => {
       navigate("/login");
     } catch (err) {
       console.error("Error:", err);
-      setErrors({ msg: err.response.data.msg || "Register failed" });
+      const validationErrors = {};
+      if (err.response) {
+        if (err.response.data.errors) {
+          // Handling validation errors
+          err.response.data.errors.forEach((error) => {
+            validationErrors[error.path] = error.msg;
+          });
+        } else if (err.response.data.msg) {
+          // Handling general error messages
+          validationErrors.msg = err.response.data.msg;
+        }
+      }
+      setErrors(validationErrors);
     }
   };
 
@@ -161,9 +173,6 @@ const RegisterPage = () => {
               _focus={{ borderColor: "var(--cyan)" }}
             />
             <FormLabel>Email address</FormLabel>
-            <FormHelperText color="white">
-              We'll never share your email.
-            </FormHelperText>
             <FormErrorMessage>{errors.email}</FormErrorMessage>
           </FormControl>
           <FormControl
@@ -181,12 +190,10 @@ const RegisterPage = () => {
               _focus={{ borderColor: "var(--cyan)" }}
             />
             <FormLabel>Password</FormLabel>
-            <FormHelperText color="white">
-              Your password must be 8-20 characters long, contain letters and
-              numbers, and must not contain spaces, special characters, or
-              emoji.
+            <FormHelperText color={errors.password ? "red" : "white"}>
+              Password must be 8-20 characters long, contain at least one letter
+              or number
             </FormHelperText>
-            <FormErrorMessage>{errors.password}</FormErrorMessage>
           </FormControl>
           <Checkbox name="role" value="applicant" onChange={onChange}>
             Register as recruiter?
