@@ -38,6 +38,7 @@ const LoginPage = () => {
   const finalRef = useRef(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [jwtExpiration, setJwtExpiration] = useState(undefined);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
@@ -45,7 +46,11 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("/api/login", { email, password });
+      const response = await axios.post("/api/login", {
+        email,
+        password,
+        jwtExpiration,
+      });
       localStorage.setItem("token", response.data.token);
       navigate("/");
     } catch (err) {
@@ -170,7 +175,10 @@ const LoginPage = () => {
             </Button>
           </FormControl>
           {errors.msg && <Text color="red.500">{errors.msg}</Text>}
-          <Checkbox>Stay signed in (30 days)</Checkbox>
+          <Checkbox onChange={(e) => setJwtExpiration(e.target.checked && 30)}>
+            Stay signed in (30 days)
+          </Checkbox>
+
           <AuthButton title="Continue" onClick={onSubmit} />
           <Text>
             Don't have an account?

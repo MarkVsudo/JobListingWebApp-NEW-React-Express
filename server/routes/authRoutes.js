@@ -80,7 +80,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password } = req.body;
+    const { email, password, jwtExpiration } = req.body;
 
     try {
       const [users] = await db.query("SELECT * FROM users WHERE email = ?", [
@@ -105,10 +105,12 @@ router.post(
         },
       };
 
+      let expiresInValue = jwtExpiration || process.env.JWT_EXPIRES;
+
       jwt.sign(
         payload,
         process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRES },
+        { expiresIn: expiresInValue },
         (err, token) => {
           if (err) throw err;
           res.json({ token });
