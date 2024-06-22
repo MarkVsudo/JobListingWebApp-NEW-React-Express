@@ -28,17 +28,19 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
+import { useContext } from "react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import { RxDashboard } from "react-icons/rx";
 import { IoLogOutOutline } from "react-icons/io5";
 import NavLogo from "../assets/website_logo.svg";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
 
-  let loggedIn = false;
   let isRecruiter = true;
+  const { token, logout } = useContext(AuthContext);
 
   return (
     <Box>
@@ -80,9 +82,21 @@ export default function WithSubnavigation() {
           spacing={6}
           align="center"
         >
-          {loggedIn ? (
+          {token ? (
             <Stack direction={"row"} spacing={7}>
-              <Button>{isRecruiter ? "Post Jobs" : "Find Jobs"}</Button>
+              <ChakraLink
+                as={ReactRouterLink}
+                to={isRecruiter ? "/dashboard" : "/job-listings"}
+                align="center"
+              >
+                <Button
+                  bg="var(--blue-gray)"
+                  color="white"
+                  _hover={{ backgroundColor: "var(--dark-blue)" }}
+                >
+                  {isRecruiter ? "Post Jobs" : "Find Jobs"}
+                </Button>
+              </ChakraLink>
               <Menu>
                 <MenuButton
                   as={Button}
@@ -93,7 +107,9 @@ export default function WithSubnavigation() {
                 >
                   <Avatar
                     size={"sm"}
-                    src={"https://avatars.dicebear.com/api/male/username.svg"}
+                    src={
+                      "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/User_icon-cp.svg/828px-User_icon-cp.svg.png"
+                    }
                   />
                 </MenuButton>
                 <MenuList alignItems={"center"}>
@@ -101,7 +117,9 @@ export default function WithSubnavigation() {
                   <Center>
                     <Avatar
                       size={"2xl"}
-                      src={"https://avatars.dicebear.com/api/male/username.svg"}
+                      src={
+                        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/User_icon-cp.svg/828px-User_icon-cp.svg.png"
+                      }
                     />
                   </Center>
                   <br />
@@ -110,11 +128,18 @@ export default function WithSubnavigation() {
                   </Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem gap=".5rem">
-                    <RxDashboard />
-                    Dashboard
-                  </MenuItem>
-                  <MenuItem gap=".5rem">
+                  <ChakraLink
+                    as={ReactRouterLink}
+                    to="/dashboard"
+                    align="center"
+                    _hover={{ textDecoration: "none" }}
+                  >
+                    <MenuItem gap=".5rem">
+                      <RxDashboard />
+                      Dashboard
+                    </MenuItem>
+                  </ChakraLink>
+                  <MenuItem gap=".5rem" onClick={logout}>
                     <IoLogOutOutline />
                     Logout
                   </MenuItem>
