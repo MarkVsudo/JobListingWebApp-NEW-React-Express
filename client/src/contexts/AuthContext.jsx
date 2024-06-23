@@ -11,19 +11,22 @@ const AuthProvider = ({ children }) => {
     if (token) {
       localStorage.setItem("token", token);
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      fetchUser();
+      fetchUserData();
     } else {
       localStorage.removeItem("token");
       delete axios.defaults.headers.common["Authorization"];
+      setUser(null);
     }
   }, [token]);
 
-  const fetchUser = async () => {
+  const fetchUserData = async () => {
     try {
       const response = await axios.get("/api/dashboard");
+      console.log("User data fetched:", response.data);
       setUser(response.data);
     } catch (error) {
-      console.error("Error fetching dashboard", error);
+      console.error("Error fetching user data:", error);
+      setUser(null);
     }
   };
 

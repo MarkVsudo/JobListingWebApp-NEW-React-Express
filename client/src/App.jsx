@@ -10,6 +10,7 @@ import WhoWeArePage from "./pages/WhoWeArePage";
 import RecommendationsPage from "./pages/RecommendationsPage";
 import CompanyOverviewPage from "./pages/CompanyOverviewPage";
 import CompanyPage from "./pages/CompanyPage";
+import DashboardPage from "./pages/DashboardPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/recommendations" element={<RecommendationsPage />} />
           <Route path="/company-overview" element={<CompanyOverviewPage />} />
           <Route path="/company/:companyName" element={<CompanyPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />

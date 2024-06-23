@@ -175,7 +175,9 @@ const LoginPage = () => {
             </Button>
           </FormControl>
           {errors.msg && <Text color="red.500">{errors.msg}</Text>}
-          <Checkbox onChange={(e) => setJwtExpiration(e.target.checked && 30)}>
+          <Checkbox
+            onChange={(e) => setJwtExpiration(e.target.checked && 2592000)}
+          >
             Stay signed in (30 days)
           </Checkbox>
 

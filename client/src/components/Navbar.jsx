@@ -39,8 +39,7 @@ import { AuthContext } from "../contexts/AuthContext";
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
 
-  let isRecruiter = true;
-  const { token, logout } = useContext(AuthContext);
+  const { token, logout, user } = useContext(AuthContext);
 
   return (
     <Box>
@@ -86,7 +85,11 @@ export default function WithSubnavigation() {
             <Stack direction={"row"} spacing={7}>
               <ChakraLink
                 as={ReactRouterLink}
-                to={isRecruiter ? "/dashboard" : "/job-listings"}
+                to={
+                  user && user.role === "recruiter"
+                    ? "/dashboard"
+                    : "/job-listings"
+                }
                 align="center"
               >
                 <Button
@@ -94,7 +97,9 @@ export default function WithSubnavigation() {
                   color="white"
                   _hover={{ backgroundColor: "var(--dark-blue)" }}
                 >
-                  {isRecruiter ? "Post Jobs" : "Find Jobs"}
+                  {user && user.role === "recruiter"
+                    ? "Post Jobs"
+                    : "Find Jobs"}
                 </Button>
               </ChakraLink>
               <Menu>
@@ -108,7 +113,9 @@ export default function WithSubnavigation() {
                   <Avatar
                     size={"sm"}
                     src={
-                      "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/User_icon-cp.svg/828px-User_icon-cp.svg.png"
+                      user && user.avatarUrl
+                        ? user.avatarUrl
+                        : "https://static-00.iconduck.com/assets.00/user-avatar-happy-icon-2048x2048-ssmbv1ou.png"
                     }
                   />
                 </MenuButton>
@@ -118,13 +125,15 @@ export default function WithSubnavigation() {
                     <Avatar
                       size={"2xl"}
                       src={
-                        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/User_icon-cp.svg/828px-User_icon-cp.svg.png"
+                        user && user.avatarUrl
+                          ? user.avatarUrl
+                          : "https://static-00.iconduck.com/assets.00/user-avatar-happy-icon-2048x2048-ssmbv1ou.png"
                       }
                     />
                   </Center>
                   <br />
                   <Center>
-                    <p>Username</p>
+                    <p>{user ? user.fullName : "Username"}</p>
                   </Center>
                   <br />
                   <MenuDivider />

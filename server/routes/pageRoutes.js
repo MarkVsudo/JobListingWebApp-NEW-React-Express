@@ -1,5 +1,7 @@
 import express from "express";
 import db from "../config/dbConfig.js";
+import authenticateToken from "../middleware/authMiddleware.js";
+import getUserProfile from "../controllers/userController.js";
 
 const router = express.Router();
 
@@ -42,5 +44,7 @@ router.get("/company/:companyName", async (req, res) => {
       .json({ error: "An error occurred while fetching the company" });
   }
 });
+
+router.get("/dashboard", authenticateToken, getUserProfile);
 
 export default router;
