@@ -41,9 +41,12 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [jwtExpiration, setJwtExpiration] = useState(undefined);
   const [errors, setErrors] = useState({});
+  const [resetErrors, setResetErrors] = useState({});
+  const [resetEmail, setResetEmail] = useState("");
   const navigate = useNavigate();
 
   const { setToken } = useContext(AuthContext);
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -56,7 +59,7 @@ const LoginPage = () => {
 
       localStorage.setItem("token", response.data.token);
 
-      setToken(response.data.token); // Update the context with the new token
+      setToken(response.data.token); // Update auth context with new token
 
       navigate("/");
     } catch (err) {
@@ -74,6 +77,29 @@ const LoginPage = () => {
         }
       }
       setErrors(validationErrors);
+    }
+  };
+
+  const onSubmitResetModal = async (e) => {
+    e.preventDefault();
+
+    try {
+      await axios.post("/api/reset-password", { resetEmail });
+    } catch (err) {
+      console.error("Error:", err);
+      const validationErrors = {};
+      if (err.response) {
+        if (err.response.data.resetErrors) {
+          // Handling validation errors
+          err.response.data.resetErrors.forEach((error) => {
+            validationErrors[error.path] = error.msg;
+          });
+        } else if (err.response.data.msg) {
+          // Handling general error messages
+          validationErrors.msg = err.response.data.msg;
+        }
+      }
+      setResetErrors(validationErrors);
     }
   };
 
@@ -216,17 +242,24 @@ const LoginPage = () => {
             <ModalCloseButton />
             <ModalBody pb={3}>
               <Text pb={2}>You'll get an email with a reset link</Text>
-              <FormControl>
+              <FormControl id="resetEmail" isInvalid={resetErrors.resetEmail}>
                 <FormLabel>Email</FormLabel>
                 <Input
                   ref={initialRef}
+                  name="resetEmail"
                   placeholder="email@example.com"
+                  value={resetEmail}
+                  onChange={(e) => setResetEmail(e.target.value)}
                   required
                 />
+                <FormErrorMessage>{resetErrors.resetEmail}</FormErrorMessage>
               </FormControl>
+              {resetErrors.msg && (
+                <Text color="red.500">{resetErrors.msg}</Text>
+              )}
             </ModalBody>
             <ModalFooter>
-              <Button colorScheme="blue" mr={3}>
+              <Button colorScheme="blue" mr={3} onClick={onSubmitResetModal}>
                 Request Reset
               </Button>
               <Button onClick={onClose}>Cancel</Button>

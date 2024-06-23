@@ -2,7 +2,11 @@
 import express from "express";
 import { check } from "express-validator";
 import dotenv from "dotenv";
-import { loginUser, registerUser } from "../controllers/authController.js";
+import {
+  loginUser,
+  registerUser,
+  resetUserPassword,
+} from "../controllers/authController.js";
 
 dotenv.config();
 
@@ -33,6 +37,14 @@ router.post(
     check("password", "Password is required").not().isEmpty(),
   ],
   loginUser
+);
+
+// Route for resetting password
+
+router.post(
+  "/reset-password",
+  [check("resetEmail", "Please include a valid email").isEmail()],
+  resetUserPassword
 );
 
 export default router;

@@ -1,8 +1,8 @@
-// src/controllers/authController.js
 import { validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import db from "../config/dbConfig.js";
+import transporter from "../config/nodemailerConfig.js";
 
 export const loginUser = async (req, res) => {
   const errors = validationResult(req);
@@ -91,6 +91,32 @@ export const registerUser = async (req, res) => {
     res.status(201).json({ msg: "User registered successfully" });
   } catch (err) {
     console.error("Error registering user:", err);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
+export const resetUserPassword = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ resetErrors: errors.array() });
+  }
+
+  const { resetEmail } = req.body;
+
+  const resetURL = "https://www.facebook.com";
+
+  try {
+    const mailOptions = {
+      from: process.env.MAIL_USER,
+      to: resetEmail,
+      subject: "Password reset link (valid 15 minutes)",
+      html: `Use this <a href="${resetURL}">link</a> to reset your password.`,
+    };
+
+    await transporter.sendMail(mailOptions);
+    res.status(200).send("Email sent successfully.");
+  } catch (err) {
+    console.error("Error resseting password:", err);
     res.status(500).json({ msg: "Server error" });
   }
 };
