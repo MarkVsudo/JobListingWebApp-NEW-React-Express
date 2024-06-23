@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-// Use the routes defined in routes.js
+// Middleware serving routes
 app.use("/api", formRoutes);
 app.use("/api", pageRoutes);
 app.use("/api", authRoutes);
