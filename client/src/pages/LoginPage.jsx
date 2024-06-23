@@ -1,5 +1,5 @@
 import "../styles/AuthPages.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useRef } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet";
@@ -31,6 +31,7 @@ import EllipseDesktop from "../assets/ellipse-svg-desktop.svg";
 import EllipseTablet from "../assets/ellipse-svg-tablet.svg";
 import EllipseMobile from "../assets/ellipse-svg-mobile.svg";
 import { theme } from "../themes/InputTheme";
+import { AuthContext } from "../contexts/AuthContext";
 
 const LoginPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -42,6 +43,7 @@ const LoginPage = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
+  const { setToken } = useContext(AuthContext);
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -51,7 +53,11 @@ const LoginPage = () => {
         password,
         jwtExpiration,
       });
+
       localStorage.setItem("token", response.data.token);
+
+      setToken(response.data.token); // Update the context with the new token
+
       navigate("/");
     } catch (err) {
       console.error("Error:", err);

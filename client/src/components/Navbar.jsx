@@ -39,7 +39,7 @@ import { AuthContext } from "../contexts/AuthContext";
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
 
-  const { token, logout, user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   return (
     <Box>
@@ -81,7 +81,7 @@ export default function WithSubnavigation() {
           spacing={6}
           align="center"
         >
-          {token ? (
+          {user ? (
             <Stack direction={"row"} spacing={7}>
               <ChakraLink
                 as={ReactRouterLink}

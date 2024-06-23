@@ -22,7 +22,6 @@ const AuthProvider = ({ children }) => {
   const fetchUserData = async () => {
     try {
       const response = await axios.get("/api/dashboard");
-      console.log("User data fetched:", response.data);
       setUser(response.data);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -36,7 +35,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, logout }}>
+    <AuthContext.Provider value={{ token, user, setToken, logout }}>
       {children}
     </AuthContext.Provider>
   );
