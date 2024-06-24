@@ -2,6 +2,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
+import DashboardLayout from "./layouts/DashboardLayout";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -23,12 +24,14 @@ function App() {
           <Route path="/recommendations" element={<RecommendationsPage />} />
           <Route path="/company-overview" element={<CompanyOverviewPage />} />
           <Route path="/company/:companyName" element={<CompanyPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+        </Route>
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

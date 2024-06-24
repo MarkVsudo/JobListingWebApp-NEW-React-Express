@@ -32,7 +32,7 @@ import { useContext } from "react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import { RxDashboard } from "react-icons/rx";
-import { IoLogOutOutline } from "react-icons/io5";
+import { TbLogout2 } from "react-icons/tb";
 import NavLogo from "../assets/website_logo.svg";
 import { AuthContext } from "../contexts/AuthContext";
 
@@ -149,7 +149,7 @@ export default function WithSubnavigation() {
                     </MenuItem>
                   </ChakraLink>
                   <MenuItem gap=".5rem" onClick={logout}>
-                    <IoLogOutOutline />
+                    <TbLogout2 />
                     Logout
                   </MenuItem>
                 </MenuList>
