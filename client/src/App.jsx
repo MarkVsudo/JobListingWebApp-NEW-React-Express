@@ -12,6 +12,10 @@ import RecommendationsPage from "./pages/RecommendationsPage";
 import CompanyOverviewPage from "./pages/CompanyOverviewPage";
 import CompanyPage from "./pages/CompanyPage";
 import DashboardPage from "./pages/DashboardPage";
+import DashboardProfilePage from "./pages/DashboardProfilePage";
+import DashboardApplicationsPage from "./pages/DashboardApplicationsPage";
+import DashboardSavedJobsPage from "./pages/DashboardSavedJobsPage";
+import DashboardFilesPage from "./pages/DashboardFilesPage";
 
 function App() {
   return (
@@ -32,6 +36,16 @@ function App() {
         </Route>
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/dashboard/profile" element={<DashboardProfilePage />} />
+          <Route
+            path="/dashboard/applications"
+            element={<DashboardApplicationsPage />}
+          />
+          <Route
+            path="/dashboard/saved-jobs"
+            element={<DashboardSavedJobsPage />}
+          />
+          <Route path="/dashboard/files" element={<DashboardFilesPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
