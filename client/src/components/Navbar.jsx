@@ -87,7 +87,7 @@ export default function WithSubnavigation() {
                 as={ReactRouterLink}
                 to={
                   user && user.role === "recruiter"
-                    ? "/dashboard"
+                    ? "/profile"
                     : "/job-listings"
                 }
                 align="center"
@@ -139,13 +139,13 @@ export default function WithSubnavigation() {
                   <MenuDivider />
                   <ChakraLink
                     as={ReactRouterLink}
-                    to="/dashboard"
+                    to="/profile"
                     align="center"
                     _hover={{ textDecoration: "none" }}
                   >
                     <MenuItem gap=".5rem">
                       <RxDashboard />
-                      Dashboard
+                      Profile
                     </MenuItem>
                   </ChakraLink>
                   <MenuItem gap=".5rem" onClick={logout}>

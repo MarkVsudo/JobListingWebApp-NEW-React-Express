@@ -4,9 +4,9 @@ const ProfilePage = () => {
   return (
     <div>
       <Helmet>
-        <title>ProfilePage</title>
+        <title>JobConqueror - Profile</title>
       </Helmet>
-      ProfilePage
+      Profile Page
     </div>
   );
 };

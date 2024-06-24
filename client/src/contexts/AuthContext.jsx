@@ -21,7 +21,7 @@ const AuthProvider = ({ children }) => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("/api/dashboard");
+      const response = await axios.get("/api/profile");
       setUser(response.data);
     } catch (error) {
       console.error("Error fetching user data:", error);

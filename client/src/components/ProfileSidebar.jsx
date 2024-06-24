@@ -32,7 +32,7 @@ const sidebarLinks = [
   },
 ];
 
-const DashboardSidebar = () => {
+const ProfileSidebar = () => {
   const { user, logout } = useContext(AuthContext);
   const location = useLocation();
 
@@ -49,7 +49,7 @@ const DashboardSidebar = () => {
           <ChakraLink
             key={index}
             as={ReactRouterLink}
-            to={`/dashboard${link.url}`}
+            to={link.url}
             _hover={{
               textDecoration: "none",
               backgroundColor: "var(--dark-blue)",
@@ -57,11 +57,7 @@ const DashboardSidebar = () => {
             p="1rem 2rem"
             w="100%"
             borderLeftRadius="0.75rem"
-            bg={
-              location.pathname === `/dashboard${link.url}`
-                ? "var(--dark-blue)"
-                : "inherit"
-            }
+            bg={location.pathname === link.url ? "var(--dark-blue)" : "inherit"}
           >
             <Flex align="center" gap="1rem" fontSize="1.125rem">
               {link.icon} {link.title}
@@ -89,4 +85,4 @@ const DashboardSidebar = () => {
   );
 };
 
-export default DashboardSidebar;
+export default ProfileSidebar;

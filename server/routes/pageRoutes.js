@@ -45,6 +45,6 @@ router.get("/company/:companyName", async (req, res) => {
   }
 });
 
-router.get("/dashboard", authenticateToken, getUserProfile);
+router.get("/profile", authenticateToken, getUserProfile);
 
 export default router;
