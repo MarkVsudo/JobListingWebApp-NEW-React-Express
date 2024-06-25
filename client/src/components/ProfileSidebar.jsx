@@ -33,7 +33,7 @@ const sidebarLinks = [
 ];
 
 const ProfileSidebar = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
   const location = useLocation();
 
   return (
@@ -41,7 +41,7 @@ const ProfileSidebar = () => {
       bg="var(--blue-gray)"
       color="white"
       borderRadius="1rem"
-      m="2rem 3.5rem"
+      ml="3.5rem"
       p="1rem 0"
     >
       <VStack align="flex-start" gap="2rem" pl="1rem">
