@@ -34,8 +34,8 @@ const ProfilePage = () => {
       <Helmet>
         <title>JobConqueror - Profile</title>
       </Helmet>
-      <HStack spacing="5rem" mx="10rem" align="flex-start">
-        <VStack align="flex-start">
+      <HStack spacing="5rem" mx="10rem" align="flex-start" w="100%">
+        <VStack align="flex-start" w="33.33%">
           <Text fontSize="1.25rem" fontWeight={700}>
             Credentials
           </Text>
@@ -63,38 +63,36 @@ const ProfilePage = () => {
           </FormControl>
           <HomeButton title="Save changes" />
         </VStack>
-        <VStack>
-          <Flex direction="column" alignItems="center">
-            <Text fontSize="1.25rem" fontWeight={700} textAlign="" pb="1rem">
-              Profile picture
-            </Text>
-            <Box position="relative" mb="1rem">
-              <Avatar size="xl" src={profileImage} />
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                display="none"
-                id="profile-image-upload"
-              />
-              <IconButton
-                aria-label="Upload profile picture"
-                icon={<FaCamera />}
-                as="label"
-                htmlFor="profile-image-upload"
-                position="absolute"
-                bottom="0"
-                right="0"
-                borderRadius="full"
-                bg="white"
-                _hover={{ bg: "gray.100" }}
-                cursor="pointer"
-              />
-            </Box>
-            <HomeButton title="Update image" />
-          </Flex>
+        <VStack alignItems="center" w="33.33%">
+          <Text fontSize="1.25rem" fontWeight={700} pb="0.5rem">
+            Profile picture
+          </Text>
+          <Box position="relative" mb="1rem">
+            <Avatar size="xl" src={profileImage} />
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              display="none"
+              id="profile-image-upload"
+            />
+            <IconButton
+              aria-label="Upload profile picture"
+              icon={<FaCamera />}
+              as="label"
+              htmlFor="profile-image-upload"
+              position="absolute"
+              bottom="0"
+              right="0"
+              borderRadius="full"
+              bg="white"
+              _hover={{ bg: "gray.100" }}
+              cursor="pointer"
+            />
+          </Box>
+          <HomeButton title="Update image" />
         </VStack>
-        <VStack align="flex-start" justify="start">
+        <VStack align="flex-start" w="33.33%">
           <Text fontSize="1.25rem" fontWeight={700}>
             Change password
           </Text>
