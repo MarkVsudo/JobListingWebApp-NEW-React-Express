@@ -34,7 +34,7 @@ const ProfilePage = () => {
       <Helmet>
         <title>JobConqueror - Profile</title>
       </Helmet>
-      <HStack spacing="5rem" mx="10rem" align="flex-start" w="100%">
+      <HStack mx="10rem" align="flex-start" w="100%">
         <VStack align="flex-start" w="33.33%">
           <Text fontSize="1.25rem" fontWeight={700}>
             Credentials

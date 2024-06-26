@@ -37,12 +37,21 @@ const ApplicationsPage = () => {
               <Td py="2rem" fontSize="1.025rem">
                 06.06.2024
               </Td>
-              <Td fontSize="1.025rem">Full-Stack Engineer Intern</Td>
               <Td fontSize="1.025rem">
                 <ChakraLink
                   as={ReactRouterLink}
                   to="/"
-                  _hover={{ textDecoration: "nonee" }}
+                  _hover={{ textDecoration: "none" }}
+                >
+                  Full-Stack Engineer Intern
+                </ChakraLink>
+              </Td>
+
+              <Td fontSize="1.025rem">
+                <ChakraLink
+                  as={ReactRouterLink}
+                  to="/"
+                  _hover={{ textDecoration: "none" }}
                 >
                   TelebidPro
                 </ChakraLink>
@@ -52,12 +61,20 @@ const ApplicationsPage = () => {
               <Td py="2rem" fontSize="1.025rem">
                 21.07.2024
               </Td>
-              <Td fontSize="1.025rem">Senior Automation QA</Td>
               <Td fontSize="1.025rem">
                 <ChakraLink
                   as={ReactRouterLink}
                   to="/"
-                  _hover={{ textDecoration: "nonee" }}
+                  _hover={{ textDecoration: "none" }}
+                >
+                  Senior Automation QA
+                </ChakraLink>
+              </Td>
+              <Td fontSize="1.025rem">
+                <ChakraLink
+                  as={ReactRouterLink}
+                  to="/"
+                  _hover={{ textDecoration: "none" }}
                 >
                   Alphabet LTD.
                 </ChakraLink>

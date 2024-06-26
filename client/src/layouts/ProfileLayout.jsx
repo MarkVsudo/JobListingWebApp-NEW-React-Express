@@ -8,7 +8,7 @@ const DashboardLayout = () => {
   return (
     <>
       <Navbar />
-      <Flex mt="2rem" align="flex-start">
+      <Flex mt="2rem" mb="8rem" align="flex-start">
         <ProfileSidebar />
         <Outlet />
       </Flex>
