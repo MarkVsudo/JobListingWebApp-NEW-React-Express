@@ -144,7 +144,7 @@ const RegisterPage = () => {
           <FormControl
             variant="floating"
             id="username"
-            isInvalid={errors.username}
+            isInvalid={errors.username || errors.msg}
             isRequired
           >
             <Input
@@ -161,7 +161,7 @@ const RegisterPage = () => {
           <FormControl
             variant="floating"
             id="email"
-            isInvalid={errors.email}
+            isInvalid={errors.email || errors.msg}
             isRequired
           >
             <Input
@@ -178,7 +178,7 @@ const RegisterPage = () => {
           <FormControl
             variant="floating"
             id="password"
-            isInvalid={errors.password}
+            isInvalid={errors.password || errors.msg}
             isRequired
           >
             <Input
@@ -195,6 +195,11 @@ const RegisterPage = () => {
               or number
             </FormHelperText>
           </FormControl>
+          {errors.msg && (
+            <Text color="red.500" fontSize="0.875rem">
+              {errors.msg}
+            </Text>
+          )}
           <Checkbox name="role" value="applicant" onChange={onChange}>
             Register as recruiter?
           </Checkbox>
@@ -215,7 +220,6 @@ const RegisterPage = () => {
               Privacy Policy
             </ChakraLink>
           </Checkbox>
-          {errors.msg && <Text color="red.500">{errors.msg}</Text>}
           <AuthButton title="Create account" onClick={onSubmit} />
           <Text>
             Already have an account?

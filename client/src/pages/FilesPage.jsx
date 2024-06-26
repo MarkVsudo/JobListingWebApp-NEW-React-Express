@@ -54,7 +54,7 @@ const FilesPage = () => {
         </VStack>
         <VStack align="flex-start" w="50%">
           <Text fontSize="1.25rem" fontWeight={700}>
-            Uploaded a files
+            Uploaded files
           </Text>
           <Flex
             bg="white"

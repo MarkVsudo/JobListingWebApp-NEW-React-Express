@@ -3,9 +3,10 @@ import express from "express";
 import { check } from "express-validator";
 import dotenv from "dotenv";
 import {
+  confirmPasswordReset,
   loginUser,
   registerUser,
-  resetUserPassword,
+  resetUserPasswordEmail,
 } from "../controllers/authController.js";
 
 dotenv.config();
@@ -42,9 +43,20 @@ router.post(
 // Route for resetting password
 
 router.post(
-  "/reset-password",
+  "/reset-password-email",
   [check("resetEmail", "Please include a valid email").isEmail()],
-  resetUserPassword
+  resetUserPasswordEmail
+);
+
+router.post(
+  "/confirm-password-reset",
+  [
+    check("newPassword", "Password is required").not().isEmpty(),
+    check("confirmPassword", "Confirmation password is required")
+      .not()
+      .isEmpty(),
+  ],
+  confirmPasswordReset
 );
 
 export default router;

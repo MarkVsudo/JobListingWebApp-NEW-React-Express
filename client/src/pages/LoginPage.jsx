@@ -84,7 +84,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      await axios.post("/api/reset-password", { resetEmail });
+      await axios.post("/api/reset-password-email", { resetEmail });
     } catch (err) {
       console.error("Error:", err);
       const validationErrors = {};
@@ -172,7 +172,7 @@ const LoginPage = () => {
             variant="floating"
             id="email"
             isRequired
-            isInvalid={errors.email}
+            isInvalid={errors.email || errors.msg}
           >
             <Input
               type="email"
@@ -188,7 +188,7 @@ const LoginPage = () => {
             variant="floating"
             id="password"
             isRequired
-            isInvalid={errors.password}
+            isInvalid={errors.password || errors.msg}
           >
             <Input
               type="password"
@@ -199,6 +199,11 @@ const LoginPage = () => {
             />
             <FormLabel>Password</FormLabel>
             <FormErrorMessage>{errors.password}</FormErrorMessage>
+            {errors.msg && (
+              <Text color="red.500" fontSize="0.875rem">
+                {errors.msg}
+              </Text>
+            )}
             <Button
               style={{ all: "unset", cursor: "pointer" }}
               onClick={onOpen}
@@ -206,7 +211,6 @@ const LoginPage = () => {
               Forgot your password?
             </Button>
           </FormControl>
-          {errors.msg && <Text color="red.500">{errors.msg}</Text>}
           <Checkbox
             onChange={(e) => setJwtExpiration(e.target.checked && 2592000)}
           >
@@ -242,7 +246,10 @@ const LoginPage = () => {
             <ModalCloseButton />
             <ModalBody pb={3}>
               <Text pb={2}>You'll get an email with a reset link</Text>
-              <FormControl id="resetEmail" isInvalid={resetErrors.resetEmail}>
+              <FormControl
+                id="resetEmail"
+                isInvalid={resetErrors.resetEmail || resetErrors.msg}
+              >
                 <FormLabel>Email</FormLabel>
                 <Input
                   ref={initialRef}
@@ -252,11 +259,10 @@ const LoginPage = () => {
                   onChange={(e) => setResetEmail(e.target.value)}
                   required
                 />
-                <FormErrorMessage>{resetErrors.resetEmail}</FormErrorMessage>
+                <FormErrorMessage>
+                  {resetErrors.resetEmail || resetErrors.msg}
+                </FormErrorMessage>
               </FormControl>
-              {resetErrors.msg && (
-                <Text color="red.500">{resetErrors.msg}</Text>
-              )}
             </ModalBody>
             <ModalFooter>
               <Button colorScheme="blue" mr={3} onClick={onSubmitResetModal}>
