@@ -212,7 +212,7 @@ const LoginPage = () => {
             </Button>
           </FormControl>
           <Checkbox
-            onChange={(e) => setJwtExpiration(e.target.checked && 2592000)}
+            onChange={(e) => setJwtExpiration(e.target.checked && "2592000s")}
           >
             Stay signed in (30 days)
           </Checkbox>

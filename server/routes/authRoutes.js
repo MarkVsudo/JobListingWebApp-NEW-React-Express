@@ -7,6 +7,7 @@ import {
   loginUser,
   registerUser,
   resetUserPasswordEmail,
+  updateUserProfile,
 } from "../controllers/authController.js";
 
 dotenv.config();
@@ -57,6 +58,15 @@ router.post(
       .isEmpty(),
   ],
   confirmPasswordReset
+);
+
+router.post(
+  "/update-credentials",
+  [
+    check("email", "Please include a valid email").isEmail(),
+    check("fullName", "Fields cannot be empty").not().isEmpty(),
+  ],
+  updateUserProfile
 );
 
 export default router;

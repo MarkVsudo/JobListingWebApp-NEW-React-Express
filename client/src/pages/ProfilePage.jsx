@@ -1,8 +1,7 @@
 import { Helmet } from "react-helmet";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import {
   Box,
-  Flex,
   Text,
   VStack,
   HStack,
@@ -11,12 +10,29 @@ import {
   Input,
   Avatar,
   IconButton,
+  Flex,
+  Spinner,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { FaCamera } from "react-icons/fa";
 import HomeButton from "../components/HomeComponents/HomeButton";
+import { AuthContext } from "../contexts/AuthContext";
+import axios from "axios";
 
 const ProfilePage = () => {
+  const { user } = useContext(AuthContext);
+
   const [profileImage, setProfileImage] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (user) {
+      setFullName(user.fullName);
+      setEmail(user.email);
+    }
+  }, [user]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -28,6 +44,50 @@ const ProfilePage = () => {
       reader.readAsDataURL(file);
     }
   };
+
+  const handleCredentialsChange = async (e) => {
+    e.preventDefault();
+
+    try {
+      const userId = user.user_id;
+      await axios.post("/api/update-credentials", {
+        fullName,
+        email,
+        userId,
+      });
+      setErrors({});
+    } catch (err) {
+      console.error("Error:", err);
+      const validationErrors = {};
+      if (err.response && err.response.data.errors) {
+        err.response.data.errors.forEach((error) => {
+          validationErrors[error.path] = error.msg;
+        });
+      }
+      if (err.response && err.response.data.msg) {
+        validationErrors.msg = err.response.data.msg;
+      }
+      setErrors(validationErrors);
+    }
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+  };
+
+  if (!user) {
+    return (
+      <Flex direction="column" justify="center" align="center" minHeight="65vh">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      </Flex>
+    );
+  }
 
   return (
     <>
@@ -43,25 +103,46 @@ const ProfilePage = () => {
             The following credentials will be used for the application when
             applying for a position at a company.
           </Text>
-          <FormControl w="sm">
-            <FormLabel>Full Name</FormLabel>
-            <Input
-              placeholder="Mark Veskov"
-              type="text"
-              bg="white"
-              border="1px solid var(--cyan)"
+          <Flex
+            direction="column"
+            gap="0.5rem"
+            as="form"
+            onSubmit={handleCredentialsChange}
+          >
+            <FormControl w="sm" id="fullName" isInvalid={errors.fullName}>
+              <FormLabel>Full Name</FormLabel>
+              <Input
+                onChange={(e) => setFullName(e.target.value)}
+                value={fullName}
+                name="fullName"
+                type="text"
+                bg="white"
+                border="1px solid var(--cyan)"
+              />
+              <FormErrorMessage>{errors.fullName}</FormErrorMessage>
+            </FormControl>
+            <FormControl w="sm" id="email" isInvalid={errors.email}>
+              <FormLabel>Email</FormLabel>
+              <Input
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+                name="email"
+                type="email"
+                bg="white"
+                border="1px solid var(--cyan)"
+              />
+              <FormErrorMessage>{errors.email}</FormErrorMessage>
+            </FormControl>
+            {errors.msg && (
+              <Text color="red.500" fontSize="0.875rem">
+                {errors.msg}
+              </Text>
+            )}
+            <HomeButton
+              title="Save changes"
+              onClick={handleCredentialsChange}
             />
-          </FormControl>
-          <FormControl w="sm">
-            <FormLabel>Email</FormLabel>
-            <Input
-              placeholder="email@example.com"
-              type="email"
-              bg="white"
-              border="1px solid var(--cyan)"
-            />
-          </FormControl>
-          <HomeButton title="Save changes" />
+          </Flex>
         </VStack>
         <VStack alignItems="center" w="33.33%">
           <Text fontSize="1.25rem" fontWeight={700} pb="0.5rem">
@@ -97,10 +178,12 @@ const ProfilePage = () => {
             Change password
           </Text>
           <Text>An email will be sent to you for resetting your password.</Text>
-          <FormControl w="sm">
+          <FormControl w="sm" id="resetEmail">
             <FormLabel>Email</FormLabel>
             <Input
-              placeholder="email@example.com"
+              value={email}
+              name="resetEmail"
+              disabled
               type="email"
               bg="white"
               border="1px solid var(--cyan)"
