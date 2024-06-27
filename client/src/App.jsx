@@ -11,6 +11,7 @@ import WhoWeArePage from "./pages/WhoWeArePage";
 import RecommendationsPage from "./pages/RecommendationsPage";
 import CompanyOverviewPage from "./pages/CompanyOverviewPage";
 import CompanyPage from "./pages/CompanyPage";
+import JobListingsPage from "./pages/JobListingsPage";
 import ProfilePage from "./pages/ProfilePage";
 import ApplicationsPage from "./pages/ApplicationsPage";
 import SavedJobsPage from "./pages/SavedJobsPage";
@@ -27,6 +28,7 @@ function App() {
           <Route path="/recommendations" element={<RecommendationsPage />} />
           <Route path="/company-overview" element={<CompanyOverviewPage />} />
           <Route path="/company/:companyName" element={<CompanyPage />} />
+          <Route path="/job-listings" element={<JobListingsPage />} />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />

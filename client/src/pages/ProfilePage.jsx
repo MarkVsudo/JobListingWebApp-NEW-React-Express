@@ -86,7 +86,13 @@ const ProfilePage = () => {
 
   if (!user) {
     return (
-      <Flex direction="column" justify="center" align="center" minHeight="65vh">
+      <Flex
+        direction="column"
+        justify="center"
+        align="center"
+        minHeight="50vh"
+        w="100%"
+      >
         <Spinner
           thickness="4px"
           speed="0.65s"
