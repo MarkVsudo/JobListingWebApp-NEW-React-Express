@@ -73,6 +73,15 @@ const ProfilePage = () => {
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
+
+    let resetEmail = email;
+    try {
+      await axios.post("/api/reset-password-email", {
+        resetEmail,
+      });
+    } catch (err) {
+      console.error("Error:", err);
+    }
   };
 
   if (!user) {
@@ -178,18 +187,25 @@ const ProfilePage = () => {
             Change password
           </Text>
           <Text>An email will be sent to you for resetting your password.</Text>
-          <FormControl w="sm" id="resetEmail">
-            <FormLabel>Email</FormLabel>
-            <Input
-              value={email}
-              name="resetEmail"
-              disabled
-              type="email"
-              bg="white"
-              border="1px solid var(--cyan)"
-            />
-          </FormControl>
-          <HomeButton title="Send" />
+          <Flex
+            direction="column"
+            gap="0.5rem"
+            as="form"
+            onSubmit={handleResetPassword}
+          >
+            <FormControl w="sm" id="resetEmail">
+              <FormLabel>Email</FormLabel>
+              <Input
+                value={email}
+                name="resetEmail"
+                disabled
+                type="email"
+                bg="white"
+                border="1px solid var(--cyan)"
+              />
+            </FormControl>
+            <HomeButton title="Send" onClick={handleResetPassword} />
+          </Flex>
         </VStack>
       </HStack>
     </>
