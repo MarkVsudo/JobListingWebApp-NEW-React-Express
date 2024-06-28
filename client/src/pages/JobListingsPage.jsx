@@ -1,5 +1,4 @@
 import { Helmet } from "react-helmet";
-import { useState } from "react";
 import {
   Flex,
   Input,
@@ -8,17 +7,11 @@ import {
   Menu,
   MenuButton,
   MenuList,
-  MenuItem,
   Button,
   Box,
   Text,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverHeader,
-  PopoverBody,
+  Checkbox,
+  VStack,
 } from "@chakra-ui/react";
 import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import HomeButton from "../components/HomeComponents/HomeButton";
@@ -123,33 +116,25 @@ const JobListingsPage = () => {
         w="100%"
         padding="1rem 5rem"
         alignItems="center"
-        justifyContent="space-between"
+        justifyContent="center"
       >
-        <Popover>
-          <InputGroup gap="0.5rem">
-            <InputLeftElement pointerEvents="none">
-              <SearchIcon color="gray.300" />
-            </InputLeftElement>
-            <PopoverTrigger>
-              <Input type="text" placeholder="Search jobs..." />
-            </PopoverTrigger>
-            {/* <datalist id="datalistOptions">
-              {recentSearches.map((search, index) => (
-                <option key={index} value={search} />
-              ))}
-            </datalist> */}
-            <PopoverContent>
-              <PopoverArrow />
-              <PopoverCloseButton />
-              <PopoverHeader>Confirmation!</PopoverHeader>
-              <PopoverBody>
-                Are you sure you want to have that milkshake?
-              </PopoverBody>
-            </PopoverContent>
-          </InputGroup>
-        </Popover>
-        <HomeButton title="Search" />
-        <Flex>
+        <InputGroup gap="1rem" w="md">
+          <InputLeftElement pointerEvents="none">
+            <SearchIcon color="gray.300" />
+          </InputLeftElement>
+          <Input
+            type="text"
+            placeholder="Search jobs..."
+            list="datalistOptions"
+          />
+          <datalist id="datalistOptions">
+            {recentSearches.map((search, index) => (
+              <option key={index} value={search} />
+            ))}
+          </datalist>
+          <HomeButton title="Search" />
+        </InputGroup>
+        <Flex mx="0.5rem">
           <Menu>
             <MenuButton
               as={Button}
@@ -160,42 +145,103 @@ const JobListingsPage = () => {
               Location
             </MenuButton>
             <MenuList>
-              <MenuItem>Sofia</MenuItem>
-              <MenuItem>Stara Zagora</MenuItem>
-              <MenuItem>Varna</MenuItem>
+              <VStack align="flex-start" px="1rem">
+                <Checkbox>Sofia</Checkbox>
+                <Checkbox>Stara Zagora</Checkbox>
+                <Checkbox>Varna</Checkbox>
+              </VStack>
             </MenuList>
           </Menu>
           <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />} mx={2}>
+            <MenuButton
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+              mx={2}
+              {...filterButtonStyles}
+            >
               Job Type
             </MenuButton>
             <MenuList>
-              <MenuItem>Full Time</MenuItem>
-              <MenuItem>Part Time</MenuItem>
-              <MenuItem>Contract</MenuItem>
+              <VStack align="flex-start" px="1rem">
+                <Checkbox>Full Time</Checkbox>
+                <Checkbox>Part Time</Checkbox>
+                <Checkbox>Contract</Checkbox>
+              </VStack>
             </MenuList>
           </Menu>
           <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />} mx={2}>
+            <MenuButton
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+              mx={2}
+              {...filterButtonStyles}
+            >
               Industry
             </MenuButton>
             <MenuList>
-              <MenuItem>Tech</MenuItem>
-              <MenuItem>Finance</MenuItem>
-              <MenuItem>Healthcare</MenuItem>
+              <VStack align="flex-start" px="1rem">
+                <Checkbox>Tech</Checkbox>
+                <Checkbox>Finance</Checkbox>
+                <Checkbox>Healthcare</Checkbox>
+              </VStack>
             </MenuList>
           </Menu>
           <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />} mx={2}>
+            <MenuButton
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+              mx={2}
+              {...filterButtonStyles}
+            >
               Experience
             </MenuButton>
             <MenuList>
-              <MenuItem>Junior</MenuItem>
-              <MenuItem>Mid</MenuItem>
-              <MenuItem>Senior</MenuItem>
+              <VStack align="flex-start" px="1rem">
+                <Checkbox>Junior</Checkbox>
+                <Checkbox>Mid</Checkbox>
+                <Checkbox>Senior</Checkbox>
+              </VStack>
+            </MenuList>
+          </Menu>
+          <Menu>
+            <MenuButton
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+              mx={2}
+              {...filterButtonStyles}
+            >
+              Salary
+            </MenuButton>
+            <MenuList>
+              <VStack align="flex-start" px="1rem">
+                <Checkbox>Specified salary</Checkbox>
+                <Checkbox>$500 - $1000</Checkbox>
+                <Checkbox>$1000 - $2000</Checkbox>
+                <Checkbox>$2000 - $4000</Checkbox>
+                <Checkbox>$4000 - $7000</Checkbox>
+                <Checkbox>+$7000</Checkbox>
+              </VStack>
+            </MenuList>
+          </Menu>
+          <Menu>
+            <MenuButton
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+              mx={2}
+              {...filterButtonStyles}
+            >
+              Company size
+            </MenuButton>
+            <MenuList>
+              <VStack align="flex-start" px="1rem">
+                <Checkbox>Small (1-50 employees)</Checkbox>
+                <Checkbox>Medium (51 - 200 employees)</Checkbox>
+                <Checkbox>Large (200+ employees)</Checkbox>
+              </VStack>
             </MenuList>
           </Menu>
         </Flex>
+        <HomeButton title="Apply filters" />
       </Flex>
     </>
   );

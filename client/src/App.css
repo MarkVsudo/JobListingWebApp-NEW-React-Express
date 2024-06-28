@@ -45,3 +45,7 @@ body {
   background: var(--blue-gray);
   border-radius: 5px
 }
+
+input[type="text"]::-webkit-calendar-picker-indicator {
+  display: none !important;
+}
