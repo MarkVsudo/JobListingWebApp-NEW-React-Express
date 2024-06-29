@@ -12,9 +12,18 @@ import {
   Text,
   Checkbox,
   VStack,
+  MenuOptionGroup,
+  MenuItemOption,
+  Divider,
+  Img,
 } from "@chakra-ui/react";
 import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { IoBookmarkOutline } from "react-icons/io5";
+import { FaRegBuilding } from "react-icons/fa";
+import { MdOutlinePersonOutline } from "react-icons/md";
+import { TbPigMoney } from "react-icons/tb";
 import HomeButton from "../components/HomeComponents/HomeButton";
+import CompanyLogo from "../assets/twitter-logo-job.png";
 
 const rectangleHeaderStyles = {
   width: "50px",
@@ -242,6 +251,110 @@ const JobListingsPage = () => {
           </Menu>
         </Flex>
         <HomeButton title="Apply filters" />
+      </Flex>
+      {/* Job Listings */}
+      <Flex w="100%" p="2rem 5rem" gap="1rem" bg="var(--light-blue)">
+        <Flex direction="column" w="30%" gap="1rem">
+          <Flex justify="space-between" align="center">
+            <VStack align="flex-start">
+              <Text fontWeight={600}>Related to "Web Developer"</Text>
+              <Text fontWeight={300}>28 Job Openings Available</Text>
+            </VStack>
+            <Menu closeOnSelect={false}>
+              <MenuButton as={Button}>Sort offers</MenuButton>
+              <MenuList minWidth="240px">
+                <MenuOptionGroup
+                  defaultValue="relevance"
+                  title="Order"
+                  type="radio"
+                >
+                  <MenuItemOption value="relevance">Relevance</MenuItemOption>
+                  <MenuItemOption value="asc">Ascending</MenuItemOption>
+                  <MenuItemOption value="desc">Descending</MenuItemOption>
+                </MenuOptionGroup>
+              </MenuList>
+            </Menu>
+          </Flex>
+          <Box
+            p="1rem"
+            borderRadius="1rem"
+            bg="white"
+            border="1px solid var(--dark-blue)"
+            boxShadow="var(--box-shadow)"
+          >
+            <Flex justify="space-between" align="center">
+              <Img
+                src={CompanyLogo}
+                alt="Job offer company logo"
+                w="80px"
+                h="80px"
+              />
+              <VStack align="flex-start">
+                <Text fontSize="1.25rem" fontWeight={600}>
+                  Product Designer
+                </Text>
+                <Text fontWeight={300}>
+                  Design and iterate intuitive digital products that delight our
+                  users.
+                </Text>
+              </VStack>
+              <IoBookmarkOutline color="var(--cyan)" fontSize="1.9rem" />
+            </Flex>
+            <Divider my="1rem" />
+            <Flex justify="space-between">
+              <Text display="flex" alignItems="center" gap="0.5rem">
+                <FaRegBuilding fontSize="1rem" />
+                Remote
+              </Text>
+              <Text display="flex" alignItems="center" gap="0.5rem">
+                <MdOutlinePersonOutline fontSize="1.25rem" />
+                18 Applicants
+              </Text>
+              <Text display="flex" alignItems="center" gap="0.5rem">
+                <TbPigMoney fontSize="1.125rem" />
+                $1000 - $1500
+              </Text>
+            </Flex>
+          </Box>
+        </Flex>
+        <Flex
+          w="70%"
+          direction="column"
+          align="flex-start"
+          borderRadius="1rem"
+          bg="white"
+          border="1px solid var(--dark-blue)"
+          boxShadow="var(--box-shadow)"
+        >
+          <Flex
+            p="0.75rem 2rem"
+            w="100%"
+            justify="space-between"
+            align="center"
+          >
+            <Flex justify="space-between" align="center">
+              <Img
+                src={CompanyLogo}
+                alt="Job offer company logo"
+                w="80px"
+                h="80px"
+              />
+              <VStack align="flex-start">
+                <Text fontSize="1.25rem" fontWeight={600}>
+                  Product Designer
+                </Text>
+                <Text fontWeight={300}>
+                  Design and iterate intuitive digital products that delight our
+                  users.
+                </Text>
+              </VStack>
+            </Flex>
+            <Flex>
+              <HomeButton title="Apply now" />
+            </Flex>
+          </Flex>
+          <Divider w="95%" alignSelf="center" mb="1rem" />
+        </Flex>
       </Flex>
     </>
   );
