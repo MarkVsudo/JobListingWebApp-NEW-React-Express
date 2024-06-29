@@ -133,6 +133,12 @@ const RecommendationsPage = () => {
     ? articles[selectedCategory].articles
     : Object.values(articles).flatMap((category) => category.articles);
 
+  // Calculate the total number of articles
+  const totalArticles = Object.values(articles).reduce(
+    (acc, category) => acc + category.articles.length,
+    0
+  );
+
   return (
     <>
       <Helmet>
@@ -177,7 +183,7 @@ const RecommendationsPage = () => {
               sx={sortBtnsStyle}
               onClick={() => filterArticlesByCategory(null)}
             >
-              All
+              All ({totalArticles})
             </Button>
             {mainCategories.map((category, index) => (
               <Button

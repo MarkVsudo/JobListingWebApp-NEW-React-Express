@@ -12,6 +12,7 @@ import RecommendationsPage from "./pages/RecommendationsPage";
 import CompanyOverviewPage from "./pages/CompanyOverviewPage";
 import CompanyPage from "./pages/CompanyPage";
 import JobListingsPage from "./pages/JobListingsPage";
+import BlogPage from "./pages/BlogPage";
 import ProfilePage from "./pages/ProfilePage";
 import ApplicationsPage from "./pages/ApplicationsPage";
 import SavedJobsPage from "./pages/SavedJobsPage";
@@ -29,6 +30,7 @@ function App() {
           <Route path="/company-overview" element={<CompanyOverviewPage />} />
           <Route path="/company/:companyName" element={<CompanyPage />} />
           <Route path="/job-listings" element={<JobListingsPage />} />
+          <Route path="/blog" element={<BlogPage />} />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />

@@ -361,9 +361,9 @@ const NAV_ITEMS = [
         href: "/recommendations",
       },
       {
-        label: "Webinars",
-        subLabel: "Watch some of the best",
-        href: "#",
+        label: "Blog",
+        subLabel: "Career tips and advice",
+        href: "/blog",
       },
     ],
   },
