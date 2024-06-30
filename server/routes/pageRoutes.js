@@ -47,4 +47,19 @@ router.get("/company/:companyName", async (req, res) => {
 
 router.get("/profile", authenticateToken, getUserProfile);
 
+router.get("/blogs", async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT b.*, u.fullName
+      FROM blogs b
+      JOIN users u ON b.user_id = u.user_id
+    `);
+
+    res.json(rows);
+  } catch (err) {
+    console.error("Error fetching blogs:", err);
+    res.status(500).json({ err: "An error occurred while fetching blogs" });
+  }
+});
+
 export default router;

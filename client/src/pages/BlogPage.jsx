@@ -1,118 +1,125 @@
-"use client";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Box,
   Heading,
   Image,
   Text,
-  HStack,
-  Tag,
   useColorModeValue,
   Container,
 } from "@chakra-ui/react";
-
-const BlogTags = ({ marginTop = 0, tags }) => {
-  return (
-    <HStack spacing={2} marginTop={marginTop}>
-      {tags.map((tag) => {
-        return (
-          <Tag size={"md"} variant="solid" bg="var(--cyan)" key={tag}>
-            {tag}
-          </Tag>
-        );
-      })}
-    </HStack>
-  );
-};
-
-const BlogAuthor = ({ date, name }) => {
-  return (
-    <HStack marginTop="2" spacing="2" display="flex" alignItems="center">
-      <Image
-        borderRadius="full"
-        boxSize="40px"
-        src="https://100k-faces.glitch.me/random-image"
-        alt={`Avatar of ${name}`}
-      />
-      <Text fontWeight="medium">{name}</Text>
-      <Text>—</Text>
-      <Text>{date.toLocaleDateString()}</Text>
-    </HStack>
-  );
-};
+import Pagination from "../components/BlogComponents/Pagination";
+import BlogTags from "../components/BlogComponents/BlogTags";
+import BlogAuthor from "../components/BlogComponents/BlogAuthor";
 
 const BlogPage = () => {
+  const [blogs, setBlogs] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4; // Number of blogs per page
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await axios.get("/api/blogs");
+        setBlogs(response.data);
+      } catch (err) {
+        console.error("Error fetching blogs:", err);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
+  // Slice blogs array to get current page's blogs
+  const currentBlogs = blogs.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  // Handle page change
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   return (
     <Container maxW={"7xl"} p="12">
-      <Heading as="h1">Stories by Chakra Templates</Heading>
-      <Box
-        marginTop={{ base: "1", sm: "5" }}
-        display="flex"
-        flexDirection={{ base: "column", sm: "row" }}
-        justifyContent="space-between"
-      >
+      <Heading as="h1">Stories by the best</Heading>
+
+      {/* Render current page's blogs */}
+      {currentBlogs.map((blog, index) => (
         <Box
+          key={index}
+          marginTop={{ base: "1", sm: "5" }}
           display="flex"
-          flex="1"
-          marginRight="3"
-          position="relative"
-          alignItems="center"
+          flexDirection={{ base: "column", sm: "row" }}
+          justifyContent="space-between"
         >
           <Box
-            width={{ base: "100%", sm: "85%" }}
-            zIndex="2"
-            marginLeft={{ base: "0", sm: "5%" }}
-            marginTop="5%"
+            display="flex"
+            flex="1"
+            marginRight="3"
+            position="relative"
+            alignItems="center"
           >
-            <Box textDecoration="none" _hover={{ textDecoration: "none" }}>
-              <Image
-                borderRadius="lg"
-                src={
-                  "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=800&q=80"
-                }
-                alt="some good alt text"
-                objectFit="contain"
+            <Box
+              width={{ base: "100%", sm: "85%" }}
+              zIndex="2"
+              marginLeft={{ base: "0", sm: "5%" }}
+              marginTop="5%"
+            >
+              <Box textDecoration="none" _hover={{ textDecoration: "none" }}>
+                <Image
+                  borderRadius="lg"
+                  src={blog.blog_banner}
+                  alt={`${blog.blog_title} blog image`}
+                  objectFit="contain"
+                />
+              </Box>
+            </Box>
+            <Box zIndex="1" width="100%" position="absolute" height="100%">
+              <Box
+                bgGradient={useColorModeValue(
+                  "radial(var(--dark-blue) 1px, transparent 1px)",
+                  "radial(var(--blue-gray) 1px, transparent 1px)"
+                )}
+                backgroundSize="20px 20px"
+                opacity="0.4"
+                height="100%"
               />
             </Box>
           </Box>
-          <Box zIndex="1" width="100%" position="absolute" height="100%">
-            <Box
-              bgGradient={useColorModeValue(
-                "radial(var(--dark-blue) 1px, transparent 1px)",
-                "radial(var(--blue-gray) 1px, transparent 1px)"
-              )}
-              backgroundSize="20px 20px"
-              opacity="0.4"
-              height="100%"
-            />
+          <Box
+            display="flex"
+            flex="1"
+            flexDirection="column"
+            justifyContent="center"
+            marginTop={{ base: "3", sm: "0" }}
+          >
+            <BlogTags tags={blog.blog_tags.split(",")} />
+            <Heading marginTop="1">
+              <Text textDecoration="none" _hover={{ textDecoration: "none" }}>
+                {blog.blog_title}
+              </Text>
+            </Heading>
+            <Text
+              as="p"
+              marginTop="2"
+              color={useColorModeValue("gray.700", "gray.200")}
+              fontSize="lg"
+            >
+              {blog.blog_content}
+            </Text>
+            <BlogAuthor name={blog.fullName} date={new Date(blog.blog_date)} />
           </Box>
         </Box>
-        <Box
-          display="flex"
-          flex="1"
-          flexDirection="column"
-          justifyContent="center"
-          marginTop={{ base: "3", sm: "0" }}
-        >
-          <BlogTags tags={["Engineering", "Product"]} />
-          <Heading marginTop="1">
-            <Text textDecoration="none" _hover={{ textDecoration: "none" }}>
-              Blog article title
-            </Text>
-          </Heading>
-          <Text
-            as="p"
-            marginTop="2"
-            color={useColorModeValue("gray.700", "gray.200")}
-            fontSize="lg"
-          >
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry&apos;s standard dummy
-            text ever since the 1500s, when an unknown printer took a galley of
-            type and scrambled it to make a type specimen book.
-          </Text>
-          <BlogAuthor name="John Doe" date={new Date("2021-04-06T19:01:27Z")} />
-        </Box>
-      </Box>
+      ))}
+
+      {/* Pagination */}
+      <Pagination
+        blogs={blogs}
+        itemsPerPage={itemsPerPage}
+        onPageChange={handlePageChange}
+      />
     </Container>
   );
 };
