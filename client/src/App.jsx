@@ -18,6 +18,7 @@ import ProfilePage from "./pages/ProfilePage";
 import ApplicationsPage from "./pages/ApplicationsPage";
 import SavedJobsPage from "./pages/SavedJobsPage";
 import FilesPage from "./pages/FilesPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path="/saved-jobs" element={<SavedJobsPage />} />
           <Route path="/files" element={<FilesPage />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -9,7 +9,6 @@ import BlogTags from "../components/BlogComponents/BlogTags";
 const BlogPage = () => {
   const { blogId } = useParams();
   const [blog, setBlog] = useState(null);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,8 +18,6 @@ const BlogPage = () => {
         setBlog(response.data);
       } catch (error) {
         console.error("Error fetching blog data:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -31,7 +28,7 @@ const BlogPage = () => {
     navigate(-1); // Go back to the previous page
   };
 
-  if (loading) {
+  if (!blog) {
     return (
       <Flex direction="column" justify="center" align="center" minHeight="65vh">
         <Spinner
@@ -43,10 +40,6 @@ const BlogPage = () => {
         />
       </Flex>
     );
-  }
-
-  if (!blog) {
-    return <Flex textAlign="center">Error loading blog post.</Flex>;
   }
 
   // Function to format the date and time

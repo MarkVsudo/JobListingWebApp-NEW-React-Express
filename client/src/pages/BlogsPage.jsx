@@ -3,12 +3,15 @@ import { Helmet } from "react-helmet";
 import axios from "axios";
 import {
   Box,
+  Flex,
   Heading,
   Image,
   Text,
   useColorModeValue,
   Container,
 } from "@chakra-ui/react";
+import { Link as ReactRouterLink } from "react-router-dom";
+import { Link as ChakraLink } from "@chakra-ui/react";
 import Pagination from "../components/BlogComponents/Pagination";
 import BlogTags from "../components/BlogComponents/BlogTags";
 import BlogAuthor from "../components/BlogComponents/BlogAuthor";
@@ -114,10 +117,22 @@ const BlogsPage = () => {
               >
                 {blog.blog_content}
               </Text>
-              <BlogAuthor
-                name={blog.fullName}
-                date={new Date(blog.blog_date)}
-              />
+              <Flex align="center" gap="2rem">
+                <BlogAuthor
+                  name={blog.fullName}
+                  date={new Date(blog.blog_date)}
+                />
+                <ChakraLink
+                  as={ReactRouterLink}
+                  to={`/blog/${index + 1}`}
+                  mt="0.5rem"
+                  color="var(--cyan)"
+                  fontWeight={600}
+                  _hover={{ textDecoration: "none" }}
+                >
+                  Read more
+                </ChakraLink>
+              </Flex>
             </Box>
           </Box>
         ))}
