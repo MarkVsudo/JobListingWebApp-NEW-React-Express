@@ -62,4 +62,25 @@ router.get("/blogs", async (req, res) => {
   }
 });
 
+router.get("/blog/:blogId", async (req, res) => {
+  const blogId = req.params.blogId;
+
+  try {
+    const [row] = await db.query("SELECT * FROM blogs WHERE blog_id = ?", [
+      blogId,
+    ]);
+
+    if (row.length === 0) {
+      return res.status(404).json({ error: "Blog not found" });
+    }
+
+    res.json(row[0]);
+  } catch (error) {
+    console.error("Error fetching blog:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching the blog" });
+  }
+});
+
 export default router;

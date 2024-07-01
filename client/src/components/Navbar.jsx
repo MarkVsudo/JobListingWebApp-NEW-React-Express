@@ -363,7 +363,7 @@ const NAV_ITEMS = [
       {
         label: "Blog",
         subLabel: "Career tips and advice",
-        href: "/blog",
+        href: "/blogs",
       },
     ],
   },

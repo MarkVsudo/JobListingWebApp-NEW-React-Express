@@ -1,126 +1,113 @@
+import { Helmet } from "react-helmet";
 import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import {
-  Box,
-  Heading,
-  Image,
-  Text,
-  useColorModeValue,
-  Container,
-} from "@chakra-ui/react";
-import Pagination from "../components/BlogComponents/Pagination";
+import { Flex, Spinner, Button, Heading, Text, Img } from "@chakra-ui/react";
+import { FaChevronLeft } from "react-icons/fa6";
 import BlogTags from "../components/BlogComponents/BlogTags";
-import BlogAuthor from "../components/BlogComponents/BlogAuthor";
 
 const BlogPage = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4; // Number of blogs per page
+  const { blogId } = useParams();
+  const [blog, setBlog] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchBlogs = async () => {
+    const fetchBlogData = async () => {
       try {
-        const response = await axios.get("/api/blogs");
-        setBlogs(response.data);
-      } catch (err) {
-        console.error("Error fetching blogs:", err);
+        const response = await axios.get(`/api/blog/${blogId}`);
+        setBlog(response.data);
+      } catch (error) {
+        console.error("Error fetching blog data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchBlogs();
-  }, []);
+    fetchBlogData();
+  }, [blogId]);
 
-  // Slice blogs array to get current page's blogs
-  const currentBlogs = blogs.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const handleBackClick = () => {
+    navigate(-1); // Go back to the previous page
+  };
 
-  // Handle page change
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
+  if (loading) {
+    return (
+      <Flex direction="column" justify="center" align="center" minHeight="65vh">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      </Flex>
+    );
+  }
+
+  if (!blog) {
+    return <Flex textAlign="center">Error loading blog post.</Flex>;
+  }
+
+  // Function to format the date and time
+  const formatDateTime = (datetime) => {
+    const date = new Date(datetime);
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const formattedDate = date.toLocaleDateString("en-US", options);
+    const formattedTime = date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+    return `${formattedDate} · ${formattedTime}`;
   };
 
   return (
-    <Container maxW={"7xl"} p="12">
-      <Heading as="h1">Stories by the best</Heading>
-
-      {/* Render current page's blogs */}
-      {currentBlogs.map((blog, index) => (
-        <Box
-          key={index}
-          marginTop={{ base: "1", sm: "5" }}
-          display="flex"
-          flexDirection={{ base: "column", sm: "row" }}
-          justifyContent="space-between"
+    <>
+      <Helmet>
+        <title>{`JobConqueror - ${blog.blog_title}`}</title>
+      </Helmet>
+      <Flex px="3.5rem" direction="column" my="2rem">
+        <Button
+          variant="link"
+          _hover={{ textDecoration: "none" }}
+          color="black"
+          onClick={handleBackClick}
+          leftIcon={<FaChevronLeft />}
+          mb="4"
+          w="max-content"
         >
-          <Box
-            display="flex"
-            flex="1"
-            marginRight="3"
-            position="relative"
-            alignItems="center"
-          >
-            <Box
-              width={{ base: "100%", sm: "85%" }}
-              zIndex="2"
-              marginLeft={{ base: "0", sm: "5%" }}
-              marginTop="5%"
-            >
-              <Box textDecoration="none" _hover={{ textDecoration: "none" }}>
-                <Image
-                  borderRadius="lg"
-                  src={blog.blog_banner}
-                  alt={`${blog.blog_title} blog image`}
-                  objectFit="contain"
-                />
-              </Box>
-            </Box>
-            <Box zIndex="1" width="100%" position="absolute" height="100%">
-              <Box
-                bgGradient={useColorModeValue(
-                  "radial(var(--dark-blue) 1px, transparent 1px)",
-                  "radial(var(--blue-gray) 1px, transparent 1px)"
-                )}
-                backgroundSize="20px 20px"
-                opacity="0.4"
-                height="100%"
-              />
-            </Box>
-          </Box>
-          <Box
-            display="flex"
-            flex="1"
-            flexDirection="column"
-            justifyContent="center"
-            marginTop={{ base: "3", sm: "0" }}
-          >
-            <BlogTags tags={blog.blog_tags.split(",")} />
-            <Heading marginTop="1">
-              <Text textDecoration="none" _hover={{ textDecoration: "none" }}>
-                {blog.blog_title}
-              </Text>
-            </Heading>
-            <Text
-              as="p"
-              marginTop="2"
-              color={useColorModeValue("gray.700", "gray.200")}
-              fontSize="lg"
-            >
-              {blog.blog_content}
-            </Text>
-            <BlogAuthor name={blog.fullName} date={new Date(blog.blog_date)} />
-          </Box>
-        </Box>
-      ))}
-
-      {/* Pagination */}
-      <Pagination
-        blogs={blogs}
-        itemsPerPage={itemsPerPage}
-        onPageChange={handlePageChange}
-      />
-    </Container>
+          Back
+        </Button>
+        <Flex
+          direction="column"
+          justify="center"
+          textAlign="center"
+          align="center"
+          gap="0.75rem"
+        >
+          <BlogTags tags={blog.blog_tags.split(",")} />
+          <Heading as="h1" maxW="45rem">
+            {blog.blog_title}
+          </Heading>
+          <Text opacity="0.7">{formatDateTime(blog.blog_date)}</Text>
+        </Flex>
+        <Flex direction="column" mt="3rem">
+          <Img
+            src={blog.blog_banner}
+            objectFit="cover"
+            height="30rem"
+            borderRadius="1rem"
+            boxShadow="0 0 25px #00000014"
+            alt="Blog post banner image"
+            mb="3rem"
+          />
+          <Flex direction="column">
+            <Text>{blog.blog_content}</Text>
+          </Flex>
+        </Flex>
+      </Flex>
+    </>
   );
 };
 
