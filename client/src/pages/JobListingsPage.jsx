@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import DOMPurify from "dompurify";
 import {
   Flex,
   Input,
@@ -25,7 +26,6 @@ import { FaRegBuilding } from "react-icons/fa";
 import { MdOutlinePersonOutline } from "react-icons/md";
 import { TbPigMoney } from "react-icons/tb";
 import HomeButton from "../components/HomeComponents/HomeButton";
-import CompanyLogo from "../assets/twitter-logo-job.png";
 
 const rectangleHeaderStyles = {
   width: "50px",
@@ -56,6 +56,7 @@ const recentSearches = [
 
 const JobListingsPage = () => {
   const [offers, setOffers] = useState([]);
+  const [selectedOffer, setSelectedOffer] = useState(null);
 
   useEffect(() => {
     const fetchOffers = async () => {
@@ -69,6 +70,12 @@ const JobListingsPage = () => {
 
     fetchOffers();
   }, []);
+
+  const currentOffer = selectedOffer || offers[0];
+
+  const sanitizedDescription = currentOffer
+    ? DOMPurify.sanitize(currentOffer.description)
+    : "";
 
   return (
     <>
@@ -308,8 +315,13 @@ const JobListingsPage = () => {
               p="1rem"
               borderRadius="1rem"
               bg="white"
-              border="1px solid var(--dark-blue)"
-              boxShadow="var(--box-shadow)"
+              transition="all 250ms ease-in-out"
+              boxShadow={
+                currentOffer.job_id == offer.job_id
+                  ? "inset 0 0 0 3px var(--dark-blue)"
+                  : "none"
+              }
+              onClick={() => setSelectedOffer(offer)}
             >
               <Flex align="center" justify="space-between">
                 <Img
@@ -346,44 +358,49 @@ const JobListingsPage = () => {
           ))}
         </Flex>
         {/* Main */}
-        <Flex
-          w="70%"
-          direction="column"
-          align="flex-start"
-          borderRadius="1rem"
-          bg="white"
-          border="1px solid var(--dark-blue)"
-          boxShadow="var(--box-shadow)"
-        >
+        {currentOffer && (
           <Flex
-            p="0.75rem 2rem"
-            w="100%"
-            justify="space-between"
-            align="center"
+            w="70%"
+            direction="column"
+            align="flex-start"
+            borderRadius="1rem"
+            bg="white"
+            boxShadow="var(--box-shadow)"
           >
-            <Flex justify="space-between" align="center">
-              <Img
-                src={CompanyLogo}
-                alt="Job offer company logo"
-                w="80px"
-                h="80px"
-              />
-              <VStack align="flex-start">
-                <Text fontSize="1.25rem" fontWeight={600}>
-                  Product Designer
-                </Text>
-                <Text fontWeight={300}>
-                  Design and iterate intuitive digital products that delight our
-                  users.
-                </Text>
-              </VStack>
+            <Flex
+              p="0.75rem 2rem"
+              w="100%"
+              justify="space-between"
+              align="center"
+            >
+              <Flex justify="space-between" align="center">
+                <Img
+                  src={currentOffer.company_logo}
+                  alt="Job offer company logo"
+                  objectFit="contain"
+                  w="50px"
+                  h="50px"
+                  mr="2rem"
+                />
+                <VStack align="flex-start">
+                  <Text fontSize="1.25rem" fontWeight={600}>
+                    {currentOffer.title}
+                  </Text>
+                  <Text fontWeight={300}>{currentOffer.short_description}</Text>
+                </VStack>
+              </Flex>
+              <Flex ml="2rem">
+                <HomeButton title="Apply now" />
+              </Flex>
             </Flex>
-            <Flex>
-              <HomeButton title="Apply now" />
-            </Flex>
+            <Divider w="95%" alignSelf="center" mb="1rem" />
+            <Flex
+              direction="column"
+              px="2rem"
+              dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+            />
           </Flex>
-          <Divider w="95%" alignSelf="center" mb="1rem" />
-        </Flex>
+        )}
       </Flex>
     </>
   );
