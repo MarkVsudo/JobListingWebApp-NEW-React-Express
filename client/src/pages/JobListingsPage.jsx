@@ -1,4 +1,6 @@
 import { Helmet } from "react-helmet";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Flex,
   Input,
@@ -44,14 +46,29 @@ const filterButtonStyles = {
   },
 };
 
+const recentSearches = [
+  "Web Developer",
+  "Financial Analyst",
+  "UX/UI Designer",
+  "Customer Support Specialist",
+  "Marketing Coordinator",
+];
+
 const JobListingsPage = () => {
-  const recentSearches = [
-    "Web Developer",
-    "Financial Analyst",
-    "UX/UI Designer",
-    "Customer Support Specialist",
-    "Marketing Coordinator",
-  ];
+  const [offers, setOffers] = useState([]);
+
+  useEffect(() => {
+    const fetchOffers = async () => {
+      try {
+        const response = await axios.get("/api/job-listings");
+        setOffers(response.data);
+      } catch (error) {
+        console.error("Error fetching job listings:", error);
+      }
+    };
+
+    fetchOffers();
+  }, []);
 
   return (
     <>
@@ -254,14 +271,23 @@ const JobListingsPage = () => {
       </Flex>
       {/* Job Listings */}
       <Flex w="100%" p="2rem 5rem" gap="1rem" bg="var(--light-blue)">
+        {/* Aside */}
         <Flex direction="column" w="30%" gap="1rem">
           <Flex justify="space-between" align="center">
             <VStack align="flex-start">
               <Text fontWeight={600}>Related to "Web Developer"</Text>
-              <Text fontWeight={300}>28 Job Openings Available</Text>
+              <Text fontWeight={300}>
+                {offers.length} Job Openings Available
+              </Text>
             </VStack>
             <Menu closeOnSelect={false}>
-              <MenuButton as={Button}>Sort offers</MenuButton>
+              <MenuButton
+                as={Button}
+                variant="outline"
+                border="1px solid var(--cyan)"
+              >
+                Sort offers
+              </MenuButton>
               <MenuList minWidth="240px">
                 <MenuOptionGroup
                   defaultValue="relevance"
@@ -275,48 +301,51 @@ const JobListingsPage = () => {
               </MenuList>
             </Menu>
           </Flex>
-          <Box
-            p="1rem"
-            borderRadius="1rem"
-            bg="white"
-            border="1px solid var(--dark-blue)"
-            boxShadow="var(--box-shadow)"
-          >
-            <Flex justify="space-between" align="center">
-              <Img
-                src={CompanyLogo}
-                alt="Job offer company logo"
-                w="80px"
-                h="80px"
-              />
-              <VStack align="flex-start">
-                <Text fontSize="1.25rem" fontWeight={600}>
-                  Product Designer
+          {offers.map((offer) => (
+            <Box
+              key={offer.job_id}
+              as="button"
+              p="1rem"
+              borderRadius="1rem"
+              bg="white"
+              border="1px solid var(--dark-blue)"
+              boxShadow="var(--box-shadow)"
+            >
+              <Flex align="center" justify="space-between">
+                <Img
+                  src={offer.company_logo}
+                  alt="Job offer company logo"
+                  objectFit="contain"
+                  w="50px"
+                  h="50px"
+                />
+                <VStack align="flex-start" textAlign="start" mx="2rem" w="100%">
+                  <Text fontSize="1.25rem" fontWeight={600}>
+                    {offer.title}
+                  </Text>
+                  <Text fontWeight={300}>{offer.short_description}</Text>
+                </VStack>
+                <IoBookmarkOutline color="var(--cyan)" fontSize="1.9rem" />
+              </Flex>
+              <Divider my="1rem" />
+              <Flex justify="space-between">
+                <Text display="flex" alignItems="center" gap="0.5rem">
+                  <FaRegBuilding fontSize="1rem" />
+                  {offer.employment_type}
                 </Text>
-                <Text fontWeight={300}>
-                  Design and iterate intuitive digital products that delight our
-                  users.
+                <Text display="flex" alignItems="center" gap="0.5rem">
+                  <MdOutlinePersonOutline fontSize="1.25rem" />
+                  {offer.applicants} Applicants
                 </Text>
-              </VStack>
-              <IoBookmarkOutline color="var(--cyan)" fontSize="1.9rem" />
-            </Flex>
-            <Divider my="1rem" />
-            <Flex justify="space-between">
-              <Text display="flex" alignItems="center" gap="0.5rem">
-                <FaRegBuilding fontSize="1rem" />
-                Remote
-              </Text>
-              <Text display="flex" alignItems="center" gap="0.5rem">
-                <MdOutlinePersonOutline fontSize="1.25rem" />
-                18 Applicants
-              </Text>
-              <Text display="flex" alignItems="center" gap="0.5rem">
-                <TbPigMoney fontSize="1.125rem" />
-                $1000 - $1500
-              </Text>
-            </Flex>
-          </Box>
+                <Text display="flex" alignItems="center" gap="0.5rem">
+                  <TbPigMoney fontSize="1.125rem" />
+                  {offer.salary}
+                </Text>
+              </Flex>
+            </Box>
+          ))}
         </Flex>
+        {/* Main */}
         <Flex
           w="70%"
           direction="column"

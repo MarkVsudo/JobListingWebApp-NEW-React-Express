@@ -40,7 +40,7 @@ const WhoWeArePage = () => {
   return (
     <Box>
       <Helmet>
-        <title>Who We Are</title>
+        <title>JobConqueror - Who We Are</title>
       </Helmet>
       <Flex direction="column" textAlign="center" mx="20rem" py={3}>
         <Heading as="h2" size="lg" mb={10} color="var(--dark-blue)">

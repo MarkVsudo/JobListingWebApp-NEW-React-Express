@@ -83,4 +83,20 @@ router.get("/blog/:blogId", async (req, res) => {
   }
 });
 
+router.get("/job-listings", async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT job_offers.*, companies.logo AS company_logo
+      FROM job_offers
+      INNER JOIN companies ON job_offers.company_id = companies.company_id
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.error("Error fetching job listings:", err);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching job listings" });
+  }
+});
+
 export default router;
