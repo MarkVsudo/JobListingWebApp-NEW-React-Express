@@ -1,7 +1,6 @@
 import { Helmet } from "react-helmet";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import DOMPurify from "dompurify";
 import {
   Flex,
   Input,
@@ -17,16 +16,11 @@ import {
   VStack,
   MenuOptionGroup,
   MenuItemOption,
-  Divider,
-  Img,
 } from "@chakra-ui/react";
 import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
-import { IoBookmarkOutline } from "react-icons/io5";
-import { FaRegBuilding } from "react-icons/fa";
-import { MdOutlinePersonOutline } from "react-icons/md";
-import { TbPigMoney } from "react-icons/tb";
-import { LuBrain } from "react-icons/lu";
 import HomeButton from "../components/HomeComponents/HomeButton";
+import JobDetails from "../components/JobListingsComponents/JobDetails";
+import JobOffer from "../components/JobListingsComponents/JobOffer";
 
 const rectangleHeaderStyles = {
   width: "50px",
@@ -74,9 +68,14 @@ const JobListingsPage = () => {
 
   const currentOffer = selectedOffer || offers[0];
 
-  const sanitizedDescription = currentOffer
-    ? DOMPurify.sanitize(currentOffer.description)
-    : "";
+  const saveJobOffer = async (jobId) => {
+    try {
+      const userId = 1;
+      await axios.post("/api/save-job-offer", { jobId, userId });
+    } catch (error) {
+      console.error("Error saving job offer:", error);
+    }
+  };
 
   return (
     <>
@@ -309,104 +308,20 @@ const JobListingsPage = () => {
               </MenuList>
             </Menu>
           </Flex>
+          {/* Job Offers */}
           {offers.map((offer) => (
-            <Box
+            <JobOffer
               key={offer.job_id}
-              as="button"
-              p="1rem"
-              borderRadius="1rem"
-              bg="white"
-              transition="all 250ms ease-in-out"
-              boxShadow={
-                currentOffer.job_id == offer.job_id
-                  ? "inset 0 0 0 3px var(--dark-blue)"
-                  : "none"
-              }
-              onClick={() => setSelectedOffer(offer)}
-            >
-              <Flex align="center" justify="space-between">
-                <Img
-                  src={offer.company_logo}
-                  alt="Job offer company logo"
-                  objectFit="contain"
-                  w="50px"
-                  h="50px"
-                />
-                <VStack align="flex-start" textAlign="start" mx="2rem" w="100%">
-                  <Text fontSize="1.25rem" fontWeight={600}>
-                    {offer.title}
-                  </Text>
-                  <Text fontWeight={300}>{offer.short_description}</Text>
-                </VStack>
-                <IoBookmarkOutline color="var(--cyan)" fontSize="1.9rem" />
-              </Flex>
-              <Divider my="1rem" />
-              <Flex justify="space-between">
-                <Text display="flex" alignItems="center" gap="0.5rem">
-                  <FaRegBuilding fontSize="1rem" />
-                  {offer.employment_type}
-                </Text>
-                <Text display="flex" alignItems="center" gap="0.5rem">
-                  <LuBrain fontSize="1rem" />
-                  {offer.experience}
-                </Text>
-                <Text display="flex" alignItems="center" gap="0.5rem">
-                  <MdOutlinePersonOutline fontSize="1.25rem" />
-                  {offer.applicants} Applicants
-                </Text>
-                <Text display="flex" alignItems="center" gap="0.5rem">
-                  <TbPigMoney fontSize="1.125rem" />
-                  {offer.salary}
-                </Text>
-              </Flex>
-            </Box>
+              offer={offer}
+              currentOffer={currentOffer}
+              setSelectedOffer={setSelectedOffer}
+              saveJobOffer={saveJobOffer}
+            />
           ))}
         </Flex>
         {/* Main */}
-        {currentOffer && (
-          <Flex
-            w="70%"
-            direction="column"
-            align="flex-start"
-            borderRadius="1rem"
-            bg="white"
-            boxShadow="var(--box-shadow)"
-          >
-            <Flex
-              p="0.75rem 2rem"
-              w="100%"
-              justify="space-between"
-              align="center"
-            >
-              <Flex justify="space-between" align="center">
-                <Img
-                  src={currentOffer.company_logo}
-                  alt="Job offer company logo"
-                  objectFit="contain"
-                  w="50px"
-                  h="50px"
-                  mr="2rem"
-                />
-                <VStack align="flex-start">
-                  <Text fontSize="1.25rem" fontWeight={600}>
-                    {currentOffer.title}
-                  </Text>
-                  <Text fontWeight={300}>{currentOffer.short_description}</Text>
-                </VStack>
-              </Flex>
-              <Flex ml="2rem">
-                <HomeButton title="Apply now" />
-              </Flex>
-            </Flex>
-            <Divider w="95%" alignSelf="center" mb="1rem" />
-            <Flex
-              className="job-description"
-              direction="column"
-              p="0 2rem 2rem 2rem"
-              dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
-            />
-          </Flex>
-        )}
+        {/* Job Description */}
+        {currentOffer && <JobDetails currentOffer={currentOffer} />}
       </Flex>
     </>
   );

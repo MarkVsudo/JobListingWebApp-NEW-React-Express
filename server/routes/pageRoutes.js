@@ -99,4 +99,40 @@ router.get("/job-listings", async (req, res) => {
   }
 });
 
+router.post("/save-job-offer", async (req, res) => {
+  const { userId, jobId } = req.body;
+
+  try {
+    await db.query(`INSERT INTO saved_jobs (user_id, job_id) VALUES (?, ?);`, [
+      userId,
+      jobId,
+    ]);
+    res.status(200).json("Job saved successfully");
+  } catch (err) {
+    console.error("Error saving job offer:", err);
+    res.status(500).json({ error: "An error occurred while saving job offer" });
+  }
+});
+
+router.get("/save-job-offer", async (req, res) => {
+  const { userId } = req.body;
+
+  try {
+    await db.query(
+      `SELECT jo.* FROM job_offers jo
+    JOIN saved_jobs sj ON jo.job_id = sj.job_id
+    WHERE sj.user_id = ?;`,
+      [userId]
+    );
+    res.status(200).json("Saved jobs fetched successfully");
+  } catch (err) {
+    console.error("Error fetching saved job offers:", err);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching saved job offers" });
+  }
+});
+
+router.get("save-job-offe");
+
 export default router;
