@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import {
   Flex,
@@ -21,6 +21,7 @@ import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import HomeButton from "../components/HomeComponents/HomeButton";
 import JobDetails from "../components/JobListingsComponents/JobDetails";
 import JobOffer from "../components/JobListingsComponents/JobOffer";
+import { AuthContext } from "../contexts/AuthContext";
 
 const rectangleHeaderStyles = {
   width: "50px",
@@ -68,14 +69,35 @@ const JobListingsPage = () => {
 
   const currentOffer = selectedOffer || offers[0];
 
+  const { user } = useContext(AuthContext);
+  const [savedJobs, setSavedJobs] = useState([]);
+
   const saveJobOffer = async (jobId) => {
     try {
-      const userId = 1;
+      const userId = user.user_id;
       await axios.post("/api/save-job-offer", { jobId, userId });
+      setSavedJobs((prev) => [...prev, jobId]);
     } catch (error) {
       console.error("Error saving job offer:", error);
     }
   };
+
+  useEffect(() => {
+    const fetchSavedJobs = async () => {
+      try {
+        const response = await axios.get(
+          `/api/save-job-offer?userId=${user.user_id}`
+        );
+        setSavedJobs(response.data);
+      } catch (error) {
+        console.error("Error fetching saved jobs:", error);
+      }
+    };
+
+    if (user) {
+      fetchSavedJobs();
+    }
+  }, [user]);
 
   return (
     <>
@@ -316,6 +338,7 @@ const JobListingsPage = () => {
               currentOffer={currentOffer}
               setSelectedOffer={setSelectedOffer}
               saveJobOffer={saveJobOffer}
+              savedJobs={savedJobs}
             />
           ))}
         </Flex>

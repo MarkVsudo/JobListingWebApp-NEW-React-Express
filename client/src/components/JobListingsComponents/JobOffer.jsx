@@ -16,7 +16,15 @@ import { MdOutlinePersonOutline } from "react-icons/md";
 import { TbPigMoney } from "react-icons/tb";
 import { LuBrain } from "react-icons/lu";
 
-const JobOffer = ({ offer, currentOffer, setSelectedOffer, saveJobOffer }) => {
+const JobOffer = ({
+  offer,
+  currentOffer,
+  setSelectedOffer,
+  saveJobOffer,
+  savedJobs,
+}) => {
+  const isSaved = savedJobs.includes(offer.job_id);
+
   return (
     <Box
       key={offer.job_id}
@@ -47,9 +55,12 @@ const JobOffer = ({ offer, currentOffer, setSelectedOffer, saveJobOffer }) => {
           <Text fontWeight={300}>{offer.short_description}</Text>
         </VStack>
         <IconButton
-          onClick={() => saveJobOffer(offer.job_id)}
+          onClick={(e) => {
+            e.stopPropagation();
+            saveJobOffer(offer.job_id);
+          }}
           aria-label="Save job offer"
-          icon={<IoBookmarkOutline />}
+          icon={isSaved ? <IoBookmark /> : <IoBookmarkOutline />}
           color="var(--cyan)"
           borderRadius="full"
           bg="transparent"

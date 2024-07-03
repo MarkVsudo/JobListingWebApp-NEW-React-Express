@@ -115,16 +115,15 @@ router.post("/save-job-offer", async (req, res) => {
 });
 
 router.get("/save-job-offer", async (req, res) => {
-  const { userId } = req.body;
+  const { userId } = req.query;
 
   try {
-    await db.query(
-      `SELECT jo.* FROM job_offers jo
-    JOIN saved_jobs sj ON jo.job_id = sj.job_id
-    WHERE sj.user_id = ?;`,
+    const [savedJobs] = await db.query(
+      `SELECT job_id FROM saved_jobs WHERE user_id = ?;`,
       [userId]
     );
-    res.status(200).json("Saved jobs fetched successfully");
+    const savedJobIds = savedJobs.map((job) => job.job_id);
+    res.status(200).json(savedJobIds);
   } catch (err) {
     console.error("Error fetching saved job offers:", err);
     res
@@ -132,7 +131,5 @@ router.get("/save-job-offer", async (req, res) => {
       .json({ error: "An error occurred while fetching saved job offers" });
   }
 });
-
-router.get("save-job-offe");
 
 export default router;
