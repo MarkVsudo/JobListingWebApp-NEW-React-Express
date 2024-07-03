@@ -132,4 +132,21 @@ router.get("/save-job-offer", async (req, res) => {
   }
 });
 
+router.delete("/save-job-offer", async (req, res) => {
+  const { userId, jobId } = req.body;
+
+  try {
+    await db.query(`DELETE FROM saved_jobs WHERE user_id = ? AND job_id = ?;`, [
+      userId,
+      jobId,
+    ]);
+    res.status(200).json("Saved job offer removed successfully");
+  } catch (err) {
+    console.error("Error deleting saved job offer:", err);
+    res
+      .status(500)
+      .json({ error: "An error occurred while deleting saved job offer" });
+  }
+});
+
 export default router;

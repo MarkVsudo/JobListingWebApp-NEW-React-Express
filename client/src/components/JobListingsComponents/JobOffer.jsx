@@ -22,6 +22,7 @@ const JobOffer = ({
   setSelectedOffer,
   saveJobOffer,
   savedJobs,
+  deleteSavedJobOffer,
 }) => {
   const isSaved = savedJobs.includes(offer.job_id);
 
@@ -57,7 +58,11 @@ const JobOffer = ({
         <IconButton
           onClick={(e) => {
             e.stopPropagation();
-            saveJobOffer(offer.job_id);
+            {
+              isSaved
+                ? deleteSavedJobOffer(offer.job_id)
+                : saveJobOffer(offer.job_id);
+            }
           }}
           aria-label="Save job offer"
           icon={isSaved ? <IoBookmark /> : <IoBookmarkOutline />}

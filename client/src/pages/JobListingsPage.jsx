@@ -99,6 +99,16 @@ const JobListingsPage = () => {
     }
   }, [user]);
 
+  const deleteSavedJobOffer = async (jobId) => {
+    try {
+      const userId = user.user_id;
+      await axios.delete("/api/save-job-offer", { data: { userId, jobId } });
+      setSavedJobs(savedJobs.filter((savedJob) => savedJob !== jobId));
+    } catch (error) {
+      console.error("Error deleting saved job offer:", error);
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -339,6 +349,7 @@ const JobListingsPage = () => {
               setSelectedOffer={setSelectedOffer}
               saveJobOffer={saveJobOffer}
               savedJobs={savedJobs}
+              deleteSavedJobOffer={deleteSavedJobOffer}
             />
           ))}
         </Flex>
