@@ -25,6 +25,7 @@ import { IoBookmarkOutline } from "react-icons/io5";
 import { FaRegBuilding } from "react-icons/fa";
 import { MdOutlinePersonOutline } from "react-icons/md";
 import { TbPigMoney } from "react-icons/tb";
+import { LuBrain } from "react-icons/lu";
 import HomeButton from "../components/HomeComponents/HomeButton";
 
 const rectangleHeaderStyles = {
@@ -346,6 +347,10 @@ const JobListingsPage = () => {
                   {offer.employment_type}
                 </Text>
                 <Text display="flex" alignItems="center" gap="0.5rem">
+                  <LuBrain fontSize="1rem" />
+                  {offer.experience}
+                </Text>
+                <Text display="flex" alignItems="center" gap="0.5rem">
                   <MdOutlinePersonOutline fontSize="1.25rem" />
                   {offer.applicants} Applicants
                 </Text>
@@ -395,8 +400,9 @@ const JobListingsPage = () => {
             </Flex>
             <Divider w="95%" alignSelf="center" mb="1rem" />
             <Flex
+              className="job-description"
               direction="column"
-              px="2rem"
+              p="0 2rem 2rem 2rem"
               dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
             />
           </Flex>

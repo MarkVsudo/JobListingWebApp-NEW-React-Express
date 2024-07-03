@@ -49,3 +49,25 @@ body {
 input[type="text"]::-webkit-calendar-picker-indicator {
   display: none !important;
 }
+
+/* Job offer description styles */
+.job-description {
+  line-height: 1.6;
+
+}
+
+.job-description h1 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.job-description h2 {
+  font-size: 1.085rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.job-description ul {
+  margin-left: 20px;
+}
