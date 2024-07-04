@@ -37,9 +37,35 @@ const BlogPage = () => {
     navigate(-1); // Go back to the previous page
   };
 
-  const sanitizedBlogContent = blog
-    ? DOMPurify.sanitize(blog.blog_content)
-    : "";
+  let sanitizedBlogContent = blog ? DOMPurify.sanitize(blog.blog_content) : "";
+
+  sanitizedBlogContent = sanitizedBlogContent.replace(
+    /<h2>(.*?)<\/h2>/g,
+    (match, p1) =>
+      `<h2 id="${p1.replace(/\s+/g, "-").toLowerCase()}">${p1}</h2>`
+  );
+
+  // Create a DOM parser
+  let parser = new DOMParser();
+  let doc = parser.parseFromString(sanitizedBlogContent, "text/html");
+
+  // Get all h2 tags
+  let h2Tags = doc.getElementsByTagName("h2");
+
+  // Extract text content and put it into an array
+  let h2Texts = Array.from(h2Tags).map((tag) => tag.textContent);
+
+  const [activeSection, setActiveSection] = useState("");
+
+  const handleSectionClick = (text) => {
+    setActiveSection(text);
+    const element = document.getElementById(
+      text.replace(/\s+/g, "-").toLowerCase()
+    );
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   if (!blog) {
     return (
@@ -109,30 +135,19 @@ const BlogPage = () => {
             mb="3rem"
           />
           <Flex justify="space-between" px="10rem">
-            <VStack w="20%">
+            <VStack w="20%" position="sticky" top="2rem" h="100%">
               <VStack alignItems="flex-start" w="100%">
-                <Text fontWeight={600}>Organizee Your Contacts</Text>
-                <Text fontWeight={600} opacity="0.6">
-                  Organizee Your Contacts
-                </Text>
-                <Text fontWeight={600} opacity="0.6">
-                  Organizee Your Contacts
-                </Text>
-                <Text fontWeight={600} opacity="0.6">
-                  Organizee Your Contacts
-                </Text>
-                <Text fontWeight={600} opacity="0.6">
-                  Organizee Your Contacts
-                </Text>
-                <Text fontWeight={600} opacity="0.6">
-                  Organizee Your Contacts
-                </Text>
-                <Text fontWeight={600} opacity="0.6">
-                  Organizee Your Contacts
-                </Text>
-                <Text fontWeight={600} opacity="0.6">
-                  Organizee Your Contacts
-                </Text>
+                {h2Texts.map((text) => (
+                  <Text
+                    key={text}
+                    fontWeight={600}
+                    cursor="pointer"
+                    opacity={activeSection === text ? 1 : 0.6}
+                    onClick={() => handleSectionClick(text)}
+                  >
+                    {text}
+                  </Text>
+                ))}
               </VStack>
               <VStack alignItems="flex-start" w="100%">
                 <Text fontWeight={600}>Share blog</Text>
