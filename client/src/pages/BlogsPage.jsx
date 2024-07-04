@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import axios from "axios";
+import DOMPurify from "dompurify";
 import {
   Box,
   Flex,
@@ -114,9 +115,10 @@ const BlogsPage = () => {
                 marginTop="2"
                 color={useColorModeValue("gray.700", "gray.200")}
                 fontSize="lg"
-              >
-                {blog.blog_content}
-              </Text>
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(blog.blog_content.slice(0, 270)),
+                }}
+              />
               <Flex align="center" gap="2rem">
                 <BlogAuthor
                   name={blog.fullName}

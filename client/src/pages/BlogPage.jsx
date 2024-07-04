@@ -2,7 +2,16 @@ import { Helmet } from "react-helmet";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Flex, Spinner, Button, Heading, Text, Img } from "@chakra-ui/react";
+import DOMPurify from "dompurify";
+import {
+  Flex,
+  Spinner,
+  Button,
+  Heading,
+  Text,
+  Img,
+  VStack,
+} from "@chakra-ui/react";
 import { FaChevronLeft } from "react-icons/fa6";
 import BlogTags from "../components/BlogComponents/BlogTags";
 
@@ -27,6 +36,10 @@ const BlogPage = () => {
   const handleBackClick = () => {
     navigate(-1); // Go back to the previous page
   };
+
+  const sanitizedBlogContent = blog
+    ? DOMPurify.sanitize(blog.blog_content)
+    : "";
 
   if (!blog) {
     return (
@@ -95,8 +108,41 @@ const BlogPage = () => {
             alt="Blog post banner image"
             mb="3rem"
           />
-          <Flex direction="column">
-            <Text>{blog.blog_content}</Text>
+          <Flex justify="space-between" px="10rem">
+            <VStack w="20%">
+              <VStack alignItems="flex-start" w="100%">
+                <Text fontWeight={600}>Organizee Your Contacts</Text>
+                <Text fontWeight={600} opacity="0.6">
+                  Organizee Your Contacts
+                </Text>
+                <Text fontWeight={600} opacity="0.6">
+                  Organizee Your Contacts
+                </Text>
+                <Text fontWeight={600} opacity="0.6">
+                  Organizee Your Contacts
+                </Text>
+                <Text fontWeight={600} opacity="0.6">
+                  Organizee Your Contacts
+                </Text>
+                <Text fontWeight={600} opacity="0.6">
+                  Organizee Your Contacts
+                </Text>
+                <Text fontWeight={600} opacity="0.6">
+                  Organizee Your Contacts
+                </Text>
+                <Text fontWeight={600} opacity="0.6">
+                  Organizee Your Contacts
+                </Text>
+              </VStack>
+              <VStack alignItems="flex-start" w="100%">
+                <Text fontWeight={600}>Share blog</Text>
+              </VStack>
+            </VStack>
+            <Text
+              w="70%"
+              className="blog-content"
+              dangerouslySetInnerHTML={{ __html: sanitizedBlogContent }}
+            />
           </Flex>
         </Flex>
       </Flex>
