@@ -1,8 +1,9 @@
+import axios from "axios";
+import { useContext } from "react";
 import {
   Box,
   chakra,
   Container,
-  Link,
   SimpleGrid,
   Stack,
   Text,
@@ -22,6 +23,7 @@ import {
 } from "react-icons/fa";
 import { BiMailSend } from "react-icons/bi";
 import NavLogo from "../assets/website_logo_bright.svg";
+import { AuthContext } from "../contexts/AuthContext";
 
 const SocialButton = ({ children, label, href }) => {
   return (
@@ -58,6 +60,22 @@ const ListHeader = ({ children }) => {
 export default function Footer() {
   let currentYear = new Date().getFullYear();
 
+  const { user } = useContext(AuthContext);
+
+  const newsletterEmail = user ? user.email : "";
+
+  const subscribeNewsletter = async () => {
+    if (user) {
+      try {
+        await axios.post("/api/newsletter", { newsletterEmail });
+      } catch (error) {
+        console.error("Error subscribing to newsletter", error);
+      }
+    } else {
+      console.log("User not logged in");
+    }
+  };
+
   return (
     <Box bg="var(--dark-blue)" color="white">
       <Container as={Stack} maxW={"6xl"} py={10}>
@@ -91,25 +109,40 @@ export default function Footer() {
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>Company</ListHeader>
-            <Link href={"#"}>About us</Link>
-            <Link href={"#"}>Blog</Link>
-            <Link href={"#"}>Contact us</Link>
-            <Link href={"#"}>Pricing</Link>
-            <Link href={"#"}>Testimonials</Link>
+            <ChakraLink as={ReactRouterLink} to="/who-we-are">
+              Who We Are
+            </ChakraLink>
+            <ChakraLink as={ReactRouterLink} to="/contact-us">
+              Contact Us
+            </ChakraLink>
+
+            <ChakraLink as={ReactRouterLink} to="/privacy-policy">
+              Privacy Policy
+            </ChakraLink>
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader>Support</ListHeader>
-            <Link href={"#"}>Help Center</Link>
-            <Link href={"#"}>Terms of Service</Link>
-            <Link href={"#"}>Legal</Link>
-            <Link href={"#"}>Privacy Policy</Link>
-            <Link href={"#"}>Satus</Link>
+            <ListHeader>Services</ListHeader>
+            <ChakraLink as={ReactRouterLink} to="/company-overview">
+              Companies Overview
+            </ChakraLink>
+            <ChakraLink as={ReactRouterLink} to="/job-listings">
+              Job Listings
+            </ChakraLink>
+            <ChakraLink as={ReactRouterLink} to="/recommendations">
+              Recommendations
+            </ChakraLink>
+            <ChakraLink as={ReactRouterLink} to="/blogs">
+              Blogs
+            </ChakraLink>
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>Stay up to date</ListHeader>
             <Stack direction={"row"}>
               <Input
-                placeholder={"Your email address"}
+                value={newsletterEmail}
+                disabled
+                placeholder={user ? "Your email address" : "Login to subscribe"}
+                name="newsletterEmail"
                 bg="var(--blue-gray)"
                 border={0}
                 _focus={{
@@ -117,6 +150,7 @@ export default function Footer() {
                 }}
               />
               <IconButton
+                onClick={subscribeNewsletter}
                 bg="var(--light-blue)"
                 color="var(--dark-blue)"
                 _hover={{

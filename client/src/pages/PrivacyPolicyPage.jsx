@@ -1,13 +1,14 @@
 import { Helmet } from "react-helmet";
+import { Flex } from "@chakra-ui/react";
 
 const PrivacyPolicyPage = () => {
   return (
-    <div>
+    <>
       <Helmet>
-        <title> PrivacyPolicyPage</title>
+        <title>JobConqueror - Privacy Policy</title>
       </Helmet>
       PrivacyPolicyPage
-    </div>
+    </>
   );
 };
 

@@ -1,13 +1,14 @@
 import { Helmet } from "react-helmet";
+import { Flex } from "@chakra-ui/react";
 
 const ContactUsPage = () => {
   return (
-    <div>
+    <>
       <Helmet>
-        <title>ContactUsPage</title>
+        <title>JobConqueror - Contact us</title>
       </Helmet>
-      ContactUsPage
-    </div>
+      Contact us page
+    </>
   );
 };
 

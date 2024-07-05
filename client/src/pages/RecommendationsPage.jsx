@@ -42,14 +42,8 @@ const headSquareStyle = {
 const sortBtnsStyle = {
   backgroundColor: "transparent",
   border: "2px solid var(--cyan)",
-
-  _active: {
-    color: "white",
-    backgroundColor: "var(--dark-blue)",
-  },
-  _focus: {
-    color: "white",
-    backgroundColor: "var(--dark-blue)",
+  _hover: {
+    bg: "inherit",
   },
 };
 
@@ -180,7 +174,14 @@ const RecommendationsPage = () => {
         <Flex direction="column" gap="3rem" py="3rem" mx="20rem">
           <HStack spacing={5}>
             <Button
-              sx={sortBtnsStyle}
+              {...sortBtnsStyle}
+              sx={{
+                "&.active": {
+                  color: "white",
+                  backgroundColor: "var(--dark-blue)",
+                },
+              }}
+              className={selectedCategory === null ? "active" : ""}
               onClick={() => filterArticlesByCategory(null)}
             >
               All ({totalArticles})
@@ -188,7 +189,14 @@ const RecommendationsPage = () => {
             {mainCategories.map((category, index) => (
               <Button
                 key={index}
-                sx={sortBtnsStyle}
+                {...sortBtnsStyle}
+                sx={{
+                  "&.active": {
+                    color: "white",
+                    backgroundColor: "var(--dark-blue)",
+                  },
+                }}
+                className={selectedCategory === category ? "active" : ""}
                 onClick={() => filterArticlesByCategory(category)}
               >
                 {articles[category].title}

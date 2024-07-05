@@ -19,6 +19,8 @@ import ApplicationsPage from "./pages/ApplicationsPage";
 import SavedJobsPage from "./pages/SavedJobsPage";
 import FilesPage from "./pages/FilesPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import ContactUsPage from "./pages/ContactUsPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
           <Route path="/job-listings" element={<JobListingsPage />} />
           <Route path="/blogs" element={<BlogsPage />} />
           <Route path="/blog/:blogId" element={<BlogPage />} />
+          <Route path="/contact-us" element={<ContactUsPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />

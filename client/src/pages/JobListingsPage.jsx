@@ -319,11 +319,17 @@ const JobListingsPage = () => {
                 {offers.length} Job Openings Available
               </Text>
             </VStack>
-            <Menu closeOnSelect={false}>
+            <Menu closeOnSelect={true}>
               <MenuButton
                 as={Button}
                 variant="outline"
                 border="1px solid var(--cyan)"
+                _hover={{
+                  bg: "inherit",
+                }}
+                _active={{
+                  bg: "inherit",
+                }}
               >
                 Sort offers
               </MenuButton>

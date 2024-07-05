@@ -121,10 +121,16 @@ const BlogPage = () => {
       <Flex px="3.5rem" direction="column" my="2rem">
         <Button
           variant="link"
-          _hover={{ textDecoration: "none" }}
+          _hover={{
+            textDecoration: "none",
+            ".leftIcon": {
+              transform: "translateX(-5px)",
+              transition: "transform 0.2s ease-in-out",
+            },
+          }}
           color="black"
           onClick={handleBackClick}
-          leftIcon={<FaChevronLeft />}
+          leftIcon={<FaChevronLeft className="leftIcon" />}
           mb="4"
           w="max-content"
         >
