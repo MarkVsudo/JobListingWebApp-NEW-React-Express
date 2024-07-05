@@ -11,8 +11,11 @@ import {
   Text,
   Img,
   VStack,
+  Center,
+  Stack,
 } from "@chakra-ui/react";
-import { FaChevronLeft } from "react-icons/fa6";
+import { FaChevronLeft, FaFacebook } from "react-icons/fa";
+import { SiLinkedin, SiMessenger } from "react-icons/si";
 import BlogTags from "../components/BlogComponents/BlogTags";
 
 const BlogPage = () => {
@@ -94,6 +97,22 @@ const BlogPage = () => {
     return `${formattedDate} · ${formattedTime}`;
   };
 
+  const currentUrl = window.location.href;
+
+  const shareToFacebook = () => {
+    const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+      currentUrl
+    )}`;
+    window.open(facebookShareUrl, "_blank");
+  };
+
+  const shareToLinkedIn = () => {
+    const linkedInShareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
+      currentUrl
+    )}&title=${encodeURIComponent(blog.blog_title)}`;
+    window.open(linkedInShareUrl, "_blank");
+  };
+
   return (
     <>
       <Helmet>
@@ -136,13 +155,18 @@ const BlogPage = () => {
           />
           <Flex justify="space-between" px="10rem">
             <VStack w="20%" position="sticky" top="2rem" h="100%">
-              <VStack alignItems="flex-start" w="100%">
+              <VStack
+                alignItems="flex-start"
+                w="100%"
+                className="left-border-animation"
+              >
                 {h2Texts.map((text) => (
                   <Text
                     key={text}
                     fontWeight={600}
                     cursor="pointer"
                     opacity={activeSection === text ? 1 : 0.6}
+                    className={activeSection === text ? "active" : ""}
                     onClick={() => handleSectionClick(text)}
                   >
                     {text}
@@ -151,6 +175,30 @@ const BlogPage = () => {
               </VStack>
               <VStack alignItems="flex-start" w="100%">
                 <Text fontWeight={600}>Share blog</Text>
+                <Stack spacing={2} align={"center"} maxW={"md"} w={"full"}>
+                  {/* Facebook */}
+                  <Button
+                    w={"full"}
+                    colorScheme={"facebook"}
+                    leftIcon={<FaFacebook />}
+                    onClick={shareToFacebook}
+                  >
+                    <Center>
+                      <Text>Share to Facebook</Text>
+                    </Center>
+                  </Button>
+                  {/* LinkedIn */}
+                  <Button
+                    w={"full"}
+                    colorScheme={"messenger"}
+                    leftIcon={<SiLinkedin />}
+                    onClick={shareToLinkedIn}
+                  >
+                    <Center>
+                      <Text>Share to Linkedin</Text>
+                    </Center>
+                  </Button>
+                </Stack>
               </VStack>
             </VStack>
             <Text

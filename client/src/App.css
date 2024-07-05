@@ -72,9 +72,32 @@ input[type="text"]::-webkit-calendar-picker-indicator {
 
 .job-description ul,
 .blog-content ul {
-  margin-left: 20px;
+  margin-left: 30px;
 }
 
 .blog-content p {
   text-align: justify;
+}
+
+.left-border-animation>.chakra-text {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.left-border-animation>.chakra-text::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: blue;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.4s ease;
+}
+
+.left-border-animation>.chakra-text.active::before,
+.left-border-animation>.chakra-text:hover::before {
+  transform: scaleY(1);
 }
