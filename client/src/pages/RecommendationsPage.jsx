@@ -143,7 +143,7 @@ const RecommendationsPage = () => {
           pos="relative"
           justify="center"
           textAlign="center"
-          p="3rem"
+          p={["1rem", "2rem", "3rem"]}
           bg="var(--dark-blue)"
           overflow="hidden"
         >
@@ -161,9 +161,10 @@ const RecommendationsPage = () => {
           ></Box>
           <Heading
             as="h1"
-            fontSize="2.5rem"
-            lineHeight="3rem"
+            fontSize={["1.5rem", "2rem", "2.5rem"]}
+            lineHeight={["2rem", "2.5rem", "3rem"]}
             color="var(--light-blue)"
+            zIndex="1"
           >
             Business Insights: Tips, Strategies and <br />
             Trends for Entrepreneurs and <br />
@@ -171,8 +172,13 @@ const RecommendationsPage = () => {
           </Heading>
         </Flex>
 
-        <Flex direction="column" gap="3rem" py="3rem" mx="20rem">
-          <HStack spacing={5}>
+        <Flex
+          direction="column"
+          gap="3rem"
+          py={["1rem", "2rem", "3rem"]}
+          mx={["1rem", "2rem", "4rem", "7rem", "20rem"]}
+        >
+          <Flex direction={["column", "row"]} gap={2} flexWrap="wrap">
             <Button
               {...sortBtnsStyle}
               sx={{
@@ -202,8 +208,17 @@ const RecommendationsPage = () => {
                 {articles[category].title}
               </Button>
             ))}
-          </HStack>
-          <Grid templateColumns="repeat(3, 1fr)" gap={5}>
+          </Flex>
+          <Grid
+            templateColumns={[
+              "repeat(1, 1fr)",
+              "repeat(2, 1fr)",
+              "repeat(2, 1fr)",
+              "repeat(2, 1fr)",
+              "repeat(3, 1fr)",
+            ]}
+            gap={5}
+          >
             {filteredArticles.map((article, index) => (
               <GridItem key={index}>
                 <Flex direction="column">
@@ -213,13 +228,17 @@ const RecommendationsPage = () => {
                     objectFit="cover"
                     borderRadius="1rem"
                     w="100%"
-                    aspectRatio="7/4"
+                    aspectRatio={["16/9", "7/4"]}
                   />
-                  <VStack align="flex-start">
-                    <Text fontWeight={500} fontSize="1.25rem" pt={1}>
+                  <VStack align="flex-start" spacing={2}>
+                    <Text
+                      fontWeight={500}
+                      fontSize={["1rem", "1.25rem"]}
+                      pt={1}
+                    >
                       {article.title}
                     </Text>
-                    <Text>
+                    <Text fontSize={["0.875rem", "1rem"]}>
                       {`${article.text.split(" ").slice(0, 25).join(" ")}...`}
                     </Text>
                     <Button
@@ -228,6 +247,7 @@ const RecommendationsPage = () => {
                       _hover={{ textDecoration: "none", opacity: "0.8" }}
                       ref={btnRef}
                       onClick={() => openModal(article)}
+                      fontSize={["0.875rem", "1rem"]}
                     >
                       Learn more
                     </Button>
@@ -237,7 +257,12 @@ const RecommendationsPage = () => {
             ))}
           </Grid>
         </Flex>
-        <Modal onClose={onClose} isOpen={isOpen} scrollBehavior="inside">
+        <Modal
+          onClose={onClose}
+          isOpen={isOpen}
+          scrollBehavior="inside"
+          size={["full", "md", "lg"]}
+        >
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>
