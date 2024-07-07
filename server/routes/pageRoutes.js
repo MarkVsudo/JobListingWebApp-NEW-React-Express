@@ -149,4 +149,35 @@ router.delete("/save-job-offer", async (req, res) => {
   }
 });
 
+router.get("/user-saved-jobs", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.id; // Get userId from the authenticated user
+
+    const [userSavedJobs] = await db.query(
+      `SELECT saved_jobs.*, 
+              job_offers.title AS title, 
+              job_offers.company_id AS company_id,
+              companies.name AS company_name
+       FROM saved_jobs 
+       INNER JOIN job_offers ON job_offers.job_id = saved_jobs.job_id 
+       INNER JOIN companies ON companies.company_id = job_offers.company_id 
+       WHERE saved_jobs.user_id = ?`,
+      [userId]
+    );
+
+    if (userSavedJobs.length === 0) {
+      return res
+        .status(204)
+        .json({ message: "No saved jobs found for this user." });
+    }
+
+    res.status(200).json(userSavedJobs);
+  } catch (err) {
+    console.error("Error fetching saved job offers for user:", err);
+    res.status(500).json({
+      error: "An error occurred while fetching saved job offers for user",
+    });
+  }
+});
+
 export default router;
