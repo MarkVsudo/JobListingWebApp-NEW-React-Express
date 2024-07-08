@@ -14,6 +14,7 @@ import CompanyPage from "./pages/CompanyPage";
 import JobListingsPage from "./pages/JobListingsPage";
 import BlogsPage from "./pages/BlogsPage";
 import BlogPage from "./pages/BlogPage";
+import RecruiterVerificationPage from "./pages/RecruiterVerificationPage";
 import ProfilePage from "./pages/ProfilePage";
 import ApplicationsPage from "./pages/ApplicationsPage";
 import SavedJobsPage from "./pages/SavedJobsPage";
@@ -45,6 +46,10 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
         </Route>
         <Route element={<DashboardLayout />}>
+          <Route
+            path="/recruiter-verification"
+            element={<RecruiterVerificationPage />}
+          />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/applications" element={<ApplicationsPage />} />
           <Route path="/saved-jobs" element={<SavedJobsPage />} />

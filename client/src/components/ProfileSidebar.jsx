@@ -7,34 +7,70 @@ import { GrDocumentUser } from "react-icons/gr";
 import { TbFileLike } from "react-icons/tb";
 import { TbLogout2 } from "react-icons/tb";
 import { PiFiles } from "react-icons/pi";
+import { MdOutlineVerified } from "react-icons/md";
 import { AuthContext } from "../contexts/AuthContext";
 
 const sidebarLinks = [
   {
+    icon: <MdOutlineVerified />,
+    url: "/",
+    title: "Admin",
+    role: ["admin"],
+  },
+  {
+    icon: <MdOutlineVerified />,
+    url: "/recruiter-verification",
+    title: "Verification",
+    role: ["recruiter", "admin"],
+  },
+  {
     icon: <CgProfile />,
     url: "/profile",
     title: "Profile",
+    role: ["applicant", "recruiter", "admin"],
   },
   {
     icon: <GrDocumentUser />,
     url: "/applications",
     title: "Applications",
+    role: ["applicant", "recruiter", "admin"],
   },
   {
     icon: <TbFileLike />,
     url: "/saved-jobs",
     title: "Saved jobs",
+    role: ["applicant", "recruiter", "admin"],
   },
   {
     icon: <PiFiles />,
     url: "/files",
     title: "Files",
+    role: ["applicant", "recruiter", "admin"],
   },
 ];
 
 const ProfileSidebar = () => {
-  const { logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const location = useLocation();
+
+  if (!user) {
+    return "Loading";
+  }
+
+  let allowedSidebarLinksApplicant = sidebarLinks.filter((sidebarLink) =>
+    sidebarLink.role.includes("applicant")
+  );
+
+  let allowedSidebarLinksRecruiter = sidebarLinks.filter((sidebarLink) =>
+    sidebarLink.role.includes("recruiter")
+  );
+
+  let userAllowedLinks =
+    user.role === "applicant"
+      ? allowedSidebarLinksApplicant
+      : user.role === "recruiter"
+      ? allowedSidebarLinksRecruiter
+      : sidebarLinks;
 
   return (
     <Flex
@@ -45,7 +81,7 @@ const ProfileSidebar = () => {
       p="1rem 0"
     >
       <VStack align="flex-start" gap="2rem" pl="1rem">
-        {sidebarLinks.map((link, index) => (
+        {userAllowedLinks.map((link, index) => (
           <ChakraLink
             key={index}
             as={ReactRouterLink}
