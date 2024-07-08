@@ -22,6 +22,7 @@ import FilesPage from "./pages/FilesPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ContactUsPage from "./pages/ContactUsPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import VerificationReviewPage from "./pages/VerificationReviewPage";
 
 function App() {
   return (
@@ -46,6 +47,10 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
         </Route>
         <Route element={<DashboardLayout />}>
+          <Route
+            path="/verification-review"
+            element={<VerificationReviewPage />}
+          />
           <Route
             path="/recruiter-verification"
             element={<RecruiterVerificationPage />}

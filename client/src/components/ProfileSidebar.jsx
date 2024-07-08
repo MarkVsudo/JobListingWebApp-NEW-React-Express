@@ -8,13 +8,14 @@ import { TbFileLike } from "react-icons/tb";
 import { TbLogout2 } from "react-icons/tb";
 import { PiFiles } from "react-icons/pi";
 import { MdOutlineVerified } from "react-icons/md";
+import { GoGitPullRequest } from "react-icons/go";
 import { AuthContext } from "../contexts/AuthContext";
 
 const sidebarLinks = [
   {
-    icon: <MdOutlineVerified />,
-    url: "/",
-    title: "Admin",
+    icon: <GoGitPullRequest />,
+    url: "/verification-review",
+    title: "Requests",
     role: ["admin"],
   },
   {

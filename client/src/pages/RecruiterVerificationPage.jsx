@@ -6,7 +6,7 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  Heading,
+  Text,
   Input,
   Select,
   Textarea,
@@ -44,14 +44,16 @@ const RecruiterVerificationPage = () => {
           borderWidth={1}
           px={4}
           width="full"
-          maxWidth="500px"
-          borderRadius={4}
+          maxWidth="lg"
+          borderRadius={5}
           textAlign="center"
           boxShadow="lg"
           bg="white"
         >
           <Box p={4}>
-            <Heading>Recruiter Verification</Heading>
+            <Text fontSize="1.25rem" fontWeight={700}>
+              Verify recruiter data
+            </Text>{" "}
             <form onSubmit={handleSubmit}>
               <VStack spacing={4} mt={8}>
                 <FormControl isRequired>
@@ -101,7 +103,10 @@ const RecruiterVerificationPage = () => {
                 </FormControl>
                 <FormControl>
                   <FormLabel>Additional Information</FormLabel>
-                  <Textarea placeholder="Any additional details about your company or recruitment needs" />
+                  <Textarea
+                    maxH="200px"
+                    placeholder="Any additional details about your company or recruitment needs"
+                  />
                 </FormControl>
                 <Button type="submit" colorScheme="blue" width="full">
                   Submit for Verification
