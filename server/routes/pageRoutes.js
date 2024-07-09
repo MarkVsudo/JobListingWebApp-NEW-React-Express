@@ -151,7 +151,7 @@ router.delete("/save-job-offer", async (req, res) => {
 
 router.get("/user-saved-jobs", authenticateToken, async (req, res) => {
   try {
-    const userId = req.user.id; // Get userId from the authenticated user
+    const userId = req.user.id;
 
     const [userSavedJobs] = await db.query(
       `SELECT saved_jobs.*, 
@@ -176,6 +176,39 @@ router.get("/user-saved-jobs", authenticateToken, async (req, res) => {
     console.error("Error fetching saved job offers for user:", err);
     res.status(500).json({
       error: "An error occurred while fetching saved job offers for user",
+    });
+  }
+});
+
+router.get("/user-job-applications", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const [userApplications] = await db.query(
+      `SELECT job_applications.*,
+      job_offers.title as title,
+      companies.name as company_name
+      FROM job_applications
+      INNER JOIN job_offers ON job_offers.job_id = job_applications.job_id
+      INNER JOIN companies ON companies.company_id = job_offers.company_id
+      WHERE job_applications.user_id = ?`,
+      [userId]
+    );
+
+    if (userApplications.length === 0) {
+      return res
+        .status(204)
+        .json({ message: "No job applications found for this user." });
+    }
+
+    res.status(200).json(userApplications);
+  } catch (err) {
+    console.error(
+      "An error occurred while fetching user job applications:",
+      err
+    );
+    res.status(500).json({
+      error: "An error occurred while fetching user job applications",
     });
   }
 });

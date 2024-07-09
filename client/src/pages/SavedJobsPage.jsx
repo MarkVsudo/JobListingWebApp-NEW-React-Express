@@ -36,8 +36,6 @@ const SavedJobsPage = () => {
     }
   }, [user]);
 
-  console.log(savedJobs);
-
   const deleteSavedJobOffer = async (jobId) => {
     try {
       const userId = user.user_id;
@@ -72,7 +70,7 @@ const SavedJobsPage = () => {
           <Tbody>
             {savedJobs ? (
               savedJobs.map((savedJob) => (
-                <Tr bg="white">
+                <Tr bg="white" key={savedJob.id}>
                   <Td py="2rem" fontSize="1.025rem">
                     {new Intl.DateTimeFormat("en-GB", {
                       year: "numeric",
