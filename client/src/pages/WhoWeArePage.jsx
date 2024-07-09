@@ -42,7 +42,12 @@ const WhoWeArePage = () => {
       <Helmet>
         <title>JobConqueror - Who We Are</title>
       </Helmet>
-      <Flex direction="column" textAlign="center" mx="20rem" py={3}>
+      <Flex
+        direction="column"
+        textAlign="center"
+        mx={{ base: "2rem", md: "5rem", lg: "10rem", xl: "20rem" }}
+        py={3}
+      >
         <Heading as="h2" size="lg" mb={10} color="var(--dark-blue)">
           We’re here to make your job seeking <br />
           much easier
@@ -52,7 +57,7 @@ const WhoWeArePage = () => {
           gap={3}
           align="center"
           justify="center"
-          h="30rem"
+          h={{ base: "auto", md: "30rem" }}
         >
           <Flex
             direction="column"
@@ -60,8 +65,8 @@ const WhoWeArePage = () => {
             p={6}
             bg="white"
             borderRadius="1rem"
-            w="50%"
-            h="100%"
+            w={{ base: "100%", md: "50%" }}
+            h={{ base: "auto", md: "100%" }}
             justifyContent="space-between"
           >
             <VStack spacing={2} align="start">
@@ -71,6 +76,7 @@ const WhoWeArePage = () => {
               <Heading
                 as="h2"
                 size="xl"
+                fontSize={{ base: "1.25rem", xl: "2.25rem" }}
                 lineHeight="base"
                 color="var(--dark-blue)"
               >
@@ -89,15 +95,19 @@ const WhoWeArePage = () => {
               on a journey towards professional success.
             </Text>
           </Flex>
-          <VStack w="50%" spacing={0} h="100%">
+          <VStack
+            w={{ base: "100%", md: "50%" }}
+            spacing={0}
+            h={{ base: "auto", md: "100%" }}
+          >
             <Img
               src={WhoWeAreImg}
               alt="How it started Img"
               borderRadius="1rem"
-              h="50%"
+              h={{ base: "auto", md: "50%" }}
             />
             <VStack spacing={5} p={5} bg="white" borderRadius="1rem" w="100%">
-              <HStack gap="3rem" w="100%">
+              <HStack gap="1rem" w="100%">
                 <VStack
                   spacing={1}
                   p={3}
@@ -125,7 +135,7 @@ const WhoWeArePage = () => {
                   <Text fontSize="md">Events</Text>
                 </VStack>
               </HStack>
-              <HStack justify="space-around" gap="3rem" w="100%">
+              <HStack justify="space-around" gap="1rem" w="100%">
                 <VStack
                   spacing={1}
                   p={3}
@@ -169,7 +179,7 @@ const WhoWeArePage = () => {
           py={5}
         >
           {members.map((member, index) => (
-            <Box key={index} textAlign="center" role="group">
+            <Box key={index} textAlign="center" role="group" w="auto">
               <Img
                 src={member.img}
                 alt={`${member.name} team member`}
