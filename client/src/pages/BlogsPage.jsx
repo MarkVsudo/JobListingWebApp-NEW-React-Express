@@ -51,14 +51,16 @@ const BlogsPage = () => {
       <Helmet>
         <title>{`JobConqueror - Blogs `}</title>
       </Helmet>
-      <Container maxW={"7xl"} p="12">
-        <Heading as="h1">Stories by the best</Heading>
+      <Container maxW={"7xl"} p={{ base: "4", md: "12" }}>
+        <Heading as="h1" mb={{ base: "4", md: "8" }}>
+          Stories by the best
+        </Heading>
 
         {/* Render current page's blogs */}
         {currentBlogs.map((blog, index) => (
           <Box
             key={index}
-            marginTop={{ base: "1", sm: "5" }}
+            marginTop={{ base: "4", sm: "5" }}
             display="flex"
             flexDirection={{ base: "column", sm: "row" }}
             justifyContent="space-between"
@@ -66,7 +68,7 @@ const BlogsPage = () => {
             <Box
               display="flex"
               flex="1"
-              marginRight="3"
+              marginRight={{ base: "0", sm: "3" }}
               position="relative"
               alignItems="center"
             >
@@ -81,7 +83,7 @@ const BlogsPage = () => {
                     borderRadius="lg"
                     src={blog.blog_banner}
                     alt={`${blog.blog_title} blog image`}
-                    objectFit="contain"
+                    objectFit="cover"
                   />
                 </Box>
               </Box>
@@ -106,7 +108,11 @@ const BlogsPage = () => {
             >
               <BlogTags tags={blog.blog_tags.split(",")} />
               <Heading marginTop="1">
-                <Text textDecoration="none" _hover={{ textDecoration: "none" }}>
+                <Text
+                  textDecoration="none"
+                  _hover={{ textDecoration: "none" }}
+                  fontSize={{ base: "1.25rem", lg: "2rem" }}
+                >
                   {blog.blog_title}
                 </Text>
               </Heading>
@@ -114,7 +120,7 @@ const BlogsPage = () => {
                 as="p"
                 marginTop="2"
                 color={useColorModeValue("gray.700", "gray.200")}
-                fontSize="lg"
+                fontSize={{ base: "1rem", lg: "lg" }}
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(blog.blog_content.slice(0, 270)),
                 }}
