@@ -13,9 +13,10 @@ import {
   VStack,
   Center,
   Stack,
+  Box,
 } from "@chakra-ui/react";
 import { FaChevronLeft, FaFacebook } from "react-icons/fa";
-import { SiLinkedin, SiMessenger } from "react-icons/si";
+import { SiLinkedin } from "react-icons/si";
 import BlogTags from "../components/BlogComponents/BlogTags";
 
 const BlogPage = () => {
@@ -118,7 +119,7 @@ const BlogPage = () => {
       <Helmet>
         <title>{`JobConqueror - ${blog.blog_title}`}</title>
       </Helmet>
-      <Flex px="3.5rem" direction="column" my="2rem">
+      <Flex px={{ base: "1rem", md: "3.5rem" }} direction="column" my="2rem">
         <Button
           variant="link"
           _hover={{
@@ -153,16 +154,25 @@ const BlogPage = () => {
           <Img
             src={blog.blog_banner}
             objectFit="cover"
-            height="30rem"
+            height={{ base: "15rem", md: "30rem" }}
             borderRadius="1rem"
             boxShadow="0 0 25px #00000014"
             alt="Blog post banner image"
-            mb="3rem"
+            mb={{ base: "0.5rem", lg: "3rem" }}
           />
-          <Flex justify="space-between" px="10rem">
-            <VStack w="20%" position="sticky" top="2rem" h="100%">
+          <Flex
+            direction={{ base: "column", lg: "row" }}
+            justify="space-between"
+            px={{ base: "0", lg: "10rem" }}
+          >
+            <VStack
+              w={{ base: "100%", lg: "20%" }}
+              position={{ base: "relative", lg: "sticky" }}
+              top="2rem"
+              h="100%"
+            >
               <VStack
-                alignItems="flex-start"
+                alignItems={{ base: "center", lg: "flex-start" }}
                 w="100%"
                 className="left-border-animation"
               >
@@ -179,7 +189,10 @@ const BlogPage = () => {
                   </Text>
                 ))}
               </VStack>
-              <VStack alignItems="flex-start" w="100%">
+              <VStack
+                alignItems={{ base: "center", lg: "flex-start" }}
+                w="100%"
+              >
                 <Text fontWeight={600}>Share blog</Text>
                 <Stack spacing={2} align={"center"} maxW={"md"} w={"full"}>
                   {/* Facebook */}
@@ -207,11 +220,12 @@ const BlogPage = () => {
                 </Stack>
               </VStack>
             </VStack>
-            <Text
-              w="70%"
-              className="blog-content"
-              dangerouslySetInnerHTML={{ __html: sanitizedBlogContent }}
-            />
+            <Box w={{ base: "100%", lg: "70%" }} mt={{ base: "3rem", lg: "0" }}>
+              <Text
+                className="blog-content"
+                dangerouslySetInnerHTML={{ __html: sanitizedBlogContent }}
+              />
+            </Box>
           </Flex>
         </Flex>
       </Flex>
