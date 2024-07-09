@@ -57,6 +57,15 @@ const RecruiterVerificationPage = () => {
     recruitingLicense: "",
     yearsInBusiness: "",
     additionalInfo: "",
+    logo: "",
+    banner: "",
+    description: "",
+    foundedYear: "",
+    numEmployees: "",
+    companyImages: "",
+    companyPerks: "",
+    googleMapsUrl: "",
+    googleMapsIframe: "",
   });
 
   const handleInputChange = (e) => {
@@ -102,6 +111,7 @@ const RecruiterVerificationPage = () => {
           <>
             <HStack align="flex-start" spacing={10}>
               <VStack w="50%">
+                {/* Company Basic Information */}
                 <FormControl isRequired>
                   <FormLabel>Company Name</FormLabel>
                   <Input
@@ -137,15 +147,6 @@ const RecruiterVerificationPage = () => {
                   </Select>
                 </FormControl>
                 <FormControl isRequired>
-                  <FormLabel>Business Registration Number</FormLabel>
-                  <Input
-                    name="businessRegNumber"
-                    value={formData.businessRegNumber}
-                    onChange={handleInputChange}
-                    placeholder="Enter registration number"
-                  />
-                </FormControl>
-                <FormControl isRequired>
                   <FormLabel>Company Size</FormLabel>
                   <Select
                     name="companySize"
@@ -160,6 +161,89 @@ const RecruiterVerificationPage = () => {
                     <option value="501+">501+ employees</option>
                   </Select>
                 </FormControl>
+                <FormControl>
+                  <FormLabel>Number of Employees</FormLabel>
+                  <Input
+                    name="numEmployees"
+                    value={formData.numEmployees}
+                    onChange={handleInputChange}
+                    type="number"
+                    placeholder="Enter number of employees"
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Founded Year</FormLabel>
+                  <Input
+                    name="foundedYear"
+                    value={formData.foundedYear}
+                    onChange={handleInputChange}
+                    type="number"
+                    placeholder="Enter founded year"
+                  />
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel>Years in Business</FormLabel>
+                  <Input
+                    name="yearsInBusiness"
+                    value={formData.yearsInBusiness}
+                    onChange={handleInputChange}
+                    type="number"
+                    placeholder="Enter years in business"
+                  />
+                </FormControl>
+
+                {/* Company Description */}
+                <FormControl>
+                  <FormLabel>Company Description</FormLabel>
+                  <Textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                    placeholder="Enter company description"
+                  />
+                </FormControl>
+
+                {/* Company Visuals */}
+                <FormControl>
+                  <FormLabel>Logo URL</FormLabel>
+                  <Input
+                    name="logo"
+                    value={formData.logo}
+                    onChange={handleInputChange}
+                    placeholder="Enter logo URL"
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Banner URL</FormLabel>
+                  <Input
+                    name="banner"
+                    value={formData.banner}
+                    onChange={handleInputChange}
+                    placeholder="Enter banner URL"
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Company Images (comma-separated URLs)</FormLabel>
+                  <Input
+                    name="companyImages"
+                    value={formData.companyImages}
+                    onChange={handleInputChange}
+                    placeholder="Enter comma-separated image URLs"
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Company Perks (comma-separated)</FormLabel>
+                  <Input
+                    name="companyPerks"
+                    value={formData.companyPerks}
+                    onChange={handleInputChange}
+                    placeholder="Enter comma-separated perks"
+                  />
+                </FormControl>
+              </VStack>
+
+              <VStack w="50%">
+                {/* Company Contact Information */}
                 <FormControl isRequired>
                   <FormLabel>Company Address</FormLabel>
                   <Input
@@ -169,26 +253,6 @@ const RecruiterVerificationPage = () => {
                     placeholder="Enter company address"
                   />
                 </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>CEO Full Name</FormLabel>
-                  <Input
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleInputChange}
-                    placeholder="Enter your full name"
-                  />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Your Job Title</FormLabel>
-                  <Input
-                    name="jobTitle"
-                    value={formData.jobTitle}
-                    onChange={handleInputChange}
-                    placeholder="Enter your job title"
-                  />
-                </FormControl>
-              </VStack>
-              <VStack w="50%">
                 <FormControl isRequired>
                   <FormLabel>Work Email</FormLabel>
                   <Input
@@ -219,6 +283,35 @@ const RecruiterVerificationPage = () => {
                     placeholder="https://www.linkedin.com/in/yourprofile"
                   />
                 </FormControl>
+                <FormControl>
+                  <FormLabel>Google Maps URL</FormLabel>
+                  <Input
+                    name="googleMapsUrl"
+                    value={formData.googleMapsUrl}
+                    onChange={handleInputChange}
+                    placeholder="Enter Google Maps URL"
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Google Maps Iframe</FormLabel>
+                  <Textarea
+                    name="googleMapsIframe"
+                    value={formData.googleMapsIframe}
+                    onChange={handleInputChange}
+                    placeholder="Enter Google Maps Iframe code"
+                  />
+                </FormControl>
+
+                {/* Legal Information */}
+                <FormControl isRequired>
+                  <FormLabel>Business Registration Number</FormLabel>
+                  <Input
+                    name="businessRegNumber"
+                    value={formData.businessRegNumber}
+                    onChange={handleInputChange}
+                    placeholder="Enter registration number"
+                  />
+                </FormControl>
                 <FormControl isRequired>
                   <FormLabel>Tax ID / EIN</FormLabel>
                   <Input
@@ -239,16 +332,28 @@ const RecruiterVerificationPage = () => {
                     placeholder="Enter your recruiting license number"
                   />
                 </FormControl>
+
+                {/* CEO Information */}
                 <FormControl isRequired>
-                  <FormLabel>Years in Business</FormLabel>
+                  <FormLabel>CEO Full Name</FormLabel>
                   <Input
-                    name="yearsInBusiness"
-                    value={formData.yearsInBusiness}
+                    name="fullName"
+                    value={formData.fullName}
                     onChange={handleInputChange}
-                    type="number"
-                    placeholder="Enter years in business"
+                    placeholder="Enter your full name"
                   />
                 </FormControl>
+                <FormControl isRequired>
+                  <FormLabel>Your Job Title</FormLabel>
+                  <Input
+                    name="jobTitle"
+                    value={formData.jobTitle}
+                    onChange={handleInputChange}
+                    placeholder="Enter your job title"
+                  />
+                </FormControl>
+
+                {/* Additional Information */}
                 <FormControl>
                   <FormLabel>Additional Information</FormLabel>
                   <Textarea
