@@ -63,4 +63,99 @@ router.post("/newsletter", async (req, res) => {
   }
 });
 
+// Route for submitting recruiter verification data
+router.post("/recruiter-verification", async (req, res) => {
+  const {
+    companyName,
+    industry,
+    companySize,
+    companyAddress,
+    companyWebsite,
+    logo,
+    banner,
+    description,
+    foundedYear,
+    workEmail,
+    phoneNumber,
+    linkedinProfile,
+    numEmployees,
+    companyImages,
+    companyPerks,
+    googleMapsUrl,
+    googleMapsIframe,
+    businessRegNumber,
+    CEOfullName,
+    taxId,
+    recruitingLicense,
+    additionalInfo,
+  } = req.body;
+
+  // Convert companySize to enum value
+  let size;
+  if (companySize === "1-10" || companySize === "11-50") size = "Small";
+  else if (companySize === "51-200") size = "Medium";
+  else size = "Large";
+
+  try {
+    await db.query(
+      `
+      INSERT INTO companies (
+        name,
+        industry,
+        size,
+        company_address,
+        website,
+        logo,
+        banner,
+        description,
+        founded_year,
+        contact_email,
+        contact_phone,
+        linkedin_url,
+        num_employees,
+        company_images,
+        company_perks,
+        google_maps_url,
+        google_maps_iframe,
+        business_reg_number,
+        ceo_full_name,
+        tax_id,
+        recruiting_license,
+        additional_info
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `,
+      [
+        companyName,
+        industry,
+        size,
+        companyAddress,
+        companyWebsite,
+        logo || null,
+        banner || null,
+        description,
+        foundedYear,
+        workEmail,
+        phoneNumber,
+        linkedinProfile,
+        numEmployees,
+        companyImages,
+        companyPerks,
+        googleMapsUrl,
+        googleMapsIframe,
+        businessRegNumber,
+        CEOfullName,
+        taxId,
+        recruitingLicense,
+        additionalInfo,
+      ]
+    );
+    res.status(200).json({ message: "Company details submitted successfully" });
+  } catch (err) {
+    console.error("Error submitting company details:", err);
+    res
+      .status(500)
+      .json({ error: "An error occurred while submitting company details" });
+  }
+});
+
 export default router;

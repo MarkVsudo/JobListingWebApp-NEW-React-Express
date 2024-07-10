@@ -503,7 +503,7 @@ const CompanyPage = () => {
                         transition="transform 0.3s"
                       >
                         <Text fontWeight={700}>{company.name}</Text>
-                        <Text>{company.headquarters}</Text>
+                        <Text>{company.company_address}</Text>
                       </Flex>
                       <Img
                         src={company.logo}
@@ -540,7 +540,7 @@ const CompanyPage = () => {
                   gap="0.5rem"
                 >
                   <SlLocationPin fontSize="1.125rem" />
-                  <Text>{company[0].headquarters}</Text>
+                  <Text>{company[0].company_address}</Text>
                 </ChakraLink>
                 <iframe
                   src={company[0].google_maps_iframe}

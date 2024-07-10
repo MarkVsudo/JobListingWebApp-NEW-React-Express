@@ -8,7 +8,7 @@ const router = express.Router();
 router.get("/company-overview", async (req, res) => {
   try {
     const [rows] = await db.query(
-      "SELECT name, banner, logo, num_employees, count_offers FROM companies"
+      "SELECT name, banner, logo, num_employees, count_offers FROM companies WHERE verified = 1;"
     );
     res.json(rows);
   } catch (error) {
@@ -23,12 +23,13 @@ router.get("/company/:companyName", async (req, res) => {
   const companyName = req.params.companyName;
 
   try {
-    const rows = await db.query("SELECT * FROM companies WHERE name = ?", [
-      companyName,
-    ]);
+    const rows = await db.query(
+      "SELECT * FROM companies WHERE name = ? AND verified = 1",
+      [companyName]
+    );
 
     const companies = await db.query(
-      "SELECT name, headquarters, logo FROM companies"
+      "SELECT name, company_address, logo FROM companies"
     );
 
     if (rows.length > 0) {

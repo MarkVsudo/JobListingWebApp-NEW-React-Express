@@ -48,14 +48,12 @@ const RecruiterVerificationPage = () => {
     businessRegNumber: "",
     companySize: "",
     companyAddress: "",
-    fullName: "",
-    jobTitle: "",
+    CEOfullName: "",
     workEmail: "",
     phoneNumber: "",
     linkedinProfile: "",
     taxId: "",
     recruitingLicense: "",
-    yearsInBusiness: "",
     additionalInfo: "",
     logo: "",
     banner: "",
@@ -80,7 +78,7 @@ const RecruiterVerificationPage = () => {
     e.preventDefault();
 
     try {
-      await axios.post("/recruiter-verification", { formData });
+      await axios.post("/api/recruiter-verification", formData);
 
       toast({
         title: "Form submitted.",
@@ -171,7 +169,7 @@ const RecruiterVerificationPage = () => {
                     placeholder="Enter number of employees"
                   />
                 </FormControl>
-                <FormControl>
+                <FormControl isRequired>
                   <FormLabel>Founded Year</FormLabel>
                   <Input
                     name="foundedYear"
@@ -179,16 +177,6 @@ const RecruiterVerificationPage = () => {
                     onChange={handleInputChange}
                     type="number"
                     placeholder="Enter founded year"
-                  />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Years in Business</FormLabel>
-                  <Input
-                    name="yearsInBusiness"
-                    value={formData.yearsInBusiness}
-                    onChange={handleInputChange}
-                    type="number"
-                    placeholder="Enter years in business"
                   />
                 </FormControl>
 
@@ -337,19 +325,10 @@ const RecruiterVerificationPage = () => {
                 <FormControl isRequired>
                   <FormLabel>CEO Full Name</FormLabel>
                   <Input
-                    name="fullName"
-                    value={formData.fullName}
+                    name="CEOfullName"
+                    value={formData.CEOfullName}
                     onChange={handleInputChange}
-                    placeholder="Enter your full name"
-                  />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Your Job Title</FormLabel>
-                  <Input
-                    name="jobTitle"
-                    value={formData.jobTitle}
-                    onChange={handleInputChange}
-                    placeholder="Enter your job title"
+                    placeholder="Enter CEO full name"
                   />
                 </FormControl>
 
@@ -437,7 +416,12 @@ const RecruiterVerificationPage = () => {
                   Review Information
                 </Button>
               ) : (
-                <Button type="submit" colorScheme="blue" ml="auto">
+                <Button
+                  type="submit"
+                  colorScheme="blue"
+                  ml="auto"
+                  onClick={handleSubmit}
+                >
                   Submit for Verification
                 </Button>
               )}
