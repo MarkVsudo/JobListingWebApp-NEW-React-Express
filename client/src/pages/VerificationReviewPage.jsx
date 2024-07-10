@@ -1,4 +1,5 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { Helmet } from "react-helmet";
 import {
   Box,
@@ -18,7 +19,37 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-const RequestItem = ({ from, type, time }) => {
+const formatDateForEurope = (isoDate) => {
+  const date = new Date(isoDate);
+  const formatter = new Intl.DateTimeFormat("en-GB", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    timeZone: "Europe/London", // Change this to your desired European time zone
+    hour12: false,
+  });
+
+  const [
+    { value: day },
+    ,
+    { value: month },
+    ,
+    { value: year },
+    ,
+    { value: hour },
+    ,
+    { value: minute },
+    ,
+    { value: second },
+  ] = formatter.formatToParts(date);
+
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+};
+
+const RequestItem = ({ from, type, createdAt }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -41,7 +72,7 @@ const RequestItem = ({ from, type, time }) => {
             <Text fontWeight={700}>
               Time:{" "}
               <Text as="span" fontWeight={400}>
-                {time}
+                {formatDateForEurope(createdAt)}
               </Text>
             </Text>
           </HStack>
@@ -70,7 +101,7 @@ const RequestItem = ({ from, type, time }) => {
           <ModalBody>
             <Text>From: {from}</Text>
             <Text>Type: {type}</Text>
-            <Text>Time: {time}</Text>
+            <Text>Time: {formatDateForEurope(createdAt)}</Text>
             {/* Add more details here as needed */}
           </ModalBody>
           <ModalFooter bg="var(--blue-gray)">
@@ -89,10 +120,23 @@ const RequestItem = ({ from, type, time }) => {
 };
 
 const VerificationReviewPage = () => {
-  const requests = [
-    { from: "Mark Veskov", type: "Job Offer", time: "08/07/2024 16:00" },
-    { from: "Mark Veskov", type: "Company", time: "05/03/2024 12:30" },
-  ];
+  const [verificationReq, setVerificationReq] = useState([]);
+
+  useEffect(() => {
+    const fetchVerificationReq = async () => {
+      try {
+        const response = await axios.get("/api/verification-request");
+        setVerificationReq(response.data);
+      } catch (error) {
+        console.error(
+          "An error occurred while fetching verification awaiting requests:",
+          error
+        );
+      }
+    };
+
+    fetchVerificationReq();
+  }, []);
 
   return (
     <>
@@ -104,8 +148,13 @@ const VerificationReviewPage = () => {
           Upcoming requests
         </Text>
         <VStack spacing={1} align="stretch" w="100%">
-          {requests.map((request, index) => (
-            <RequestItem key={index} {...request} />
+          {verificationReq.map((request, index) => (
+            <RequestItem
+              key={index}
+              from={request.company_name || request.name}
+              type={request.company_name ? "Job Offer" : "Company"}
+              createdAt={request.created_at}
+            />
           ))}
         </VStack>
       </Flex>

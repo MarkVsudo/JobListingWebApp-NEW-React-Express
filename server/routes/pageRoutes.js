@@ -213,4 +213,40 @@ router.get("/user-job-applications", authenticateToken, async (req, res) => {
   }
 });
 
+router.get("/verification-request", authenticateToken, async (req, res) => {
+  try {
+    const [verificationReqJobOffers] = await db.query(
+      "SELECT job_offers.*, companies.name as company_name FROM job_offers INNER JOIN companies ON companies.company_id = job_offers.company_id;"
+    );
+
+    const [verificationReqCompanies] = await db.query(
+      "SELECT * FROM companies WHERE verified = 0;"
+    );
+
+    if (
+      verificationReqJobOffers.length === 0 &&
+      verificationReqCompanies.length === 0
+    ) {
+      return res
+        .status(204)
+        .json({ message: "No verification awaiting requests available." });
+    }
+
+    const totalVerificationReq = [
+      ...verificationReqJobOffers,
+      ...verificationReqCompanies,
+    ];
+
+    res.status(200).json(totalVerificationReq);
+  } catch (err) {
+    console.error(
+      "An error occurred while fetching verification awaiting requests:",
+      err
+    );
+    res.status(500).json({
+      error: "An error occurred while fetching verification awaiting requests",
+    });
+  }
+});
+
 export default router;
