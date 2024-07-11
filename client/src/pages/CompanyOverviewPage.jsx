@@ -44,16 +44,32 @@ const CompanyOverviewPage = () => {
       <Helmet>
         <title>JobConqueror - Companies</title>
       </Helmet>
-      <Flex direction="column" gap="4rem" mx="4rem" my="4rem">
+      <Flex
+        direction="column"
+        gap="4rem"
+        mx={["1rem", "2rem", "4rem"]}
+        my="4rem"
+      >
         <Flex
           bg="var(--dark-blue)"
           justifyContent="space-between"
           alignItems="center"
           gap={2}
           p={6}
+          direction={["column", "column", "row"]}
         >
-          <Heading as="h1" fontSize="4rem" color="var(--light-blue)" mb="1rem">
-            <Text as="span" color="var(--cyan)" pr="1rem" fontSize="6rem">
+          <Heading
+            as="h1"
+            fontSize={["2rem", "3rem", "4rem"]}
+            color="var(--light-blue)"
+            mb="1rem"
+          >
+            <Text
+              as="span"
+              color="var(--cyan)"
+              pr="1rem"
+              fontSize={["4rem", "5rem", "6rem"]}
+            >
               {companies.length}
             </Text>
             <Text as="span">companies</Text>
@@ -66,8 +82,8 @@ const CompanyOverviewPage = () => {
           <Img
             src={HandGif}
             alt="Hand gif"
-            h="20rem"
-            w="50rem"
+            h={["10rem", "15rem", "20rem"]}
+            w={["25rem", "35rem", "50rem"]}
             objectFit="cover"
             transform="rotate(-10deg)"
           />
@@ -95,10 +111,11 @@ const CompanyOverviewPage = () => {
             justify="center"
             align="center"
             zIndex="1"
+            px={["1rem", "2rem", "4rem"]}
           >
             <Text
               textAlign="center"
-              fontSize="1.75rem"
+              fontSize={["1.25rem", "1.5rem", "1.75rem"]}
               fontWeight={500}
               pb="1.25rem"
             >
@@ -175,15 +192,27 @@ const CompanyOverviewPage = () => {
           </Flex>
           <Flex
             direction="column"
-            px="15rem"
+            px={["1rem", "2rem", "3rem", "4rem", "15rem"]}
             justify="center"
             align="center"
             zIndex="1"
           >
-            <Text fontSize="1.75rem" fontWeight={500} py="1.25rem">
+            <Text
+              fontSize={["1.25rem", "1.5rem", "1.75rem"]}
+              fontWeight={500}
+              py="1.25rem"
+            >
               Best companies on our platform
             </Text>
-            <Grid templateColumns="repeat(3, 1fr)" gap="1.5rem">
+            <Grid
+              templateColumns={[
+                "repeat(1, 1fr)",
+                "repeat(2, 1fr)",
+                "repeat(2, 1fr)",
+                "repeat(3, 1fr)",
+              ]}
+              gap="1.5rem"
+            >
               {companies.map((company) => (
                 <GridItem
                   key={company.id}
