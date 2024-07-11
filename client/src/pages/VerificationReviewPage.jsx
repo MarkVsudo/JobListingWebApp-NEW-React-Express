@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet";
 import {
@@ -17,6 +17,12 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
 } from "@chakra-ui/react";
 
 const formatDateForEurope = (isoDate) => {
@@ -50,7 +56,23 @@ const formatDateForEurope = (isoDate) => {
 };
 
 const RequestItem = ({ from, type, createdAt }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isModalOpen,
+    onOpen: onModalOpen,
+    onClose: onModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: isApproveAlertOpen,
+    onOpen: onApproveAlertOpen,
+    onClose: onApproveAlertClose,
+  } = useDisclosure();
+  const {
+    isOpen: isRejectAlertOpen,
+    onOpen: onRejectAlertOpen,
+    onClose: onRejectAlertClose,
+  } = useDisclosure();
+
+  const cancelRef = useRef();
 
   return (
     <>
@@ -78,20 +100,20 @@ const RequestItem = ({ from, type, createdAt }) => {
           </HStack>
           <Spacer />
           <HStack>
-            <Button size="sm" colorScheme="blue" onClick={onOpen}>
+            <Button size="sm" colorScheme="blue" onClick={onModalOpen}>
               See details
             </Button>
-            <Button size="sm" colorScheme="green">
+            <Button size="sm" colorScheme="green" onClick={onApproveAlertOpen}>
               Approve
             </Button>
-            <Button size="sm" colorScheme="red">
+            <Button size="sm" colorScheme="red" onClick={onRejectAlertOpen}>
               Reject
             </Button>
           </HStack>
         </Flex>
       </Box>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="full">
+      <Modal isOpen={isModalOpen} onClose={onModalClose} size="full">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader bg="var(--blue-gray)" color="white">
@@ -105,16 +127,74 @@ const RequestItem = ({ from, type, createdAt }) => {
             {/* Add more details here as needed */}
           </ModalBody>
           <ModalFooter bg="var(--blue-gray)">
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button colorScheme="blue" mr={3} onClick={onModalClose}>
               Close
             </Button>
-            <Button colorScheme="green">Approve</Button>
-            <Button colorScheme="red" ml={3}>
+            <Button colorScheme="green" onClick={onApproveAlertOpen}>
+              Approve
+            </Button>
+            <Button colorScheme="red" ml={3} onClick={onRejectAlertOpen}>
               Reject
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
+
+      <AlertDialog
+        isOpen={isApproveAlertOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onApproveAlertClose}
+        isCentered
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Approve Request
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? You can't undo this action afterwards.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onApproveAlertClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="green" onClick={onApproveAlertClose} ml={3}>
+                Approve
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+
+      <AlertDialog
+        isOpen={isRejectAlertOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onRejectAlertClose}
+        isCentered
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Reject Request
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? You can't undo this action afterwards.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onRejectAlertClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={onRejectAlertClose} ml={3}>
+                Reject
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 };
