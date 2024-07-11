@@ -118,7 +118,7 @@ const CompanyPage = () => {
   return (
     <>
       <Helmet>
-        <title>{`JobConqueror - ${company[0].name} `}</title>
+        <title>{`JobConqueror - ${company[0].name}`}</title>
       </Helmet>
       <Flex
         direction="column"
@@ -130,38 +130,43 @@ const CompanyPage = () => {
           src={company[0].banner}
           alt="Company banner image"
           w="100%"
-          h="17.5rem"
+          h={["10rem", "15rem", "17.5rem"]}
           objectFit="cover"
         />
         <Flex
-          w={[300, 500, 1330]}
+          w={["90%", "90%", "1330px"]}
+          maxW="90%"
           bg="white"
           borderRadius="1rem"
           direction="column"
-          p="3rem"
+          p={["1rem", "2rem", "3rem"]}
           gap="1rem"
           boxShadow="0 0 25px #00000049"
           transform="translateY(-50%)"
         >
-          <Flex justify="space-between">
-            <Flex gap="1rem">
+          <Flex
+            direction={["column", "row"]}
+            justify="space-between"
+            align="center"
+          >
+            <Flex gap="1rem" align="center">
               <Img
                 src={company[0].logo}
                 alt="Company logo"
                 objectFit="contain"
-                width="5rem"
-                height="5rem"
+                w={["3rem", "4rem", "5rem"]}
+                h={["3rem", "4rem", "5rem"]}
               />
               <Flex direction="column" justify="space-between">
-                <Text fontWeight={700} fontSize="1.5rem">
+                <Text fontWeight={700} fontSize={["1rem", "1.25rem", "1.5rem"]}>
                   {company[0].name}
                 </Text>
-                <Text fontSize="1.25rem">
+                <Text fontSize={["0.875rem", "1rem", "1.25rem"]}>
                   Discover, save and share creative ideas online.
                 </Text>
               </Flex>
             </Flex>
-            <Flex gap="1rem">
+            <Flex gap="1rem" mt={["1rem", "0"]}>
               <Button
                 size="lg"
                 bg="white"
@@ -173,12 +178,12 @@ const CompanyPage = () => {
                 <FaRegShareFromSquare />
               </Button>
               <Button
-                size="lg"
+                size={"lg"}
                 bg="var(--cyan)"
                 color="white"
                 gap=".5rem"
                 _hover={{ bg: "var(--blue-gray)" }}
-                onClick={() => setFollowed(true)}
+                onClick={() => setFollowed(!followed)}
               >
                 {followed ? (
                   <>
@@ -194,7 +199,11 @@ const CompanyPage = () => {
               </Button>
             </Flex>
           </Flex>
-          <Flex justify="space-between">
+          <Flex
+            direction={["column", "row"]}
+            justify="space-between"
+            gap="1rem"
+          >
             <VStack align="start">
               <Text>Website</Text>
               <Text fontWeight={700} color="blue">
@@ -209,7 +218,7 @@ const CompanyPage = () => {
             </VStack>
             <VStack align="start">
               <Text>Location</Text>
-              <Text fontWeight={700}>Sofia, Bulgaria</Text>
+              <Text fontWeight={700}>{company[0].company_address}</Text>
             </VStack>
             <VStack align="start">
               <Text>Company Size</Text>
@@ -222,11 +231,17 @@ const CompanyPage = () => {
           </Flex>
         </Flex>
 
-        <Flex w={[300, 500, 1330]} justify="space-between" pb="5rem">
-          <VStack w="50%" spacing="2rem">
+        <Flex
+          direction={["column", "column", "row"]}
+          w="100%"
+          maxW="1330px"
+          justify="space-between"
+          pb="5rem"
+        >
+          <Flex w={["100%", "100%", "50%"]} gap="2rem" direction="column">
             {/* About */}
             <Box w="100%">
-              <Text pb={3} fontSize="1.5rem" fontWeight={700}>
+              <Text pb={3} fontSize={["1.25rem", "1.5rem"]} fontWeight={700}>
                 About {company[0].name}
               </Text>
               <Box textAlign="justify">
@@ -251,7 +266,7 @@ const CompanyPage = () => {
             {/* Jobs */}
             <Box w="100%">
               <Flex justify="space-between" align="center" pb={3}>
-                <Text fontSize="1.5rem" fontWeight={700}>
+                <Text fontSize={["1.25rem", "1.5rem"]} fontWeight={700}>
                   Jobs From {company[0].name}
                 </Text>
                 <ChakraLink
@@ -284,7 +299,11 @@ const CompanyPage = () => {
                         pr={1}
                       />
                       <VStack justify="space-between" align="flex-start">
-                        <Text as="span" fontWeight={700} fontSize="1.25rem">
+                        <Text
+                          as="span"
+                          fontWeight={700}
+                          fontSize={["1rem", "1.25rem"]}
+                        >
                           Back-end engineer
                         </Text>
                         <Text as="span">Varna, Bulgaria</Text>
@@ -292,7 +311,6 @@ const CompanyPage = () => {
                     </Flex>
                     <IoBookmarkOutline color="var(--cyan)" fontSize="1.5rem" />
                   </HStack>
-
                   <HStack spacing={2}>
                     <Text as="span" bg="#f8f8f8" p=".25rem">
                       Internship
@@ -304,7 +322,6 @@ const CompanyPage = () => {
                       Fresh Graduate
                     </Text>
                   </HStack>
-
                   <Text color="rgba(33, 37, 41, 0.75)">
                     12 days ago | 47 applicants
                   </Text>
@@ -329,7 +346,11 @@ const CompanyPage = () => {
                         pr={1}
                       />
                       <VStack justify="space-between" align="flex-start">
-                        <Text as="span" fontWeight={700} fontSize="1.25rem">
+                        <Text
+                          as="span"
+                          fontWeight={700}
+                          fontSize={["1rem", "1.25rem"]}
+                        >
                           Web Developer
                         </Text>
                         <Text as="span">Sofia, Bulgaria</Text>
@@ -337,7 +358,6 @@ const CompanyPage = () => {
                     </Flex>
                     <IoBookmark color="var(--cyan)" fontSize="1.5rem" />
                   </HStack>
-
                   <HStack spacing={2}>
                     <Text as="span" bg="#f8f8f8" p=".25rem">
                       Full Time
@@ -349,7 +369,6 @@ const CompanyPage = () => {
                       2-4 years
                     </Text>
                   </HStack>
-
                   <Text color="rgba(33, 37, 41, 0.75)">
                     5 days ago | 135 applicants
                   </Text>
@@ -358,11 +377,11 @@ const CompanyPage = () => {
             </Box>
             {/* Photos */}
             <Box w="100%">
-              <Text fontSize="1.5rem" fontWeight={700} pb={3}>
+              <Text fontSize={["1.25rem", "1.5rem"]} fontWeight={700} pb={3}>
                 Life at {company[0].name}
               </Text>
-              <Flex gap="0.5rem">
-                <Box w="66.66%">
+              <Flex gap="0.5rem" flexDirection={["column", "row"]}>
+                <Box w={["100%", "66.66%"]}>
                   <Img
                     src={images[0]}
                     alt="Company image 1"
@@ -371,7 +390,7 @@ const CompanyPage = () => {
                     objectFit="cover"
                   />
                 </Box>
-                <Flex direction="column" w="33.33%" gap="0.5rem">
+                <Flex direction="column" w={["100%", "33.33%"]} gap="0.5rem">
                   <Img
                     src={images[1]}
                     alt="Company image 1"
@@ -407,11 +426,15 @@ const CompanyPage = () => {
             </Box>
             {/* Benefits */}
             <Box w="100%">
-              <Text fontSize="1.5rem" fontWeight={700} pb={3}>
+              <Text fontSize={["1.25rem", "1.5rem"]} fontWeight={700} pb={3}>
                 Perks and Benefits
               </Text>
               <Grid
-                templateColumns="repeat(3, 1fr)"
+                templateColumns={[
+                  "repeat(1, 1fr)",
+                  "repeat(2, 1fr)",
+                  "repeat(3, 1fr)",
+                ]}
                 gap="1rem"
                 p="1rem"
                 justifyContent="space-around"
@@ -466,11 +489,11 @@ const CompanyPage = () => {
                 )}
               </Grid>
             </Box>
-          </VStack>
-          <VStack w="35%" spacing="2rem">
+          </Flex>
+          <Flex w={["100%", "100%", "35%"]} gap="2rem" direction="column">
             {/* People also view */}
             <Box w="100%">
-              <Text pb={3} fontSize="1.5rem" fontWeight={700}>
+              <Text pb={3} fontSize={["1.25rem", "1.5rem"]} fontWeight={700}>
                 People Also View
               </Text>
               <Flex
@@ -519,7 +542,7 @@ const CompanyPage = () => {
             </Box>
             {/* Location */}
             <Box w="100%">
-              <Text pb={3} fontSize="1.5rem" fontWeight={700}>
+              <Text pb={3} fontSize={["1.25rem", "1.5rem"]} fontWeight={700}>
                 Location
               </Text>
               <Flex
@@ -547,9 +570,9 @@ const CompanyPage = () => {
                   width="fit-content"
                   height="250"
                   borderRadius="1rem"
-                  allowfullscreen=""
+                  allowFullScreen=""
                   loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
+                  referrerPolicy="no-referrer-when-downgrade"
                 ></iframe>
                 <ChakraLink
                   as={ReactRouterLink}
@@ -564,7 +587,7 @@ const CompanyPage = () => {
                 </ChakraLink>
               </Flex>
             </Box>
-          </VStack>
+          </Flex>
         </Flex>
       </Flex>
 
