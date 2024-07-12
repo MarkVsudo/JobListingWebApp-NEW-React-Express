@@ -214,6 +214,32 @@ router.get("/user-job-applications", authenticateToken, async (req, res) => {
   }
 });
 
+router.get("/recruiter-verification", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const result = await db.query(
+      "SELECT verified FROM companies WHERE user_id = ?",
+      [userId]
+    );
+
+    if (result.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json(result[0]);
+    console.log(result[0]);
+  } catch (err) {
+    console.error(
+      "An error occurred while checking user verification status:",
+      err
+    );
+    res.status(500).json({
+      error: "An error occurred while checking user verification status",
+    });
+  }
+});
+
 router.get("/verification-request", authenticateToken, async (req, res) => {
   try {
     const [verificationReqJobOffers] = await db.query(

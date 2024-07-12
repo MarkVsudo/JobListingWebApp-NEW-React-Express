@@ -88,6 +88,7 @@ router.post("/recruiter-verification", async (req, res) => {
     taxId,
     recruitingLicense,
     additionalInfo,
+    user_id,
   } = req.body;
 
   // Convert companySize to enum value
@@ -121,8 +122,9 @@ router.post("/recruiter-verification", async (req, res) => {
         ceo_full_name,
         tax_id,
         recruiting_license,
-        additional_info
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        additional_info,
+        user_id
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
       [
         companyName,
@@ -147,6 +149,7 @@ router.post("/recruiter-verification", async (req, res) => {
         taxId,
         recruitingLicense,
         additionalInfo,
+        user_id,
       ]
     );
     res.status(200).json({ message: "Company details submitted successfully" });

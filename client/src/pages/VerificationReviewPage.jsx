@@ -153,7 +153,8 @@ const RequestItem = ({ from, type, createdAt }) => {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Are you sure? You can't undo this action afterwards.
+              Are you sure? This action will approve the request sent from the
+              user.
             </AlertDialogBody>
 
             <AlertDialogFooter>
@@ -181,7 +182,8 @@ const RequestItem = ({ from, type, createdAt }) => {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Are you sure? You can't undo this action afterwards.
+              Are you sure? This action will reject the request sent from the
+              user..
             </AlertDialogBody>
 
             <AlertDialogFooter>

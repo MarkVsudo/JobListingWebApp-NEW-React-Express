@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import axios from "axios";
 import {
@@ -25,6 +25,7 @@ import {
   Stepper,
   useSteps,
 } from "@chakra-ui/react";
+import { AuthContext } from "../contexts/AuthContext";
 
 const steps = [
   {
@@ -35,6 +36,7 @@ const steps = [
 ];
 
 const RecruiterVerificationPage = () => {
+  const { user } = useContext(AuthContext);
   const toast = useToast();
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
@@ -66,6 +68,37 @@ const RecruiterVerificationPage = () => {
     googleMapsIframe: "",
   });
 
+  const [verificationStatus, setVerificationStatus] = useState("not_submitted");
+
+  useEffect(() => {
+    const fetchVerificationStatus = async () => {
+      try {
+        const response = await axios.get("/api/recruiter-verification");
+        if (response.data.length > 0) {
+          const { verified } = response.data[0];
+          if (verified === 1) {
+            setVerificationStatus("verified");
+          } else if (verified === 0) {
+            setVerificationStatus("awaiting");
+          } else {
+            setVerificationStatus("not_submitted");
+          }
+        } else {
+          setVerificationStatus("not_submitted");
+        }
+      } catch (error) {
+        console.error("Error fetching verification status:", error);
+        setVerificationStatus("not_submitted");
+      }
+    };
+
+    if (user) {
+      fetchVerificationStatus();
+    }
+  }, [user]);
+
+  console.log(verificationStatus);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -78,7 +111,11 @@ const RecruiterVerificationPage = () => {
     e.preventDefault();
 
     try {
-      await axios.post("/api/recruiter-verification", formData);
+      const formDataWithUserId = { ...formData, user_id: user.user_id };
+
+      await axios.post("/api/recruiter-verification", formDataWithUserId);
+
+      setVerificationStatus("awaiting");
 
       toast({
         title: "Form submitted.",
@@ -94,7 +131,7 @@ const RecruiterVerificationPage = () => {
       );
       toast({
         title: "Form submission failed.",
-        description: "An error occured while submitting the form.",
+        description: "An error occurred while submitting the form.",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -367,68 +404,80 @@ const RecruiterVerificationPage = () => {
       <Helmet>
         <title>JobConqueror - Recruiter Verification</title>
       </Helmet>
-      <Box
-        borderWidth={1}
-        mx="10rem"
-        px={4}
-        width="full"
-        borderRadius={5}
-        textAlign="center"
-        boxShadow="lg"
-        bg="white"
-        p={4}
-      >
-        <Text fontSize="1.25rem" fontWeight={700} mb={4}>
-          Verify recruiter data
-        </Text>
-        <Stepper index={activeStep} mb={8}>
-          {steps.map((step, index) => (
-            <Step key={index}>
-              <StepIndicator>
-                <StepStatus
-                  complete={<StepIcon />}
-                  incomplete={<StepNumber />}
-                  active={<StepNumber />}
-                />
-              </StepIndicator>
-              <Box flexShrink="0" textAlign="left">
-                <StepTitle>{step.title}</StepTitle>
-                <StepDescription>{step.description}</StepDescription>
-              </Box>
-              <StepSeparator />
-            </Step>
-          ))}
-        </Stepper>
-        <form onSubmit={handleSubmit}>
-          <VStack spacing={4} align="stretch">
-            {renderFormStep()}
-            <Flex justifyContent="space-between" mt={4}>
-              {activeStep > 0 && (
-                <Button onClick={() => setActiveStep((prev) => prev - 1)}>
-                  Back to Edit
-                </Button>
-              )}
-              {activeStep < steps.length - 1 ? (
-                <Button
-                  onClick={() => setActiveStep((prev) => prev + 1)}
-                  ml="auto"
-                >
-                  Review Information
-                </Button>
-              ) : (
-                <Button
-                  type="submit"
-                  colorScheme="blue"
-                  ml="auto"
-                  onClick={handleSubmit}
-                >
-                  Submit for Verification
-                </Button>
-              )}
-            </Flex>
-          </VStack>
-        </form>
-      </Box>
+      {user ? (
+        <Box
+          borderWidth={1}
+          mx="10rem"
+          px={4}
+          width="full"
+          borderRadius={5}
+          textAlign="center"
+          boxShadow="lg"
+          bg="white"
+          p={4}
+        >
+          <Text fontSize="1.25rem" fontWeight={700} mb={4}>
+            {verificationStatus === "verified"
+              ? "Your request has been approved"
+              : verificationStatus === "awaiting"
+              ? "Your request has been sent for review"
+              : "Verify recruiter data"}
+          </Text>
+          {verificationStatus === "not_submitted" && (
+            <>
+              <Stepper index={activeStep} mb={8}>
+                {steps.map((step, index) => (
+                  <Step key={index}>
+                    <StepIndicator>
+                      <StepStatus
+                        complete={<StepIcon />}
+                        incomplete={<StepNumber />}
+                        active={<StepNumber />}
+                      />
+                    </StepIndicator>
+                    <Box flexShrink="0" textAlign="left">
+                      <StepTitle>{step.title}</StepTitle>
+                      <StepDescription>{step.description}</StepDescription>
+                    </Box>
+                    <StepSeparator />
+                  </Step>
+                ))}
+              </Stepper>
+              <form onSubmit={handleSubmit}>
+                <VStack spacing={4} align="stretch">
+                  {renderFormStep()}
+                  <Flex justifyContent="space-between" mt={4}>
+                    {activeStep > 0 && (
+                      <Button onClick={() => setActiveStep((prev) => prev - 1)}>
+                        Back to Edit
+                      </Button>
+                    )}
+                    {activeStep < steps.length - 1 ? (
+                      <Button
+                        onClick={() => setActiveStep((prev) => prev + 1)}
+                        ml="auto"
+                      >
+                        Review Information
+                      </Button>
+                    ) : (
+                      <Button
+                        type="submit"
+                        colorScheme="blue"
+                        ml="auto"
+                        onClick={handleSubmit}
+                      >
+                        Submit for Verification
+                      </Button>
+                    )}
+                  </Flex>
+                </VStack>
+              </form>
+            </>
+          )}
+        </Box>
+      ) : (
+        <Text>Fetching user</Text>
+      )}
     </>
   );
 };
