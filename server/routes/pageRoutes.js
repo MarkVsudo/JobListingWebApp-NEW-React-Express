@@ -228,7 +228,6 @@ router.get("/recruiter-verification", authenticateToken, async (req, res) => {
     }
 
     res.status(200).json(result[0]);
-    console.log(result[0]);
   } catch (err) {
     console.error(
       "An error occurred while checking user verification status:",

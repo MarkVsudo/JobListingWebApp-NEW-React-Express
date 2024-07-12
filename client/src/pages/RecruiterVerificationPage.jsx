@@ -97,8 +97,6 @@ const RecruiterVerificationPage = () => {
     }
   }, [user]);
 
-  console.log(verificationStatus);
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({

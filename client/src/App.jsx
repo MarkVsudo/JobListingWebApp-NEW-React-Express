@@ -15,6 +15,7 @@ import JobListingsPage from "./pages/JobListingsPage";
 import BlogsPage from "./pages/BlogsPage";
 import BlogPage from "./pages/BlogPage";
 import RecruiterVerificationPage from "./pages/RecruiterVerificationPage";
+import PostJobOfferPage from "./pages/PostJobOfferPage";
 import ProfilePage from "./pages/ProfilePage";
 import ApplicationsPage from "./pages/ApplicationsPage";
 import SavedJobsPage from "./pages/SavedJobsPage";
@@ -55,6 +56,7 @@ function App() {
             path="/recruiter-verification"
             element={<RecruiterVerificationPage />}
           />
+          <Route path="/post-job-offer" element={<PostJobOfferPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/applications" element={<ApplicationsPage />} />
           <Route path="/saved-jobs" element={<SavedJobsPage />} />
