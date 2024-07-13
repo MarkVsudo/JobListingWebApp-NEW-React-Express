@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet";
 import {
@@ -34,7 +34,7 @@ const formatDateForEurope = (isoDate) => {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-    timeZone: "Europe/London", // Change this to your desired European time zone
+    timeZone: "Europe/London",
     hour12: false,
   });
 
@@ -55,7 +55,15 @@ const formatDateForEurope = (isoDate) => {
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 };
 
-const RequestItem = ({ from, type, createdAt }) => {
+const RequestItem = ({
+  from,
+  type,
+  createdAt,
+  jobId,
+  companyId,
+  onApprove,
+  onReject,
+}) => {
   const {
     isOpen: isModalOpen,
     onOpen: onModalOpen,
@@ -73,6 +81,26 @@ const RequestItem = ({ from, type, createdAt }) => {
   } = useDisclosure();
 
   const cancelRef = useRef();
+
+  const handleApproval = async () => {
+    try {
+      await onApprove(type, jobId, companyId);
+      onApproveAlertClose();
+      onModalClose();
+    } catch (error) {
+      console.error("An error occurred while approving request", error);
+    }
+  };
+
+  const handleRejection = async () => {
+    try {
+      await onReject(type, jobId, companyId);
+      onRejectAlertClose();
+      onModalClose();
+    } catch (error) {
+      console.error("An error occurred while rejecting request", error);
+    }
+  };
 
   return (
     <>
@@ -161,7 +189,7 @@ const RequestItem = ({ from, type, createdAt }) => {
               <Button ref={cancelRef} onClick={onApproveAlertClose}>
                 Cancel
               </Button>
-              <Button colorScheme="green" onClick={onApproveAlertClose} ml={3}>
+              <Button colorScheme="green" onClick={handleApproval} ml={3}>
                 Approve
               </Button>
             </AlertDialogFooter>
@@ -183,14 +211,14 @@ const RequestItem = ({ from, type, createdAt }) => {
 
             <AlertDialogBody>
               Are you sure? This action will reject the request sent from the
-              user..
+              user.
             </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onRejectAlertClose}>
                 Cancel
               </Button>
-              <Button colorScheme="red" onClick={onRejectAlertClose} ml={3}>
+              <Button colorScheme="red" onClick={handleRejection} ml={3}>
                 Reject
               </Button>
             </AlertDialogFooter>
@@ -204,21 +232,41 @@ const RequestItem = ({ from, type, createdAt }) => {
 const VerificationReviewPage = () => {
   const [verificationReq, setVerificationReq] = useState([]);
 
-  useEffect(() => {
-    const fetchVerificationReq = async () => {
-      try {
-        const response = await axios.get("/api/verification-request");
-        setVerificationReq(response.data);
-      } catch (error) {
-        console.error(
-          "An error occurred while fetching verification awaiting requests:",
-          error
-        );
-      }
-    };
+  console.log(verificationReq);
 
+  const fetchVerificationReq = async () => {
+    try {
+      const response = await axios.get("/api/verification-request");
+      setVerificationReq(response.data);
+    } catch (error) {
+      console.error(
+        "An error occurred while fetching verification awaiting requests:",
+        error
+      );
+    }
+  };
+
+  useEffect(() => {
     fetchVerificationReq();
   }, []);
+
+  const handleApprove = async (type, jobId, companyId) => {
+    try {
+      await axios.patch("/api/approve-request", { type, jobId, companyId });
+      fetchVerificationReq();
+    } catch (error) {
+      console.error("An error occurred while approving request", error);
+    }
+  };
+
+  const handleReject = async (type, jobId, companyId) => {
+    try {
+      await axios.patch("/api/reject-request", { type, jobId, companyId });
+      fetchVerificationReq();
+    } catch (error) {
+      console.error("An error occurred while rejecting request", error);
+    }
+  };
 
   return (
     <>
@@ -236,6 +284,10 @@ const VerificationReviewPage = () => {
               from={request.company_name || request.name}
               type={request.company_name ? "Job Offer" : "Company"}
               createdAt={request.created_at}
+              jobId={request.job_id}
+              companyId={request.company_id}
+              onApprove={handleApprove}
+              onReject={handleReject}
             />
           ))}
         </VStack>

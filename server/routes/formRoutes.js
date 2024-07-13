@@ -161,4 +161,65 @@ router.post("/recruiter-verification", async (req, res) => {
   }
 });
 
+// Route for submitting job offer data
+router.post("/job-offer", async (req, res) => {
+  const {
+    title,
+    description,
+    company_id,
+    location,
+    employment_type,
+    salary,
+    requirements,
+    benefits,
+    application_deadline,
+    short_description,
+    experience,
+    user_id,
+  } = req.body;
+
+  try {
+    await db.query(
+      `
+      INSERT INTO job_offers (
+        title,
+        description,
+        company_id,
+        location,
+        employment_type,
+        salary,
+        requirements,
+        benefits,
+        application_deadline,
+        short_description,
+        experience,
+        user_id,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `,
+      [
+        title,
+        description,
+        company_id,
+        location,
+        employment_type,
+        salary,
+        requirements,
+        benefits,
+        application_deadline,
+        short_description,
+        experience,
+        user_id,
+      ]
+    );
+    res
+      .status(200)
+      .json({ message: "Job offer details submitted successfully" });
+  } catch (err) {
+    console.error("Error submitting job offer details:", err);
+    res
+      .status(500)
+      .json({ error: "An error occurred while submitting job offer details" });
+  }
+});
+
 export default router;

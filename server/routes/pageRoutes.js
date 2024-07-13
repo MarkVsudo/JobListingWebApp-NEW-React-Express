@@ -242,7 +242,11 @@ router.get("/recruiter-verification", authenticateToken, async (req, res) => {
 router.get("/verification-request", authenticateToken, async (req, res) => {
   try {
     const [verificationReqJobOffers] = await db.query(
-      "SELECT job_offers.*, companies.name as company_name FROM job_offers INNER JOIN companies ON companies.company_id = job_offers.company_id;"
+      `SELECT job_offers.*, companies.name as company_name
+      FROM job_offers
+      INNER JOIN companies ON companies.company_id = job_offers.company_id
+      WHERE job_offers.verified = 0;
+      `
     );
 
     const [verificationReqCompanies] = await db.query(
@@ -271,6 +275,36 @@ router.get("/verification-request", authenticateToken, async (req, res) => {
     );
     res.status(500).json({
       error: "An error occurred while fetching verification awaiting requests",
+    });
+  }
+});
+
+router.patch("/approve-request", authenticateToken, async (req, res) => {
+  let { type, jobId, companyId } = req.body;
+
+  if (type === "Job Offer") {
+    type = "job_offers";
+  } else if (type === "Company") {
+    type = "companies";
+  } else {
+    return res.status(400).json({ error: "Invalid request type" });
+  }
+
+  try {
+    if (type === "job_offers") {
+      await db.query(`UPDATE job_offers SET verified = 1 WHERE job_id = ?`, [
+        jobId,
+      ]);
+    } else if (type === "companies") {
+      await db.query(`UPDATE companies SET verified = 1 WHERE company_id = ?`, [
+        companyId,
+      ]);
+    }
+    res.status(200).json({ message: "Request approved successfully" });
+  } catch (err) {
+    console.error("An error occurred while approving request", err);
+    res.status(500).json({
+      error: "An error occurred while approving request",
     });
   }
 });

@@ -44,28 +44,17 @@ const PostJobOfferPage = () => {
   });
 
   const [formData, setFormData] = useState({
-    companyName: "",
-    companyWebsite: "",
-    industry: "",
-    businessRegNumber: "",
-    companySize: "",
-    companyAddress: "",
-    CEOfullName: "",
-    workEmail: "",
-    phoneNumber: "",
-    linkedinProfile: "",
-    taxId: "",
-    recruitingLicense: "",
-    additionalInfo: "",
-    logo: "",
-    banner: "",
+    title: "",
     description: "",
-    foundedYear: "",
-    numEmployees: "",
-    companyImages: "",
-    companyPerks: "",
-    googleMapsUrl: "",
-    googleMapsIframe: "",
+    company_id: "",
+    location: "",
+    employment_type: "",
+    salary: "",
+    requirements: "",
+    benefits: "",
+    application_deadline: "",
+    short_description: "",
+    experience: "Not Specified",
   });
 
   const [verificationStatus, setVerificationStatus] = useState("not_submitted");
@@ -111,7 +100,7 @@ const PostJobOfferPage = () => {
     try {
       const formDataWithUserId = { ...formData, user_id: user.user_id };
 
-      await axios.post("/api/recruiter-verification", formDataWithUserId);
+      await axios.post("/api/job-offer", formDataWithUserId);
 
       setVerificationStatus("awaiting");
 
