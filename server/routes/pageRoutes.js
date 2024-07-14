@@ -2,6 +2,7 @@ import express from "express";
 import db from "../config/dbConfig.js";
 import authenticateToken from "../middleware/authMiddleware.js";
 import getUserProfile from "../controllers/userController.js";
+import transporter from "../config/nodemailerConfig.js";
 
 const router = express.Router();
 
@@ -279,8 +280,16 @@ router.get("/verification-request", authenticateToken, async (req, res) => {
   }
 });
 
+// Approve Request
 router.patch("/approve-request", authenticateToken, async (req, res) => {
-  let { type, jobId, companyId } = req.body;
+  let { type, jobId, companyId, userEmail } = req.body;
+
+  const mailOptions = {
+    from: process.env.MAIL_USER,
+    to: userEmail,
+    subject: `JobConqueror | ${type} request approved`,
+    text: `Your request for a ${type} verification has been approved. Check it out on the ${type} page.`,
+  };
 
   if (type === "Job Offer") {
     type = "job_offers";
@@ -300,12 +309,50 @@ router.patch("/approve-request", authenticateToken, async (req, res) => {
         companyId,
       ]);
     }
+    await transporter.sendMail(mailOptions);
+
     res.status(200).json({ message: "Request approved successfully" });
   } catch (err) {
     console.error("An error occurred while approving request", err);
-    res.status(500).json({
-      error: "An error occurred while approving request",
-    });
+    res
+      .status(500)
+      .json({ error: "An error occurred while approving request" });
+  }
+});
+
+// Reject Request
+router.delete("/reject-request", authenticateToken, async (req, res) => {
+  let { type, jobId, companyId, userEmail } = req.body;
+
+  const mailOptions = {
+    from: process.env.MAIL_USER,
+    to: userEmail,
+    subject: `JobConqueror | ${type} request rejected`,
+    text: `Your request for a ${type} verification has been rejected. Please try submitting a new request again.`,
+  };
+
+  if (type === "Job Offer") {
+    type = "job_offers";
+  } else if (type === "Company") {
+    type = "companies";
+  } else {
+    return res.status(400).json({ error: "Invalid request type" });
+  }
+
+  try {
+    if (type === "job_offers") {
+      await db.query(`DELETE FROM job_offers WHERE job_id = ?`, [jobId]);
+    } else if (type === "companies") {
+      await db.query(`DELETE FROM companies WHERE company_id = ?`, [companyId]);
+    }
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: "Request rejected successfully" });
+  } catch (err) {
+    console.error("An error occurred while rejecting request", err);
+    res
+      .status(500)
+      .json({ error: "An error occurred while rejecting request" });
   }
 });
 

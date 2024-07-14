@@ -24,6 +24,7 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
 } from "@chakra-ui/react";
+import { AuthContext } from "../contexts/AuthContext";
 
 const formatDateForEurope = (isoDate) => {
   const date = new Date(isoDate);
@@ -231,8 +232,7 @@ const RequestItem = ({
 
 const VerificationReviewPage = () => {
   const [verificationReq, setVerificationReq] = useState([]);
-
-  console.log(verificationReq);
+  const { user } = useContext(AuthContext);
 
   const fetchVerificationReq = async () => {
     try {
@@ -247,12 +247,19 @@ const VerificationReviewPage = () => {
   };
 
   useEffect(() => {
-    fetchVerificationReq();
-  }, []);
+    if (user) {
+      fetchVerificationReq();
+    }
+  }, [user]);
 
   const handleApprove = async (type, jobId, companyId) => {
     try {
-      await axios.patch("/api/approve-request", { type, jobId, companyId });
+      await axios.patch("/api/approve-request", {
+        type,
+        jobId,
+        companyId,
+        userEmail: user.email,
+      });
       fetchVerificationReq();
     } catch (error) {
       console.error("An error occurred while approving request", error);
@@ -261,7 +268,9 @@ const VerificationReviewPage = () => {
 
   const handleReject = async (type, jobId, companyId) => {
     try {
-      await axios.patch("/api/reject-request", { type, jobId, companyId });
+      await axios.delete("/api/reject-request", {
+        data: { type, jobId, companyId, userEmail: user.email },
+      });
       fetchVerificationReq();
     } catch (error) {
       console.error("An error occurred while rejecting request", error);
@@ -278,18 +287,22 @@ const VerificationReviewPage = () => {
           Upcoming requests
         </Text>
         <VStack spacing={1} align="stretch" w="100%">
-          {verificationReq.map((request, index) => (
-            <RequestItem
-              key={index}
-              from={request.company_name || request.name}
-              type={request.company_name ? "Job Offer" : "Company"}
-              createdAt={request.created_at}
-              jobId={request.job_id}
-              companyId={request.company_id}
-              onApprove={handleApprove}
-              onReject={handleReject}
-            />
-          ))}
+          {verificationReq ? (
+            verificationReq.map((request, index) => (
+              <RequestItem
+                key={index}
+                from={request.company_name || request.name}
+                type={request.company_name ? "Job Offer" : "Company"}
+                createdAt={request.created_at}
+                jobId={request.job_id}
+                companyId={request.company_id}
+                onApprove={handleApprove}
+                onReject={handleReject}
+              />
+            ))
+          ) : (
+            <Text>No requests available.</Text>
+          )}
         </VStack>
       </Flex>
     </>
