@@ -1,5 +1,10 @@
+import { useRef, useEffect } from "react";
 import { Img, Flex, Text } from "@chakra-ui/react";
 import ProcessImg from "../../assets/process_svg.svg";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 let processData = [
   {
@@ -20,8 +25,41 @@ let processData = [
 ];
 
 const Process = () => {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const stepElementSt = container.querySelector(".step-1");
+    const stepElementNd = container.querySelector(".step-2");
+    const stepElementRd = container.querySelector(".step-3");
+
+    gsap.set([stepElementSt, stepElementNd, stepElementRd], {
+      opacity: 0,
+      x: 50,
+    });
+
+    ScrollTrigger.create({
+      trigger: container,
+      start: "top 80%", // Adjust this value as needed
+      onEnter: () => {
+        gsap.to(stepElementRd, { opacity: 1, x: 0, duration: 0.4 });
+        gsap.to(stepElementNd, { opacity: 1, x: 0, duration: 0.4, delay: 0.4 });
+        gsap.to(stepElementSt, { opacity: 1, x: 0, duration: 0.4, delay: 0.8 });
+      },
+      once: true,
+    });
+
+    // Cleanup function
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
+
   return (
     <Flex
+      ref={containerRef}
       bg="var(--blue-gray)"
       borderRadius="12px"
       my="10rem"
@@ -32,6 +70,7 @@ const Process = () => {
         {processData.map((step, index) => (
           <Flex
             key={index}
+            className={`step-${step.count}`}
             direction="column"
             p="1rem"
             h="max-content"

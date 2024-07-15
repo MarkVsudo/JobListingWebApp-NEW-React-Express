@@ -11,6 +11,9 @@ import CategoryImgHR from "../../assets/hr-category-img.svg";
 import EllipseCategories from "../../assets/ellipse-background-categories.svg";
 import HomeButton from "./HomeButton";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const jobCategories = [
   {
@@ -64,20 +67,50 @@ const jobCategories = [
 ];
 
 const JobCategories = () => {
-  const ellipseRef = useRef(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    gsap.to(ellipseRef.current, {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const h2Elements = container.querySelectorAll("h2");
+    const gridElement = container.querySelector(".job-categories-grid");
+    const buttonElement = container.querySelector(".home-button-wrapper");
+
+    gsap.set([...h2Elements, gridElement, buttonElement], {
+      opacity: 0,
+      y: -50,
+    });
+
+    ScrollTrigger.create({
+      trigger: container,
+      start: "top 80%",
+      onEnter: () => {
+        gsap.to(h2Elements[0], { opacity: 1, y: 0, duration: 0.4 });
+        gsap.to(h2Elements[1], { opacity: 1, y: 0, duration: 0.4, delay: 0.4 });
+        gsap.to(gridElement, { opacity: 1, y: 0, duration: 0.7, delay: 0.8 });
+        gsap.to(buttonElement, { opacity: 1, y: 0, duration: 0.4, delay: 1.2 });
+      },
+      once: true,
+    });
+
+    gsap.to(container.querySelector(".background-ellipse"), {
       y: 20,
       duration: 1.5,
       ease: "power1.inOut",
       yoyo: true,
       repeat: -1,
     });
+
+    // Cleanup function
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
   }, []);
 
   return (
     <Flex
+      ref={containerRef}
       direction="column"
       alignItems="center"
       justifyContent="center"
@@ -90,7 +123,13 @@ const JobCategories = () => {
       <Heading as="h2" size="md" fontWeight={200}>
         There are 50+ job categories available
       </Heading>
-      <Grid templateColumns="repeat(4, 1fr)" gap={10} p={5} my="2rem">
+      <Grid
+        className="job-categories-grid"
+        templateColumns="repeat(4, 1fr)"
+        gap={10}
+        p={5}
+        my="2rem"
+      >
         {jobCategories.map((category, index) => (
           <GridItem
             key={index}
@@ -133,9 +172,11 @@ const JobCategories = () => {
           </GridItem>
         ))}
       </Grid>
-      <HomeButton title="Explore all categories" />
+      <div className="home-button-wrapper">
+        <HomeButton title="Explore all categories" />
+      </div>
       <Img
-        ref={ellipseRef}
+        className="background-ellipse"
         src={EllipseCategories}
         alt="Categories section image"
         pos="absolute"
