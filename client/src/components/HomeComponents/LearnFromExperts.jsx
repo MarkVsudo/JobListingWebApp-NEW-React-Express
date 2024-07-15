@@ -1,17 +1,14 @@
-import {
-  Heading,
-  Img,
-  Flex,
-  Grid,
-  GridItem,
-  Text,
-  ring,
-} from "@chakra-ui/react";
+import { useRef, useEffect } from "react";
+import { Heading, Img, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import LearnFromExpertsImg from "../../assets/experts-section-img.png";
 import TutorialSvg from "../../assets/tutorial-svg.svg";
 import { FaArrowRight } from "react-icons/fa6";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 let advices = [
   {
@@ -37,8 +34,47 @@ let advices = [
 ];
 
 const LearnFromExperts = () => {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const headings = container.querySelectorAll("h2");
+    const mainImage = container.querySelector(".main-image");
+    const adviceCards = container.querySelectorAll(".advice-card");
+
+    gsap.set([...headings, mainImage, ...adviceCards], {
+      opacity: 0,
+      y: -50,
+    });
+
+    ScrollTrigger.create({
+      trigger: container,
+      start: "top 80%",
+      onEnter: () => {
+        gsap.to(headings[0], { opacity: 1, y: 0, duration: 0.7 });
+        gsap.to(headings[1], { opacity: 1, y: 0, duration: 0.7, delay: 0.3 });
+        gsap.to(mainImage, { opacity: 1, y: 0, duration: 0.7, delay: 0.6 });
+        gsap.to(adviceCards, {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          stagger: 0.2,
+          delay: 0.9,
+        });
+      },
+      once: true,
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
+
   return (
     <Flex
+      ref={containerRef}
       direction="column"
       justifyContent="center"
       alignItems="center"
@@ -58,6 +94,7 @@ const LearnFromExperts = () => {
       <Grid templateColumns="repeat(4, 1fr)" gap="2rem">
         <GridItem colSpan={4} borderRadius="12px">
           <Img
+            className="main-image"
             src={LearnFromExpertsImg}
             alt="Learn from experts image"
             w="100%"
@@ -66,6 +103,7 @@ const LearnFromExperts = () => {
         {advices.map((advice, index) => (
           <GridItem
             key={index}
+            className="advice-card"
             bg="var(--blue-gray)"
             color="white"
             borderRadius="12px"

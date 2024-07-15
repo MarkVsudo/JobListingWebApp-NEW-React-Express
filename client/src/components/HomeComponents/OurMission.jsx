@@ -1,9 +1,52 @@
+import React, { useRef, useEffect } from "react";
 import { Box, Flex, Heading, Text, Img } from "@chakra-ui/react";
 import OurMissionImg from "../../assets/mission-img.png";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const OurMission = () => {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const heading = container.querySelector("h2");
+    const textContent = container.querySelector(".text-content");
+    const image = container.querySelector(".mission-image");
+
+    gsap.set([heading, textContent, image], {
+      opacity: 0,
+      y: 50,
+    });
+
+    ScrollTrigger.create({
+      trigger: container,
+      start: "top 80%",
+      onEnter: () => {
+        gsap.to(heading, { opacity: 1, y: 0, duration: 0.7 });
+        gsap.to(textContent, { opacity: 1, y: 0, duration: 0.7, delay: 0.3 });
+        gsap.to(image, {
+          opacity: 1,
+          y: -20,
+          x: -20,
+          duration: 0.7,
+          delay: 0.6,
+          ease: "back.out(1.7)",
+        });
+      },
+      once: true,
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
+
   return (
-    <Box mx="20rem">
+    <Box ref={containerRef} mx="20rem">
       <Heading as="h2" textAlign="center" color="var(--dark-blue)" mb="3rem">
         Our mission
       </Heading>
@@ -13,10 +56,10 @@ const OurMission = () => {
         mt={4}
         color="white"
         bg="var(--blue-gray)"
-        borderRadius="12px
-        "
+        borderRadius="12px"
       >
         <Flex
+          className="text-content"
           direction="column"
           gap={2}
           fontWeight="light"
@@ -51,12 +94,12 @@ const OurMission = () => {
           </Text>
         </Flex>
         <Img
+          className="mission-image"
           src={OurMissionImg}
           alt="Mission Image"
           objectFit="cover"
           ml={4}
           borderRadius="12px"
-          transform="translate(-30px, -30px)"
         />
       </Flex>
     </Box>

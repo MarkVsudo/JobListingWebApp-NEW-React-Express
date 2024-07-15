@@ -42,7 +42,7 @@ const Process = () => {
 
     ScrollTrigger.create({
       trigger: container,
-      start: "top 80%", // Adjust this value as needed
+      start: "top 80%",
       onEnter: () => {
         gsap.to(stepElementRd, { opacity: 1, x: 0, duration: 0.4 });
         gsap.to(stepElementNd, { opacity: 1, x: 0, duration: 0.4, delay: 0.4 });
