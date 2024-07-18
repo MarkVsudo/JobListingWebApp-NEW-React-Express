@@ -133,10 +133,9 @@ export const resetUserPasswordEmail = async (req, res) => {
     const templatePath = path.join(
       __dirname,
       "../../client/src/components/EmailTemplates/index.html"
-    ); // Update the path to your HTML file
+    );
     let htmlContent = fs.readFileSync(templatePath, "utf-8");
 
-    // Inject the reset URL into the HTML content
     htmlContent = htmlContent.replace("{{resetURL}}", resetURL);
 
     console.log(htmlContent);
