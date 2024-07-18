@@ -1,3 +1,6 @@
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 import { validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -98,6 +101,10 @@ export const registerUser = async (req, res) => {
   }
 };
 
+// Get the current file path and directory
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Reset User Password Function
 export const resetUserPasswordEmail = async (req, res) => {
   const errors = validationResult(req);
@@ -117,16 +124,28 @@ export const resetUserPasswordEmail = async (req, res) => {
 
     const payload = { email: resetEmail };
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "15s",
+      expiresIn: "15m",
     });
 
     const resetURL = `http://localhost:5173/reset-password?token=${token}`;
 
+    // Read the HTML template
+    const templatePath = path.join(
+      __dirname,
+      "../../client/src/components/EmailTemplates/index.html"
+    ); // Update the path to your HTML file
+    let htmlContent = fs.readFileSync(templatePath, "utf-8");
+
+    // Inject the reset URL into the HTML content
+    htmlContent = htmlContent.replace("{{resetURL}}", resetURL);
+
+    console.log(htmlContent);
+
     const mailOptions = {
       from: process.env.MAIL_USER,
       to: resetEmail,
-      subject: "Password reset link (valid 15 seconds)",
-      html: `Use this <a href="${resetURL}">link</a> to reset your password.`,
+      subject: "JobConqueror | Password reset link (valid 15 minutes)",
+      html: htmlContent,
     };
 
     await transporter.sendMail(mailOptions);
@@ -166,7 +185,9 @@ export const confirmPasswordReset = async (req, res) => {
     res.status(200).json({ msg: "Password reset successfully" });
   } catch (err) {
     console.error("Error confirming password reset:", err);
-    res.status(500).json({ msg: "Server error" });
+    res.status(500).json({
+      msg: "Your token has expired. Please try sending a new request for resetting your password. ",
+    });
   }
 };
 
