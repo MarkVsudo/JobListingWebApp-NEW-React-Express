@@ -60,8 +60,37 @@ const RequestItem = ({
   from,
   type,
   createdAt,
+  description,
+  userId,
   jobId,
+  applicationDeadline,
+  benefits,
+  employementType,
+  experience,
+  location,
+  requirements,
+  salary,
+  shortDescription,
+  title,
   companyId,
+  additionalInfo,
+  banner,
+  logo,
+  businessRegNum,
+  ceoFullname,
+  companyAddress,
+  companyImages,
+  companyPerks,
+  contactEmail,
+  contactPhone,
+  foundedYear,
+  googleMapsUrl,
+  industry,
+  linkedInURL,
+  numEmployees,
+  recruitingLicense,
+  size,
+  taxId,
   onApprove,
   onReject,
 }) => {
@@ -153,6 +182,48 @@ const RequestItem = ({
             <Text>From: {from}</Text>
             <Text>Type: {type}</Text>
             <Text>Time: {formatDateForEurope(createdAt)}</Text>
+            <Text>User ID: {userId}</Text>
+            <Text>
+              {type} Description: {description}
+            </Text>
+            {type === "Job Offer" ? (
+              <>
+                <Text>Job ID: {jobId}</Text>
+                <Text>Application Deadline: {applicationDeadline}</Text>
+                <Text>Benefits: {benefits}</Text>
+                <Text>Employement Type: {employementType}</Text>
+                <Text>Level of experience: {experience}</Text>
+                <Text>Location: {location}</Text>
+                <Text>Job Requirements: {requirements}</Text>
+                <Text>Requirements: {requirements}</Text>
+                <Text>Salary: {salary}</Text>
+                <Text>Short Description: {shortDescription}</Text>
+                <Text>Title: {title}</Text>
+              </>
+            ) : (
+              <>
+                <Text>Company ID: {companyId}</Text>
+                <Text>Additional Information: {additionalInfo}</Text>
+                <Text>Banner Image: {banner}</Text>
+                <Text>Logo Image: {logo}</Text>
+                <Text>Business Registration Number: {businessRegNum}</Text>
+                <Text>CEO Full Name: {ceoFullname}</Text>
+                <Text>Company Address: {companyAddress}</Text>
+                <Text>Company Images: {companyImages}</Text>
+                <Text>Company Perks: {companyPerks}</Text>
+                <Text>Contact E-mail: {contactEmail}</Text>
+                <Text>Contact Phone: {contactPhone}</Text>
+                <Text>Contact Phone: {contactPhone}</Text>
+                <Text>Founded Year: {foundedYear}</Text>
+                <Text>Google Maps URL: {googleMapsUrl}</Text>
+                <Text>Industry of work: {industry}</Text>
+                <Text>LinkedIn URL: {linkedInURL}</Text>
+                <Text>Number of employees: {numEmployees}</Text>
+                <Text>Recruiting License: {recruitingLicense}</Text>
+                <Text>Company size: {size}</Text>
+                <Text>Tax ID: {taxId}</Text>
+              </>
+            )}
             {/* Add more details here as needed */}
           </ModalBody>
           <ModalFooter bg="var(--blue-gray)">
@@ -290,12 +361,45 @@ const VerificationReviewPage = () => {
           {verificationReq ? (
             verificationReq.map((request, index) => (
               <RequestItem
+                // Shared data
                 key={index}
                 from={request.company_name || request.name}
                 type={request.company_name ? "Job Offer" : "Company"}
                 createdAt={request.created_at}
-                jobId={request.job_id}
-                companyId={request.company_id}
+                description={request.description || ""}
+                userId={request.user_id}
+                // Job Offer data
+                jobId={request.job_id || ""}
+                applicationDeadline={request.application_deadline || ""}
+                benefits={request.benefits || ""}
+                employementType={request.employement_type || ""}
+                experience={request.experience || ""}
+                location={request.location || ""}
+                requirements={request.requirements || ""}
+                salary={request.salary || ""}
+                shortDescription={request.short_description || ""}
+                title={request.title || ""}
+                // Company data
+                companyId={request.company_id || ""}
+                additionalInfo={request.additional_info || ""}
+                banner={request.banner || ""}
+                logo={request.logo || ""}
+                businessRegNum={request.business_reg_number || ""}
+                ceoFullname={request.ceo_full_name || ""}
+                companyAddress={request.company_address || ""}
+                companyImages={request.company_images || ""}
+                companyPerks={request.company_perks || ""}
+                contactEmail={request.contact_email || ""}
+                contactPhone={request.contact_phone || ""}
+                foundedYear={request.founded_year || ""}
+                googleMapsUrl={request.google_maps_url || ""}
+                industry={request.industry || ""}
+                linkedInURL={request.linkedin_url || ""}
+                numEmployees={request.num_employees || ""}
+                recruitingLicense={request.recruiting_license || ""}
+                size={request.size || ""}
+                taxId={request.tax_id || ""}
+                // Event listeners
                 onApprove={handleApprove}
                 onReject={handleReject}
               />
