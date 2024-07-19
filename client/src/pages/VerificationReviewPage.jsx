@@ -87,6 +87,7 @@ const RequestItem = ({
   googleMapsUrl,
   industry,
   linkedInURL,
+  website,
   numEmployees,
   recruitingLicense,
   size,
@@ -179,50 +180,121 @@ const RequestItem = ({
           </ModalHeader>
           <ModalCloseButton color="white" />
           <ModalBody>
-            <Text>From: {from}</Text>
-            <Text>Type: {type}</Text>
-            <Text>Time: {formatDateForEurope(createdAt)}</Text>
-            <Text>User ID: {userId}</Text>
             <Text>
-              {type} Description: {description}
+              <strong>From:</strong> {from}
+            </Text>
+            <Text>
+              <strong>Type:</strong> {type}
+            </Text>
+            <Text>
+              <strong>Time:</strong> {formatDateForEurope(createdAt)}
+            </Text>
+            <Text>
+              <strong>User ID:</strong> {userId}
+            </Text>
+            <Text>
+              <strong>Company ID:</strong> {companyId}
+            </Text>
+            <Text>
+              <strong>{type} Description:</strong> {description}
             </Text>
             {type === "Job Offer" ? (
               <>
-                <Text>Job ID: {jobId}</Text>
-                <Text>Application Deadline: {applicationDeadline}</Text>
-                <Text>Benefits: {benefits}</Text>
-                <Text>Employement Type: {employementType}</Text>
-                <Text>Level of experience: {experience}</Text>
-                <Text>Location: {location}</Text>
-                <Text>Job Requirements: {requirements}</Text>
-                <Text>Salary: {salary}</Text>
-                <Text>Short Description: {shortDescription}</Text>
-                <Text>Title: {title}</Text>
+                <Text>
+                  <strong>Job ID:</strong> {jobId}
+                </Text>
+                <Text>
+                  <strong>Application Deadline:</strong> {applicationDeadline}
+                </Text>
+                <Text>
+                  <strong>Benefits:</strong> {benefits}
+                </Text>
+                <Text>
+                  <strong>Employement Type:</strong> {employementType}
+                </Text>
+                <Text>
+                  <strong>Level of experience:</strong> {experience}
+                </Text>
+                <Text>
+                  <strong>Location:</strong> {location}
+                </Text>
+                <Text>
+                  <strong>Job Requirements:</strong> {requirements}
+                </Text>
+                <Text>
+                  <strong>Salary:</strong> {salary}
+                </Text>
+                <Text>
+                  <strong>Short Description:</strong> {shortDescription}
+                </Text>
+                <Text>
+                  <strong>Title:</strong> {title}
+                </Text>
               </>
             ) : (
               <>
-                <Text>Company ID: {companyId}</Text>
-                <Text>Additional Information: {additionalInfo}</Text>
-                <Text>Banner Image: {banner}</Text>
-                <Text>Logo Image: {logo}</Text>
-                <Text>Business Registration Number: {businessRegNum}</Text>
-                <Text>CEO Full Name: {ceoFullname}</Text>
-                <Text>Company Address: {companyAddress}</Text>
-                <Text>Company Images: {companyImages}</Text>
-                <Text>Company Perks: {companyPerks}</Text>
-                <Text>Contact E-mail: {contactEmail}</Text>
-                <Text>Contact Phone: {contactPhone}</Text>
-                <Text>Founded Year: {foundedYear}</Text>
-                <Text>Google Maps URL: {googleMapsUrl}</Text>
-                <Text>Industry of work: {industry}</Text>
-                <Text>LinkedIn URL: {linkedInURL}</Text>
-                <Text>Number of employees: {numEmployees}</Text>
-                <Text>Recruiting License: {recruitingLicense}</Text>
-                <Text>Company size: {size}</Text>
-                <Text>Tax ID: {taxId}</Text>
+                <Text>
+                  <strong>Additional Information:</strong> {additionalInfo}
+                </Text>
+                <Text>
+                  <strong>Banner Image:</strong> {banner}
+                </Text>
+                <Text>
+                  <strong>Logo Image:</strong> {logo}
+                </Text>
+                <Text>
+                  <strong>Business Registration Number:</strong>{" "}
+                  {businessRegNum}
+                </Text>
+                <Text>
+                  <strong>CEO Full Name:</strong> {ceoFullname}
+                </Text>
+                <Text>
+                  <strong>Company Address:</strong> {companyAddress}
+                </Text>
+                <Text>
+                  <strong>Company Images:</strong> {companyImages}
+                </Text>
+                <Text>
+                  <strong>Company Perks:</strong> {companyPerks}
+                </Text>
+                <Text>
+                  <strong>Contact E-mail:</strong> {contactEmail}
+                </Text>
+                <Text>
+                  <strong>Contact Phone:</strong> {contactPhone}
+                </Text>
+                <Text>
+                  <strong>Founded Year:</strong> {foundedYear}
+                </Text>
+                <Text>
+                  <strong>Google Maps URL:</strong> {googleMapsUrl}
+                </Text>
+                <Text>
+                  <strong>Industry of work:</strong> {industry}
+                </Text>
+                <Text>
+                  <strong>LinkedIn URL:</strong> {linkedInURL}
+                </Text>
+                <Text>
+                  <strong>Company Website:</strong> {website}
+                </Text>
+                <Text>
+                  <strong>Number of employees:</strong> {numEmployees}
+                </Text>
+                <Text>
+                  <strong>Recruiting License:</strong> {recruitingLicense}
+                </Text>
+                <Text>
+                  <strong>Company size:</strong> {size}
+                </Text>
+                <Text>
+                  <strong>Tax ID:</strong> {taxId}
+                </Text>
               </>
             )}
           </ModalBody>
+
           <ModalFooter bg="var(--blue-gray)">
             <Button colorScheme="blue" mr={3} onClick={onModalClose}>
               Close
@@ -297,6 +369,7 @@ const RequestItem = ({
 const VerificationReviewPage = () => {
   const [verificationReq, setVerificationReq] = useState([]);
   const { user } = useContext(AuthContext);
+  console.log(verificationReq);
 
   const fetchVerificationReq = async () => {
     try {
@@ -388,6 +461,7 @@ const VerificationReviewPage = () => {
                 googleMapsUrl={request.google_maps_url || ""}
                 industry={request.industry || ""}
                 linkedInURL={request.linkedin_url || ""}
+                website={request.website}
                 numEmployees={request.num_employees || ""}
                 recruitingLicense={request.recruiting_license || ""}
                 size={request.size || ""}
