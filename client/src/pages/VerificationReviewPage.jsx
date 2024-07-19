@@ -195,7 +195,6 @@ const RequestItem = ({
                 <Text>Level of experience: {experience}</Text>
                 <Text>Location: {location}</Text>
                 <Text>Job Requirements: {requirements}</Text>
-                <Text>Requirements: {requirements}</Text>
                 <Text>Salary: {salary}</Text>
                 <Text>Short Description: {shortDescription}</Text>
                 <Text>Title: {title}</Text>
@@ -213,7 +212,6 @@ const RequestItem = ({
                 <Text>Company Perks: {companyPerks}</Text>
                 <Text>Contact E-mail: {contactEmail}</Text>
                 <Text>Contact Phone: {contactPhone}</Text>
-                <Text>Contact Phone: {contactPhone}</Text>
                 <Text>Founded Year: {foundedYear}</Text>
                 <Text>Google Maps URL: {googleMapsUrl}</Text>
                 <Text>Industry of work: {industry}</Text>
@@ -224,7 +222,6 @@ const RequestItem = ({
                 <Text>Tax ID: {taxId}</Text>
               </>
             )}
-            {/* Add more details here as needed */}
           </ModalBody>
           <ModalFooter bg="var(--blue-gray)">
             <Button colorScheme="blue" mr={3} onClick={onModalClose}>
@@ -251,12 +248,10 @@ const RequestItem = ({
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Approve Request
             </AlertDialogHeader>
-
             <AlertDialogBody>
               Are you sure? This action will approve the request sent from the
               user.
             </AlertDialogBody>
-
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onApproveAlertClose}>
                 Cancel
@@ -280,12 +275,10 @@ const RequestItem = ({
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Reject Request
             </AlertDialogHeader>
-
             <AlertDialogBody>
               Are you sure? This action will reject the request sent from the
               user.
             </AlertDialogBody>
-
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onRejectAlertClose}>
                 Cancel
@@ -358,7 +351,7 @@ const VerificationReviewPage = () => {
           Upcoming requests
         </Text>
         <VStack spacing={1} align="stretch" w="100%">
-          {verificationReq ? (
+          {verificationReq.length > 0 ? (
             verificationReq.map((request, index) => (
               <RequestItem
                 // Shared data
