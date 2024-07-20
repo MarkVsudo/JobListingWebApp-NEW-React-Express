@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet";
 import { useState, useEffect, useContext } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import {
   Flex,
@@ -84,6 +85,9 @@ const companySizes = [
 ];
 
 const JobListingsPage = () => {
+  let location = useLocation();
+  let [searchParams, setSearchParams] = useSearchParams();
+
   const [offers, setOffers] = useState([]);
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [selectedLocations, setSelectedLocations] = useState([]);
@@ -112,7 +116,7 @@ const JobListingsPage = () => {
       }
     };
 
-    console.log(offers[0]);
+    // console.log(offers[0]);
 
     fetchOffers();
   }, []);
@@ -266,9 +270,15 @@ const JobListingsPage = () => {
                   <Checkbox
                     key={location}
                     isChecked={selectedLocations.includes(location)}
-                    onChange={() =>
-                      handleChange(location, setSelectedLocations)
-                    }
+                    onChange={() => {
+                      handleChange(location, setSelectedLocations);
+                      setSearchParams((prevParams) => {
+                        console.log(prevParams);
+                        const newParams = new URLSearchParams(prevParams);
+                        newParams.set("location", location);
+                        return newParams;
+                      });
+                    }}
                   >
                     {location}
                   </Checkbox>
@@ -291,7 +301,15 @@ const JobListingsPage = () => {
                   <Checkbox
                     key={jobType}
                     isChecked={selectedJobType.includes(jobType)}
-                    onChange={() => handleChange(jobType, setSelectedJobType)}
+                    onChange={() => {
+                      handleChange(jobType, setSelectedJobType);
+                      setSearchParams((prevParams) => {
+                        console.log(prevParams);
+                        const newParams = new URLSearchParams(prevParams);
+                        newParams.set("jobType", jobType);
+                        return newParams;
+                      });
+                    }}
                   >
                     {jobType}
                   </Checkbox>
@@ -314,7 +332,15 @@ const JobListingsPage = () => {
                   <Checkbox
                     key={industry}
                     isChecked={selectedIndustry.includes(industry)}
-                    onChange={() => handleChange(industry, setSelectedIndustry)}
+                    onChange={() => {
+                      handleChange(industry, setSelectedIndustry);
+                      setSearchParams((prevParams) => {
+                        console.log(prevParams);
+                        const newParams = new URLSearchParams(prevParams);
+                        newParams.set("industry", industry);
+                        return newParams;
+                      });
+                    }}
                   >
                     {industry}
                   </Checkbox>
@@ -337,9 +363,15 @@ const JobListingsPage = () => {
                   <Checkbox
                     key={experienceLevel}
                     isChecked={selectedExperience.includes(experienceLevel)}
-                    onChange={() =>
-                      handleChange(experienceLevel, setSelectedExperience)
-                    }
+                    onChange={() => {
+                      handleChange(experienceLevel, setSelectedExperience);
+                      setSearchParams((prevParams) => {
+                        console.log(prevParams);
+                        const newParams = new URLSearchParams(prevParams);
+                        newParams.set("experienceLevel", experienceLevel);
+                        return newParams;
+                      });
+                    }}
                   >
                     {experienceLevel}
                   </Checkbox>
@@ -362,7 +394,15 @@ const JobListingsPage = () => {
                   <Checkbox
                     key={salary}
                     isChecked={selectedSalary.includes(salary)}
-                    onChange={() => handleChange(salary, setSelectedSalary)}
+                    onChange={() => {
+                      handleChange(salary, setSelectedSalary);
+                      setSearchParams((prevParams) => {
+                        console.log(prevParams);
+                        const newParams = new URLSearchParams(prevParams);
+                        newParams.set("salary", salary);
+                        return newParams;
+                      });
+                    }}
                   >
                     {salary}
                   </Checkbox>
@@ -385,9 +425,14 @@ const JobListingsPage = () => {
                   <Checkbox
                     key={companySize}
                     isChecked={selectedCompanySize.includes(companySize)}
-                    onChange={() =>
-                      handleChange(companySize, setSelectedCompanySize)
-                    }
+                    onChange={() => {
+                      handleChange(companySize, setSelectedCompanySize);
+                      setSearchParams((prevParams) => {
+                        const newParams = new URLSearchParams(prevParams);
+                        newParams.set("companySize", companySize);
+                        return newParams;
+                      });
+                    }}
                   >
                     {companySize}
                   </Checkbox>
