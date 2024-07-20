@@ -50,9 +50,57 @@ const recentSearches = [
   "Marketing Coordinator",
 ];
 
+const locations = ["Sofia", "Stara Zagora", "Varna"];
+const jobTypes = [
+  "Full-time",
+  "Part-time",
+  "Temporary",
+  "Internship",
+  "Freelance",
+];
+const industries = ["IT (Information technology)", "Finance", "Healthcare"];
+const experienceLevels = [
+  "Junior level",
+  "Mid level",
+  "Senior level",
+  "0-2 years",
+  "3-5 years",
+  "5+ years",
+  "Internship",
+  "Not Specified",
+];
+const salaries = [
+  "Specified salary",
+  "$500 - $1000",
+  "$1001 - $2000",
+  "$2001 - $4000",
+  "$4001 - $7000",
+  "+$7000",
+];
+const companySizes = [
+  "Small (1-50 employees)",
+  "Medium (51 - 200 employees)",
+  "Large (+200 employees)",
+];
+
 const JobListingsPage = () => {
   const [offers, setOffers] = useState([]);
   const [selectedOffer, setSelectedOffer] = useState(null);
+  const [selectedLocations, setSelectedLocations] = useState([]);
+  const [selectedJobType, setSelectedJobType] = useState([]);
+  const [selectedIndustry, setSelectedIndustry] = useState([]);
+  const [selectedExperience, setSelectedExperience] = useState([]);
+  const [selectedSalary, setSelectedSalary] = useState([]);
+  const [selectedCompanySize, setSelectedCompanySize] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleChange = (filter, setFilter) => {
+    setFilter((prevSelected) =>
+      prevSelected.includes(filter)
+        ? prevSelected.filter((item) => item !== filter)
+        : [...prevSelected, filter]
+    );
+  };
 
   useEffect(() => {
     const fetchOffers = async () => {
@@ -63,6 +111,8 @@ const JobListingsPage = () => {
         console.error("Error fetching job listings:", error);
       }
     };
+
+    console.log(offers[0]);
 
     fetchOffers();
   }, []);
@@ -191,6 +241,7 @@ const JobListingsPage = () => {
             type="text"
             placeholder="Search jobs..."
             list="datalistOptions"
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           <datalist id="datalistOptions">
             {recentSearches.map((search, index) => (
@@ -211,9 +262,17 @@ const JobListingsPage = () => {
             </MenuButton>
             <MenuList>
               <VStack align="flex-start" px="1rem">
-                <Checkbox>Sofia</Checkbox>
-                <Checkbox>Stara Zagora</Checkbox>
-                <Checkbox>Varna</Checkbox>
+                {locations.map((location) => (
+                  <Checkbox
+                    key={location}
+                    isChecked={selectedLocations.includes(location)}
+                    onChange={() =>
+                      handleChange(location, setSelectedLocations)
+                    }
+                  >
+                    {location}
+                  </Checkbox>
+                ))}
               </VStack>
             </MenuList>
           </Menu>
@@ -228,9 +287,15 @@ const JobListingsPage = () => {
             </MenuButton>
             <MenuList>
               <VStack align="flex-start" px="1rem">
-                <Checkbox>Full Time</Checkbox>
-                <Checkbox>Part Time</Checkbox>
-                <Checkbox>Contract</Checkbox>
+                {jobTypes.map((jobType) => (
+                  <Checkbox
+                    key={jobType}
+                    isChecked={selectedJobType.includes(jobType)}
+                    onChange={() => handleChange(jobType, setSelectedJobType)}
+                  >
+                    {jobType}
+                  </Checkbox>
+                ))}
               </VStack>
             </MenuList>
           </Menu>
@@ -245,9 +310,15 @@ const JobListingsPage = () => {
             </MenuButton>
             <MenuList>
               <VStack align="flex-start" px="1rem">
-                <Checkbox>Tech</Checkbox>
-                <Checkbox>Finance</Checkbox>
-                <Checkbox>Healthcare</Checkbox>
+                {industries.map((industry) => (
+                  <Checkbox
+                    key={industry}
+                    isChecked={selectedIndustry.includes(industry)}
+                    onChange={() => handleChange(industry, setSelectedIndustry)}
+                  >
+                    {industry}
+                  </Checkbox>
+                ))}
               </VStack>
             </MenuList>
           </Menu>
@@ -262,9 +333,17 @@ const JobListingsPage = () => {
             </MenuButton>
             <MenuList>
               <VStack align="flex-start" px="1rem">
-                <Checkbox>Junior</Checkbox>
-                <Checkbox>Mid</Checkbox>
-                <Checkbox>Senior</Checkbox>
+                {experienceLevels.map((experienceLevel) => (
+                  <Checkbox
+                    key={experienceLevel}
+                    isChecked={selectedExperience.includes(experienceLevel)}
+                    onChange={() =>
+                      handleChange(experienceLevel, setSelectedExperience)
+                    }
+                  >
+                    {experienceLevel}
+                  </Checkbox>
+                ))}
               </VStack>
             </MenuList>
           </Menu>
@@ -279,12 +358,15 @@ const JobListingsPage = () => {
             </MenuButton>
             <MenuList>
               <VStack align="flex-start" px="1rem">
-                <Checkbox>Specified salary</Checkbox>
-                <Checkbox>$500 - $1000</Checkbox>
-                <Checkbox>$1000 - $2000</Checkbox>
-                <Checkbox>$2000 - $4000</Checkbox>
-                <Checkbox>$4000 - $7000</Checkbox>
-                <Checkbox>+$7000</Checkbox>
+                {salaries.map((salary) => (
+                  <Checkbox
+                    key={salary}
+                    isChecked={selectedSalary.includes(salary)}
+                    onChange={() => handleChange(salary, setSelectedSalary)}
+                  >
+                    {salary}
+                  </Checkbox>
+                ))}
               </VStack>
             </MenuList>
           </Menu>
@@ -299,9 +381,17 @@ const JobListingsPage = () => {
             </MenuButton>
             <MenuList>
               <VStack align="flex-start" px="1rem">
-                <Checkbox>Small (1-50 employees)</Checkbox>
-                <Checkbox>Medium (51 - 200 employees)</Checkbox>
-                <Checkbox>Large (200+ employees)</Checkbox>
+                {companySizes.map((companySize) => (
+                  <Checkbox
+                    key={companySize}
+                    isChecked={selectedCompanySize.includes(companySize)}
+                    onChange={() =>
+                      handleChange(companySize, setSelectedCompanySize)
+                    }
+                  >
+                    {companySize}
+                  </Checkbox>
+                ))}
               </VStack>
             </MenuList>
           </Menu>
