@@ -98,28 +98,67 @@ const JobListingsPage = () => {
   const [selectedCompanySize, setSelectedCompanySize] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const handleChange = (filter, setFilter) => {
+  const handleChange = (filter, setFilter, paramKey) => {
     setFilter((prevSelected) =>
       prevSelected.includes(filter)
         ? prevSelected.filter((item) => item !== filter)
         : [...prevSelected, filter]
     );
+
+    setSearchParams((prevParams) => {
+      const newParams = new URLSearchParams(prevParams);
+      const selectedFilters = newParams.get(paramKey)?.split(",") || [];
+
+      if (selectedFilters.includes(filter)) {
+        newParams.set(
+          paramKey,
+          selectedFilters.filter((item) => item !== filter).join(",")
+        );
+      } else {
+        selectedFilters.push(filter);
+        newParams.set(paramKey, selectedFilters.join(","));
+      }
+
+      return newParams;
+    });
   };
 
   useEffect(() => {
     const fetchOffers = async () => {
       try {
-        const response = await axios.get("/api/job-listings");
+        const params = new URLSearchParams();
+        if (selectedLocations.length)
+          params.append("location", selectedLocations.join(","));
+        if (selectedJobType.length)
+          params.append("jobType", selectedJobType.join(","));
+        if (selectedIndustry.length)
+          params.append("industry", selectedIndustry.join(","));
+        if (selectedExperience.length)
+          params.append("experience", selectedExperience.join(","));
+        if (selectedSalary.length)
+          params.append("salary", selectedSalary.join(","));
+        if (selectedCompanySize.length)
+          params.append("companySize", selectedCompanySize.join(","));
+
+        const response = await axios.get(
+          `/api/job-listings?${params.toString()}`
+        );
         setOffers(response.data);
       } catch (error) {
         console.error("Error fetching job listings:", error);
       }
     };
 
-    // console.log(offers[0]);
-
     fetchOffers();
-  }, []);
+  }, [
+    searchParams,
+    selectedLocations,
+    selectedJobType,
+    selectedIndustry,
+    selectedExperience,
+    selectedSalary,
+    selectedCompanySize,
+  ]);
 
   const currentOffer = selectedOffer || offers[0];
 
@@ -270,15 +309,9 @@ const JobListingsPage = () => {
                   <Checkbox
                     key={location}
                     isChecked={selectedLocations.includes(location)}
-                    onChange={() => {
-                      handleChange(location, setSelectedLocations);
-                      setSearchParams((prevParams) => {
-                        console.log(prevParams);
-                        const newParams = new URLSearchParams(prevParams);
-                        newParams.set("location", location);
-                        return newParams;
-                      });
-                    }}
+                    onChange={() =>
+                      handleChange(location, setSelectedLocations, "location")
+                    }
                   >
                     {location}
                   </Checkbox>
@@ -301,15 +334,9 @@ const JobListingsPage = () => {
                   <Checkbox
                     key={jobType}
                     isChecked={selectedJobType.includes(jobType)}
-                    onChange={() => {
-                      handleChange(jobType, setSelectedJobType);
-                      setSearchParams((prevParams) => {
-                        console.log(prevParams);
-                        const newParams = new URLSearchParams(prevParams);
-                        newParams.set("jobType", jobType);
-                        return newParams;
-                      });
-                    }}
+                    onChange={() =>
+                      handleChange(jobType, setSelectedJobType, "jobType")
+                    }
                   >
                     {jobType}
                   </Checkbox>
@@ -332,15 +359,9 @@ const JobListingsPage = () => {
                   <Checkbox
                     key={industry}
                     isChecked={selectedIndustry.includes(industry)}
-                    onChange={() => {
-                      handleChange(industry, setSelectedIndustry);
-                      setSearchParams((prevParams) => {
-                        console.log(prevParams);
-                        const newParams = new URLSearchParams(prevParams);
-                        newParams.set("industry", industry);
-                        return newParams;
-                      });
-                    }}
+                    onChange={() =>
+                      handleChange(industry, setSelectedIndustry, "industry")
+                    }
                   >
                     {industry}
                   </Checkbox>
@@ -363,15 +384,13 @@ const JobListingsPage = () => {
                   <Checkbox
                     key={experienceLevel}
                     isChecked={selectedExperience.includes(experienceLevel)}
-                    onChange={() => {
-                      handleChange(experienceLevel, setSelectedExperience);
-                      setSearchParams((prevParams) => {
-                        console.log(prevParams);
-                        const newParams = new URLSearchParams(prevParams);
-                        newParams.set("experienceLevel", experienceLevel);
-                        return newParams;
-                      });
-                    }}
+                    onChange={() =>
+                      handleChange(
+                        experienceLevel,
+                        setSelectedExperience,
+                        "experience"
+                      )
+                    }
                   >
                     {experienceLevel}
                   </Checkbox>
@@ -394,15 +413,9 @@ const JobListingsPage = () => {
                   <Checkbox
                     key={salary}
                     isChecked={selectedSalary.includes(salary)}
-                    onChange={() => {
-                      handleChange(salary, setSelectedSalary);
-                      setSearchParams((prevParams) => {
-                        console.log(prevParams);
-                        const newParams = new URLSearchParams(prevParams);
-                        newParams.set("salary", salary);
-                        return newParams;
-                      });
-                    }}
+                    onChange={() =>
+                      handleChange(salary, setSelectedSalary, "salary")
+                    }
                   >
                     {salary}
                   </Checkbox>
@@ -425,14 +438,13 @@ const JobListingsPage = () => {
                   <Checkbox
                     key={companySize}
                     isChecked={selectedCompanySize.includes(companySize)}
-                    onChange={() => {
-                      handleChange(companySize, setSelectedCompanySize);
-                      setSearchParams((prevParams) => {
-                        const newParams = new URLSearchParams(prevParams);
-                        newParams.set("companySize", companySize);
-                        return newParams;
-                      });
-                    }}
+                    onChange={() =>
+                      handleChange(
+                        companySize,
+                        setSelectedCompanySize,
+                        "companySize"
+                      )
+                    }
                   >
                     {companySize}
                   </Checkbox>

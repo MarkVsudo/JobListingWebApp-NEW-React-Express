@@ -87,11 +87,17 @@ router.get("/blog/:blogId", async (req, res) => {
 
 router.get("/job-listings", async (req, res) => {
   try {
-    const [rows] = await db.query(`
-      SELECT job_offers.*, companies.logo AS company_logo
-      FROM job_offers
-      INNER JOIN companies ON job_offers.company_id = companies.company_id
+    const { location, jobType, industry, experience, salary, companySize } =
+      req.query;
+    console.log("Query Parameters:", req.query);
+
+    let [rows] = await db.query(`
+    SELECT job_offers.*, companies.logo AS company_logo
+    FROM job_offers
+    INNER JOIN companies ON job_offers.company_id = companies.company_id
+    WHERE job_offers.verified = 1;    
     `);
+
     res.json(rows);
   } catch (err) {
     console.error("Error fetching job listings:", err);
