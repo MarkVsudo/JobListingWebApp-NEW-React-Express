@@ -91,12 +91,38 @@ router.get("/job-listings", async (req, res) => {
       req.query;
     console.log("Query Parameters:", req.query);
 
-    let [rows] = await db.query(`
-    SELECT job_offers.*, companies.logo AS company_logo
-    FROM job_offers
-    INNER JOIN companies ON job_offers.company_id = companies.company_id
-    WHERE job_offers.verified = 1;    
-    `);
+    const locationQuery = location ? `AND job_offers.location IN (?)` : "";
+    const jobTypeQuery = jobType ? `AND job_offers.employment_type IN (?)` : "";
+    const industryQuery = industry ? `AND companies.industry IN (?)` : "";
+    const experienceQuery = experience
+      ? `AND job_offers.experience IN (?)`
+      : "";
+    const salaryQuery = salary ? `AND job_offers.salary IN (?)` : "";
+    const companySizeQuery = companySize ? `AND companies.size IN (?)` : "";
+
+    let filterQuery = "";
+    if (location) filterQuery += locationQuery;
+    if (jobType) filterQuery += jobTypeQuery;
+    if (industry) filterQuery += industryQuery;
+    if (experience) filterQuery += experienceQuery;
+    if (salary) filterQuery += salaryQuery;
+    if (companySize) filterQuery += companySizeQuery;
+
+    const query = `
+      SELECT job_offers.*, companies.logo AS company_logo, companies.size AS company_size, companies.industry AS company_industry
+      FROM job_offers
+      INNER JOIN companies ON job_offers.company_id = companies.company_id
+      WHERE job_offers.verified = 1 ${filterQuery};`;
+
+    const queryParams = [];
+    if (location) queryParams.push(location.split(","));
+    if (jobType) queryParams.push(jobType.split(","));
+    if (industry) queryParams.push(industry.split(","));
+    if (experience) queryParams.push(experience.split(","));
+    if (salary) queryParams.push(salary.split(","));
+    if (companySize) queryParams.push(companySize.split(","));
+
+    let [rows] = await db.query(query, queryParams);
 
     res.json(rows);
   } catch (err) {

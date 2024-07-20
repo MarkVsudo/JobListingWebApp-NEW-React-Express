@@ -59,7 +59,7 @@ const jobTypes = [
   "Internship",
   "Freelance",
 ];
-const industries = ["IT (Information technology)", "Finance", "Healthcare"];
+const industries = ["IT (Information Technology)", "Finance", "Healthcare"];
 const experienceLevels = [
   "Junior level",
   "Mid level",
@@ -85,11 +85,10 @@ const companySizes = [
 ];
 
 const JobListingsPage = () => {
-  let location = useLocation();
-  let [searchParams, setSearchParams] = useSearchParams();
-
   const [offers, setOffers] = useState([]);
   const [selectedOffer, setSelectedOffer] = useState(null);
+
+  let [searchParams, setSearchParams] = useSearchParams();
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [selectedJobType, setSelectedJobType] = useState([]);
   const [selectedIndustry, setSelectedIndustry] = useState([]);
@@ -148,6 +147,7 @@ const JobListingsPage = () => {
         console.error("Error fetching job listings:", error);
       }
     };
+    console.log(offers[0]);
 
     fetchOffers();
   }, [
