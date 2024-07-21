@@ -101,3 +101,19 @@ input[type="text"]::-webkit-calendar-picker-indicator {
 .left-border-animation>.chakra-text:hover::before {
   transform: scaleY(1);
 }
+
+/* Scroll bar job offers */
+
+/* styles.css */
+.job-listing {
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.job-listing::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, and Opera */
+}

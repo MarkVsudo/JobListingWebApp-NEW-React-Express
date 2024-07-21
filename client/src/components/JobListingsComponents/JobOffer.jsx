@@ -75,19 +75,19 @@ const JobOffer = ({
       </Flex>
       <Divider my="1rem" />
       <Flex justify="space-between">
-        <Text display="flex" alignItems="center" gap="0.5rem">
+        <Text display="flex" alignItems="center" gap="0.125rem">
           <FaRegBuilding fontSize="1rem" />
           {offer.employment_type}
         </Text>
-        <Text display="flex" alignItems="center" gap="0.5rem">
+        <Text display="flex" alignItems="center" gap="0.125rem">
           <LuBrain fontSize="1rem" />
           {offer.experience}
         </Text>
-        <Text display="flex" alignItems="center" gap="0.5rem">
+        <Text display="flex" alignItems="center" gap="0.125rem">
           <MdOutlinePersonOutline fontSize="1.25rem" />
           {offer.applicants} Applicants
         </Text>
-        <Text display="flex" alignItems="center" gap="0.5rem">
+        <Text display="flex" alignItems="center" gap="0.125rem">
           <TbPigMoney fontSize="1.125rem" />
           {offer.salary}
         </Text>

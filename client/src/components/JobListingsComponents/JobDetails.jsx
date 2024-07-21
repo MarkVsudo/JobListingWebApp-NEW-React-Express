@@ -10,7 +10,7 @@ const JobDetails = ({ currentOffer }) => {
 
   return (
     <Flex
-      w="70%"
+      w="100%"
       direction="column"
       align="flex-start"
       borderRadius="1rem"

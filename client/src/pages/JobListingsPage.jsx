@@ -213,15 +213,25 @@ const JobListingsPage = () => {
         overflow="hidden"
         w="100%"
         h="max-content"
-        p="3rem 5rem"
+        p={{ base: "2rem 1rem", md: "3rem 5rem" }}
         bg="var(--blue-gray)"
         color="white"
+        direction={{ base: "column", md: "row" }}
+        align={{ base: "center", md: "flex-start" }}
       >
-        <Flex direction="column" gap=".5rem" alignContent="center">
+        <Flex
+          direction="column"
+          gap=".5rem"
+          align={{ base: "center", md: "flex-start" }}
+        >
           <Text as="h1" fontSize="1.5rem" fontWeight={600}>
             Find your dream job
           </Text>
-          <Text as="span" fontWeight={300}>
+          <Text
+            as="span"
+            fontWeight={300}
+            textAlign={{ base: "center", md: "left" }}
+          >
             Looking for jobs? Browse our latest job openings
           </Text>
         </Flex>
@@ -229,42 +239,42 @@ const JobListingsPage = () => {
           {...rectangleHeaderStyles}
           bg="var(--dark-blue)"
           top="1rem"
-          right="5rem"
+          right={{ base: "1rem", md: "5rem" }}
           transform="rotate(70deg)"
         />
         <Box
           {...rectangleHeaderStyles}
           bg="var(--light-blue)"
           top="-7rem"
-          right="-8rem"
+          right={{ base: "-3rem", md: "-8rem" }}
           transform="rotate(80deg)"
         />
         <Box
           {...rectangleHeaderStyles}
           bg="var(--cyan)"
           top="-12rem"
-          right="7rem"
+          right={{ base: "3rem", md: "7rem" }}
           transform="rotate(30deg)"
         />
         <Box
           {...rectangleHeaderStyles}
           bg="var(--dark-blue)"
           top="-3rem"
-          right="17rem"
+          right={{ base: "10rem", md: "17rem" }}
           transform="rotate(-40deg)"
         />
         <Box
           {...rectangleHeaderStyles}
           bg="var(--light-blue)"
           top="5rem"
-          right="28rem"
+          right={{ base: "15rem", md: "28rem" }}
           transform="rotate(30deg)"
         />
         <Box
           {...rectangleHeaderStyles}
           bg="var(--cyan)"
           top="-10rem"
-          right="33rem"
+          right={{ base: "20rem", md: "33rem" }}
           transform="rotate(70deg)"
         />
       </Flex>
@@ -272,11 +282,12 @@ const JobListingsPage = () => {
       <Flex
         bg="white"
         w="100%"
-        padding="1rem 5rem"
+        padding={{ base: "1rem", md: "1rem 5rem" }}
         alignItems="center"
         justifyContent="center"
+        direction={{ base: "column", md: "row" }}
       >
-        <InputGroup gap="1rem" w="md">
+        <InputGroup gap="1rem" w={{ base: "100%", md: "md" }}>
           <InputLeftElement pointerEvents="none">
             <SearchIcon color="gray.300" />
           </InputLeftElement>
@@ -293,7 +304,12 @@ const JobListingsPage = () => {
           </datalist>
           <HomeButton title="Search" />
         </InputGroup>
-        <Flex mx="0.5rem">
+        <Flex
+          mx="0.5rem"
+          direction={{ base: "column", md: "row" }}
+          gap="1rem"
+          mt={{ base: "1rem", md: "0" }}
+        >
           <Menu>
             <MenuButton
               as={Button}
@@ -453,12 +469,25 @@ const JobListingsPage = () => {
             </MenuList>
           </Menu>
         </Flex>
-        <HomeButton title="Apply filters" />
+        <HomeButton title="Apply filters" mt={{ base: "1rem", md: "0" }} />
       </Flex>
       {/* Job Listings */}
-      <Flex w="100%" p="2rem 5rem" gap="1rem" bg="var(--light-blue)">
+      <Flex
+        w="100%"
+        p={{ base: "1rem", md: "2rem 5rem" }}
+        gap="1rem"
+        bg="var(--light-blue)"
+        direction={{ base: "column", lg: "row" }}
+      >
         {/* Aside */}
-        <Flex direction="column" w="30%" gap="1rem">
+        <Flex
+          direction="column"
+          w={{ base: "100%", lg: "30%" }}
+          gap="1rem"
+          position={{ base: "static", lg: "sticky" }}
+          h="50%"
+          top="2rem"
+        >
           <Flex justify="space-between" align="center">
             <VStack align="flex-start">
               <Text fontWeight={600}>Related to "Web Developer"</Text>
@@ -494,21 +523,34 @@ const JobListingsPage = () => {
             </Menu>
           </Flex>
           {/* Job Offers */}
-          {offers.map((offer) => (
-            <JobOffer
-              key={offer.job_id}
-              offer={offer}
-              currentOffer={currentOffer}
-              setSelectedOffer={setSelectedOffer}
-              saveJobOffer={saveJobOffer}
-              savedJobs={savedJobs}
-              deleteSavedJobOffer={deleteSavedJobOffer}
-            />
-          ))}
+
+          <Flex
+            direction="column"
+            maxH="100vh"
+            gap="1rem"
+            mt="1rem"
+            className="job-listing"
+          >
+            {offers.map((offer) => (
+              <JobOffer
+                key={offer.job_id}
+                offer={offer}
+                currentOffer={currentOffer}
+                setSelectedOffer={setSelectedOffer}
+                saveJobOffer={saveJobOffer}
+                savedJobs={savedJobs}
+                deleteSavedJobOffer={deleteSavedJobOffer}
+              />
+            ))}
+          </Flex>
         </Flex>
         {/* Main */}
         {/* Job Description */}
-        {currentOffer && <JobDetails currentOffer={currentOffer} />}
+        {currentOffer && (
+          <Box w={{ base: "100%", lg: "70%" }}>
+            <JobDetails currentOffer={currentOffer} />
+          </Box>
+        )}
       </Flex>
     </>
   );
