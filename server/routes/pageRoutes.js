@@ -1,7 +1,11 @@
 import express from "express";
 import db from "../config/dbConfig.js";
 import authenticateToken from "../middleware/authMiddleware.js";
-import getUserProfile from "../controllers/userController.js";
+import {
+  getUserProfile,
+  getUserAvatar,
+} from "../controllers/userController.js";
+
 import transporter from "../config/nodemailerConfig.js";
 
 const router = express.Router();
@@ -48,6 +52,8 @@ router.get("/company/:companyName", async (req, res) => {
 });
 
 router.get("/profile", authenticateToken, getUserProfile);
+
+router.get("/user-avatar", authenticateToken, getUserAvatar);
 
 router.get("/blogs", async (req, res) => {
   try {

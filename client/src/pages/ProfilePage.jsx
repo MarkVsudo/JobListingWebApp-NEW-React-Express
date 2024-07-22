@@ -22,15 +22,21 @@ import axios from "axios";
 const ProfilePage = () => {
   const { user } = useContext(AuthContext);
 
-  const [profileImage, setProfileImage] = useState("");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
+  const [avatar, setAvatar] = useState("");
 
   useEffect(() => {
+    const fetchUserAvatar = async () => {
+      const response = await axios.get(`/api/user-avatar`);
+      setAvatar(response.data[0].avatar);
+    };
+
     if (user) {
       setFullName(user.fullName);
       setEmail(user.email);
+      fetchUserAvatar();
     }
   }, [user]);
 
@@ -164,7 +170,14 @@ const ProfilePage = () => {
             Profile picture
           </Text>
           <Box position="relative" mb="1rem">
-            <Avatar size="xl" src={profileImage} />
+            <Avatar
+              size="xl"
+              src={
+                avatar
+                  ? avatar
+                  : "https://cdn-icons-png.flaticon.com/512/9131/9131590.png"
+              }
+            />
             <Input
               type="file"
               accept="image/*"

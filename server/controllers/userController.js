@@ -17,4 +17,17 @@ const getUserProfile = async (req, res) => {
   }
 };
 
-export default getUserProfile;
+const getUserAvatar = async (req, res) => {
+  try {
+    const avatar = await db.query("SELECT avatar from users WHERE user_id=?", [
+      req.user.id,
+    ]);
+
+    return res.status(200).json(avatar[0]);
+  } catch (error) {
+    console.error("An error occured while fetching user avatar", error);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
+export { getUserProfile, getUserAvatar };

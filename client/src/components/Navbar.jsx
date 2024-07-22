@@ -28,18 +28,32 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import { RxDashboard } from "react-icons/rx";
 import { TbLogout2 } from "react-icons/tb";
 import NavLogo from "../assets/website_logo.svg";
 import { AuthContext } from "../contexts/AuthContext";
+import axios from "axios";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
 
   const { user, logout } = useContext(AuthContext);
+
+  const [avatar, setAvatar] = useState("");
+
+  useEffect(() => {
+    const fetchUserAvatar = async () => {
+      const response = await axios.get(`/api/user-avatar`);
+      setAvatar(response.data[0].avatar);
+    };
+
+    if (user) {
+      fetchUserAvatar();
+    }
+  }, [user]);
 
   return (
     <Box>
@@ -113,9 +127,9 @@ export default function WithSubnavigation() {
                   <Avatar
                     size={"sm"}
                     src={
-                      user && user.avatarUrl
-                        ? user.avatarUrl
-                        : "https://static-00.iconduck.com/assets.00/user-avatar-happy-icon-2048x2048-ssmbv1ou.png"
+                      avatar
+                        ? avatar
+                        : "https://cdn-icons-png.flaticon.com/512/9131/9131590.png"
                     }
                   />
                 </MenuButton>
@@ -125,9 +139,9 @@ export default function WithSubnavigation() {
                     <Avatar
                       size={"2xl"}
                       src={
-                        user && user.avatarUrl
-                          ? user.avatarUrl
-                          : "https://static-00.iconduck.com/assets.00/user-avatar-happy-icon-2048x2048-ssmbv1ou.png"
+                        avatar
+                          ? avatar
+                          : "https://cdn-icons-png.flaticon.com/512/9131/9131590.png"
                       }
                     />
                   </Center>
