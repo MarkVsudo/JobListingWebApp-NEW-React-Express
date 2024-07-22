@@ -1,3 +1,13 @@
+```html
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img
+      src="https://skillicons.dev/icons?i=nodejs,express,mysql,aws,git,github,react,js,css,figma,vite"
+    />
+  </a>
+</p>
+```
+
 **For running the project, execute these two commands:**
 
 1. **🏗 Download all dependencies**
