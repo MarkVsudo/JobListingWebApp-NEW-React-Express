@@ -1,4 +1,3 @@
-```html
 <p align="center">
   <a href="https://skillicons.dev">
     <img
@@ -6,7 +5,6 @@
     />
   </a>
 </p>
-```
 
 **For running the project, execute these two commands:**
 
