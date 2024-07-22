@@ -39,6 +39,76 @@ AWS_REGION=
 AWS_S3_BUCKET_NAME=
 ```
 
+**📦 AWS S3 Setup**
+
+Bucket policy:
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::your-bucket-name/*"
+        }
+    ]
+}
+```
+
+Cross-origin resource sharding (CORS):
+
+```
+[
+    {
+        "AllowedHeaders": [
+            "*"
+        ],
+        "AllowedMethods": [
+            "GET",
+            "POST",
+            "PUT",
+            "DELETE",
+            "HEAD"
+        ],
+        "AllowedOrigins": [
+            "*"
+        ],
+        "ExposeHeaders": [
+            "ETag"
+        ],
+        "MaxAgeSeconds": 3000
+    }
+]
+```
+
+For best practices create an Identity and Access Management (IAM) user. Click on `Add permissions --> Create inline policy --> JSON --> ctrl + v JSON content `
+
+```
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "VisualEditor0",
+			"Effect": "Allow",
+			"Action": [
+				"s3:PutObject",
+				"s3:GetObject",
+				"s3:ListBucket"
+			],
+			"Resource": [
+				"arn:aws:s3:::your-bucket-name",
+				"arn:aws:s3:::your-bucket-name/*"
+			]
+		}
+	]
+}
+```
+
+`AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are also extracted from this IAM user in section `Users --> Security credentials --> Access keys --> Create access key`
+
 ---
 
 🎨 **[Mock Figma Design](https://www.figma.com/design/qddYw8hDrG7ztUBGP9T6zf/Job-Board?node-id=0-1&t=9Ll8kh17qngVnt9c-1)**
