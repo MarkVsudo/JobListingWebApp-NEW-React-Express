@@ -4,6 +4,11 @@
       src="https://skillicons.dev/icons?i=nodejs,express,mysql,aws,git,github,react,js,css,figma,vite"
     />
   </a>
+	  <a href="https://v2.chakra-ui.com/">
+    <img
+      src='https://www.coffeeclass.io/logos/chakra-ui.png' width='47px'
+    />
+  </a>
 </p>
 
 **For running the project, execute these two commands:**
