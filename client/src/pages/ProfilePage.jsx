@@ -26,11 +26,12 @@ const ProfilePage = () => {
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
   const [avatar, setAvatar] = useState("");
+  const [avatarFile, setAvatarFile] = useState(null);
 
   useEffect(() => {
     const fetchUserAvatar = async () => {
       const response = await axios.get(`/api/user-avatar`);
-      setAvatar(response.data[0].avatar);
+      setAvatar(response.data.avatar);
     };
 
     if (user) {
@@ -42,12 +43,27 @@ const ProfilePage = () => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    setAvatarFile(file);
     const reader = new FileReader();
     reader.onloadend = () => {
-      setProfileImage(reader.result);
+      setAvatar(reader.result);
     };
     if (file) {
       reader.readAsDataURL(file);
+    }
+  };
+
+  const updateUserAvatar = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("avatar", avatarFile);
+      await axios.post("/api/user-avatar", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    } catch (err) {
+      console.error("An error occurred while updating user avatar:", err);
     }
   };
 
@@ -199,7 +215,7 @@ const ProfilePage = () => {
               cursor="pointer"
             />
           </Box>
-          <HomeButton title="Update image" />
+          <HomeButton title="Update image" onClick={updateUserAvatar} />
         </VStack>
         <VStack align="flex-start" w="33.33%">
           <Text fontSize="1.25rem" fontWeight={700}>

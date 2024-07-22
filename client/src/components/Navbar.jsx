@@ -47,7 +47,7 @@ export default function WithSubnavigation() {
   useEffect(() => {
     const fetchUserAvatar = async () => {
       const response = await axios.get(`/api/user-avatar`);
-      setAvatar(response.data[0].avatar);
+      setAvatar(response.data.avatar);
     };
 
     if (user) {

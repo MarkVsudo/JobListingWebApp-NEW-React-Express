@@ -4,7 +4,9 @@ import authenticateToken from "../middleware/authMiddleware.js";
 import {
   getUserProfile,
   getUserAvatar,
+  updateUserAvatar,
 } from "../controllers/userController.js";
+import { upload } from "../config/awsS3Config.js";
 
 import transporter from "../config/nodemailerConfig.js";
 
@@ -54,6 +56,13 @@ router.get("/company/:companyName", async (req, res) => {
 router.get("/profile", authenticateToken, getUserProfile);
 
 router.get("/user-avatar", authenticateToken, getUserAvatar);
+
+router.post(
+  "/user-avatar",
+  authenticateToken,
+  upload.single("avatar"),
+  updateUserAvatar
+);
 
 router.get("/blogs", async (req, res) => {
   try {
