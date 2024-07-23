@@ -120,12 +120,14 @@ const FilesPage = () => {
               files.map((file, index) => (
                 <HStack w="100%" justify="space-between" key={index}>
                   <Text fontWeight={600}>
-                    {file.file_name}{" "}
+                    {file.file_name || file.name}{" "}
                     <Text as="span" opacity="0.6" fontWeight={400}>
-                      ({file.file_size} MB)
+                      ({file.file_size || (file.size / 1000000).toFixed(2)} MB)
                     </Text>
                     <Text opacity="0.6" fontWeight={400}>
-                      {new Date(file.uploaded_at).toLocaleString("en-GB", {
+                      {new Date(
+                        file.uploaded_at || file.lastModified
+                      ).toLocaleString("en-GB", {
                         day: "2-digit",
                         month: "2-digit",
                         year: "numeric",

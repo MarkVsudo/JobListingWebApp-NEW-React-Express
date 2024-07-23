@@ -73,7 +73,7 @@ const postUserFile = async (req, res) => {
     const fileUrl = req.file.location;
     const fileMimeType = req.file.mimetype;
     const fileSize = (req.file.size / 1000000).toFixed(2);
-    const fileName = req.file.originalname;
+    const fileName = decodeURIComponent(req.file.originalname);
 
     await db.query(
       "INSERT INTO user_files (user_id, file_url, file_type, file_size, file_name) VALUES (?, ?, ?, ?, ?)",

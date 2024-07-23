@@ -3,6 +3,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import multer from "multer";
 import multerS3 from "multer-s3";
 import dotenv from "dotenv";
+import urlencode from "urlencode";
 
 dotenv.config();
 
@@ -38,9 +39,10 @@ const uploadFile = multer({
       cb(null, { fileName: file.fieldname });
     },
     key: function (req, file, cb) {
+      const encodedFileName = urlencode(file.originalname);
       cb(
         null,
-        `files/${req.user.id}-${Date.now().toString()}-${file.originalname}`
+        `files/${req.user.id}-${Date.now().toString()}-${encodedFileName}`
       );
     },
   }),
