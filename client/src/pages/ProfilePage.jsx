@@ -1,23 +1,23 @@
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
 import { Helmet } from "react-helmet";
-import { useState, useContext, useEffect } from "react";
+import { FaCamera } from "react-icons/fa";
 import {
+  Avatar,
   Box,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  HStack,
+  IconButton,
+  Input,
+  Spinner,
   Text,
   VStack,
-  HStack,
-  FormControl,
-  FormLabel,
-  Input,
-  Avatar,
-  IconButton,
-  Flex,
-  Spinner,
-  FormErrorMessage,
 } from "@chakra-ui/react";
-import { FaCamera } from "react-icons/fa";
-import HomeButton from "../components/HomeComponents/HomeButton";
 import { AuthContext } from "../contexts/AuthContext";
-import axios from "axios";
+import HomeButton from "../components/HomeComponents/HomeButton";
 
 const ProfilePage = () => {
   const { user } = useContext(AuthContext);

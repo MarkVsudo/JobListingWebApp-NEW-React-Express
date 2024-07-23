@@ -14,7 +14,7 @@ const s3Client = new S3Client({
   },
 });
 
-const upload = multer({
+const uploadAvatar = multer({
   storage: multerS3({
     s3: s3Client,
     bucket: process.env.AWS_S3_BUCKET_NAME,
@@ -22,9 +22,28 @@ const upload = multer({
       cb(null, { fieldName: file.fieldname });
     },
     key: function (req, file, cb) {
-      cb(null, `avatars/${Date.now().toString()}-${file.originalname}`);
+      cb(
+        null,
+        `avatars/${req.user.id}-${Date.now().toString()}-${file.originalname}`
+      );
     },
   }),
 });
 
-export { s3Client, upload, getSignedUrl, PutObjectCommand };
+const uploadFile = multer({
+  storage: multerS3({
+    s3: s3Client,
+    bucket: process.env.AWS_S3_BUCKET_NAME,
+    metadata: function (req, file, cb) {
+      cb(null, { fileName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+      cb(
+        null,
+        `files/${req.user.id}-${Date.now().toString()}-${file.originalname}`
+      );
+    },
+  }),
+});
+
+export { s3Client, uploadAvatar, uploadFile, getSignedUrl, PutObjectCommand };

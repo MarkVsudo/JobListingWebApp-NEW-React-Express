@@ -5,8 +5,10 @@ import {
   getUserProfile,
   getUserAvatar,
   updateUserAvatar,
+  getUserFile,
+  postUserFile,
 } from "../controllers/userController.js";
-import { upload } from "../config/awsS3Config.js";
+import { uploadAvatar, uploadFile } from "../config/awsS3Config.js";
 
 import transporter from "../config/nodemailerConfig.js";
 
@@ -60,8 +62,17 @@ router.get("/user-avatar", authenticateToken, getUserAvatar);
 router.post(
   "/user-avatar",
   authenticateToken,
-  upload.single("avatar"),
+  uploadAvatar.single("avatar"),
   updateUserAvatar
+);
+
+router.get("/user-file", authenticateToken, getUserFile);
+
+router.post(
+  "/user-file",
+  authenticateToken,
+  uploadFile.single("file"),
+  postUserFile
 );
 
 router.get("/blogs", async (req, res) => {

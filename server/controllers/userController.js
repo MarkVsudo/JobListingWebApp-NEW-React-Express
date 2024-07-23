@@ -50,4 +50,46 @@ const updateUserAvatar = async (req, res) => {
   }
 };
 
-export { getUserProfile, getUserAvatar, updateUserAvatar };
+const getUserFile = async (req, res) => {
+  try {
+    const [result] = await db.query(
+      "SELECT * FROM user_files WHERE user_id = ?",
+      [req.user.id]
+    );
+    const files = result.length ? result : null;
+    res.json({ files });
+  } catch (err) {
+    console.error("An error occurred while fetching user files:", err);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
+const postUserFile = async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ msg: "File upload failed" });
+  }
+
+  try {
+    const fileUrl = req.file.location;
+    const fileMimeType = req.file.mimetype;
+    const fileSize = (req.file.size / 1000000).toFixed(2);
+    const fileName = req.file.originalname;
+
+    await db.query(
+      "INSERT INTO user_files (user_id, file_url, file_type, file_size, file_name) VALUES (?, ?, ?, ?, ?)",
+      [req.user.id, fileUrl, fileMimeType, fileSize, fileName]
+    );
+    res.status(200).json({ msg: "File uploaded successfully" });
+  } catch (err) {
+    console.error("An error occurred while uploading user file:", err);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
+export {
+  getUserProfile,
+  getUserAvatar,
+  updateUserAvatar,
+  getUserFile,
+  postUserFile,
+};
