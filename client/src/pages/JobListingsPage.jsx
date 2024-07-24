@@ -142,20 +142,7 @@ const JobListingsPage = () => {
   useEffect(() => {
     const fetchOffers = async () => {
       try {
-        const params = new URLSearchParams();
-        if (selectedLocations.length)
-          params.append("location", selectedLocations.join(","));
-        if (selectedJobType.length)
-          params.append("jobType", selectedJobType.join(","));
-        if (selectedIndustry.length)
-          params.append("industry", selectedIndustry.join(","));
-        if (selectedExperience.length)
-          params.append("experience", selectedExperience.join(","));
-        if (selectedSalary.length)
-          params.append("salary", selectedSalary.join(","));
-        if (selectedCompanySize.length)
-          params.append("companySize", selectedCompanySize.join(","));
-        if (searchQuery !== "") params.append("query", searchQuery);
+        const params = new URLSearchParams(searchParams);
 
         const response = await axios.get(
           `/api/job-listings?${params.toString()}`

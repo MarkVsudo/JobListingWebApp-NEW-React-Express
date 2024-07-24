@@ -113,18 +113,11 @@ router.get("/blog/:blogId", async (req, res) => {
 
 router.get("/job-listings", async (req, res) => {
   try {
-    const {
-      location,
-      jobType,
-      industry,
-      experience,
-      salary,
-      companySize,
-      searchQuery,
-    } = req.query;
-    console.log("Query Parameters:", req.query);
+    const { location, jobType, industry, experience, salary, companySize } =
+      req.query;
 
-    let searchQueryExtracted = req.query.query;
+    const searchQueryExtracted = req.query.query;
+    console.log("Query Parameters:", req.query);
 
     const locationQuery = location ? `AND job_offers.location IN (?)` : "";
     const jobTypeQuery = jobType ? `AND job_offers.employment_type IN (?)` : "";
@@ -153,8 +146,6 @@ router.get("/job-listings", async (req, res) => {
       INNER JOIN companies ON job_offers.company_id = companies.company_id
       WHERE job_offers.verified = 1 ${filterQuery};`;
 
-    console.log(query);
-
     const queryParams = [];
     if (location) queryParams.push(location.split(","));
     if (jobType) queryParams.push(jobType.split(","));
@@ -163,8 +154,6 @@ router.get("/job-listings", async (req, res) => {
     if (salary) queryParams.push(salary.split(","));
     if (companySize) queryParams.push(companySize.split(","));
     if (searchQueryExtracted) queryParams.push(searchQueryExtracted);
-
-    console.log(queryParams);
 
     let [rows] = await db.query(query, queryParams);
 
