@@ -155,6 +155,7 @@ const JobListingsPage = () => {
           params.append("salary", selectedSalary.join(","));
         if (selectedCompanySize.length)
           params.append("companySize", selectedCompanySize.join(","));
+        if (searchQuery !== "") params.append("query", searchQuery);
 
         const response = await axios.get(
           `/api/job-listings?${params.toString()}`
@@ -323,7 +324,6 @@ const JobListingsPage = () => {
         <Flex
           mx="0.5rem"
           direction={{ base: "column", md: "row" }}
-          gap="1rem"
           mt={{ base: "1rem", md: "0" }}
         >
           <Menu>

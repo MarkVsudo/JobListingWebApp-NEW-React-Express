@@ -113,9 +113,18 @@ router.get("/blog/:blogId", async (req, res) => {
 
 router.get("/job-listings", async (req, res) => {
   try {
-    const { location, jobType, industry, experience, salary, companySize } =
-      req.query;
+    const {
+      location,
+      jobType,
+      industry,
+      experience,
+      salary,
+      companySize,
+      searchQuery,
+    } = req.query;
     console.log("Query Parameters:", req.query);
+
+    let searchQueryExtracted = req.query.query;
 
     const locationQuery = location ? `AND job_offers.location IN (?)` : "";
     const jobTypeQuery = jobType ? `AND job_offers.employment_type IN (?)` : "";
@@ -125,6 +134,9 @@ router.get("/job-listings", async (req, res) => {
       : "";
     const salaryQuery = salary ? `AND job_offers.salary IN (?)` : "";
     const companySizeQuery = companySize ? `AND companies.size IN (?)` : "";
+    const searchInputQuery = searchQueryExtracted
+      ? `AND job_offers.title LIKE CONCAT('%', ?, '%');`
+      : "";
 
     let filterQuery = "";
     if (location) filterQuery += locationQuery;
@@ -133,12 +145,15 @@ router.get("/job-listings", async (req, res) => {
     if (experience) filterQuery += experienceQuery;
     if (salary) filterQuery += salaryQuery;
     if (companySize) filterQuery += companySizeQuery;
+    if (searchQueryExtracted) filterQuery += searchInputQuery;
 
     const query = `
       SELECT job_offers.*, companies.logo AS company_logo, companies.size AS company_size, companies.industry AS company_industry
       FROM job_offers
       INNER JOIN companies ON job_offers.company_id = companies.company_id
       WHERE job_offers.verified = 1 ${filterQuery};`;
+
+    console.log(query);
 
     const queryParams = [];
     if (location) queryParams.push(location.split(","));
@@ -147,6 +162,9 @@ router.get("/job-listings", async (req, res) => {
     if (experience) queryParams.push(experience.split(","));
     if (salary) queryParams.push(salary.split(","));
     if (companySize) queryParams.push(companySize.split(","));
+    if (searchQueryExtracted) queryParams.push(searchQueryExtracted);
+
+    console.log(queryParams);
 
     let [rows] = await db.query(query, queryParams);
 
