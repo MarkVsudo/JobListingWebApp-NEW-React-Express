@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet";
 import { useState, useEffect, useContext } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import {
   Flex,
@@ -122,6 +122,23 @@ const JobListingsPage = () => {
     });
   };
 
+  const handleSearchInput = (e) => {
+    const newSearchQuery = e.target.value;
+    setSearchQuery(newSearchQuery);
+  };
+
+  const handleSearchInputBtn = () => {
+    const newParams = new URLSearchParams(searchParams);
+
+    if (newParams.has("query")) {
+      newParams.set("query", searchQuery);
+    } else {
+      newParams.append("query", searchQuery);
+    }
+
+    setSearchParams(newParams);
+  };
+
   useEffect(() => {
     const fetchOffers = async () => {
       try {
@@ -147,7 +164,6 @@ const JobListingsPage = () => {
         console.error("Error fetching job listings:", error);
       }
     };
-    console.log(offers[0]);
 
     fetchOffers();
   }, [
@@ -295,14 +311,14 @@ const JobListingsPage = () => {
             type="text"
             placeholder="Search jobs..."
             list="datalistOptions"
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={handleSearchInput}
           />
           <datalist id="datalistOptions">
             {recentSearches.map((search, index) => (
               <option key={index} value={search} />
             ))}
           </datalist>
-          <HomeButton title="Search" />
+          <HomeButton title="Search" onClick={handleSearchInputBtn} />
         </InputGroup>
         <Flex
           mx="0.5rem"
