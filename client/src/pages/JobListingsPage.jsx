@@ -140,10 +140,27 @@ const JobListingsPage = () => {
   };
 
   useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+
+    setSelectedLocations(
+      params.get("location")?.split(",").filter(Boolean) || []
+    );
+    setSelectedJobType(params.get("jobType")?.split(",").filter(Boolean) || []);
+    setSelectedIndustry(
+      params.get("industry")?.split(",").filter(Boolean) || []
+    );
+    setSelectedExperience(
+      params.get("experience")?.split(",").filter(Boolean) || []
+    );
+    setSelectedSalary(params.get("salary")?.split(",").filter(Boolean) || []);
+    setSelectedCompanySize(
+      params.get("companySize")?.split(",").filter(Boolean) || []
+    );
+
+    setSearchQuery(params.get("query") || "");
+
     const fetchOffers = async () => {
       try {
-        const params = new URLSearchParams(searchParams);
-
         const response = await axios.get(
           `/api/job-listings?${params.toString()}`
         );
@@ -154,15 +171,7 @@ const JobListingsPage = () => {
     };
 
     fetchOffers();
-  }, [
-    searchParams,
-    selectedLocations,
-    selectedJobType,
-    selectedIndustry,
-    selectedExperience,
-    selectedSalary,
-    selectedCompanySize,
-  ]);
+  }, [searchParams]);
 
   const currentOffer = selectedOffer || offers[0];
 
