@@ -51,7 +51,7 @@ const recentSearches = [
   "Marketing Coordinator",
 ];
 
-const locations = ["Sofia", "Stara Zagora", "Varna"];
+const locations = ["Sofia", "Stara Zagora", "Varna", "USA"];
 const jobTypes = [
   "Full-time",
   "Part-time",

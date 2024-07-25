@@ -187,11 +187,9 @@ const RecruiterVerificationPage = () => {
                     onChange={handleInputChange}
                     placeholder="Select company size"
                   >
-                    <option value="1-10">1-10 employees</option>
-                    <option value="11-50">11-50 employees</option>
-                    <option value="51-200">51-200 employees</option>
-                    <option value="201-500">201-500 employees</option>
-                    <option value="501+">501+ employees</option>
+                    <option value="1-10">1-50 employees</option>
+                    <option value="11-50">51-200 employees</option>
+                    <option value="51-200">+200 employees</option>
                   </Select>
                 </FormControl>
                 <FormControl>

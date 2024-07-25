@@ -12,7 +12,6 @@ import { IoBookmarkOutline } from "react-icons/io5";
 import { IoBookmark } from "react-icons/io5";
 
 import { FaRegBuilding } from "react-icons/fa";
-import { MdOutlinePersonOutline } from "react-icons/md";
 import { TbPigMoney } from "react-icons/tb";
 import { LuBrain } from "react-icons/lu";
 
@@ -75,19 +74,15 @@ const JobOffer = ({
       </Flex>
       <Divider my="1rem" />
       <Flex justify="space-between">
-        <Text display="flex" alignItems="center" gap="0.125rem">
+        <Text display="flex" alignItems="center" gap="0.2rem">
           <FaRegBuilding fontSize="1rem" />
           {offer.employment_type}
         </Text>
-        <Text display="flex" alignItems="center" gap="0.125rem">
+        <Text display="flex" alignItems="center" gap="0.2rem">
           <LuBrain fontSize="1rem" />
           {offer.experience}
         </Text>
-        <Text display="flex" alignItems="center" gap="0.125rem">
-          <MdOutlinePersonOutline fontSize="1.25rem" />
-          {offer.applicants} Applicants
-        </Text>
-        <Text display="flex" alignItems="center" gap="0.125rem">
+        <Text display="flex" alignItems="center" gap="0.2rem">
           <TbPigMoney fontSize="1.125rem" />
           {offer.salary}
         </Text>

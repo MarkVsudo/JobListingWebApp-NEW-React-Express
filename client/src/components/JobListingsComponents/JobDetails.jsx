@@ -1,6 +1,7 @@
 import React from "react";
 import DOMPurify from "dompurify";
 import { Flex, Img, Text, VStack, Divider } from "@chakra-ui/react";
+import { MdOutlinePersonOutline } from "react-icons/md";
 import HomeButton from "../HomeComponents/HomeButton";
 
 const JobDetails = ({ currentOffer }) => {
@@ -34,7 +35,11 @@ const JobDetails = ({ currentOffer }) => {
             <Text fontWeight={300}>{currentOffer.short_description}</Text>
           </VStack>
         </Flex>
-        <Flex ml="2rem">
+        <Flex ml="2rem" gap="1rem">
+          <Text display="flex" alignItems="center" gap="0.2rem">
+            <MdOutlinePersonOutline fontSize="1.25rem" />
+            {currentOffer.applicants} Applicants
+          </Text>
           <HomeButton title="Apply now" />
         </Flex>
       </Flex>

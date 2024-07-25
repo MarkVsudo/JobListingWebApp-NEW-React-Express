@@ -93,9 +93,9 @@ router.post("/recruiter-verification", async (req, res) => {
 
   // Convert companySize to enum value
   let size;
-  if (companySize === "1-10" || companySize === "11-50") size = "Small";
-  else if (companySize === "51-200") size = "Medium";
-  else size = "Large";
+  if (companySize === "1-50") size = "Small (1-50 employees)";
+  else if (companySize === "51-200") size = "Medium (51-200 employees)";
+  else size = "Large (+200 employees)";
 
   try {
     await db.query(
