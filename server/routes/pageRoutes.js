@@ -274,25 +274,35 @@ router.get("/user-saved-jobs", authenticateToken, async (req, res) => {
 });
 
 router.get("/user-job-applications", authenticateToken, async (req, res) => {
-  try {
-    const userId = req.user.id;
+  const userId = req.user.id;
+  const userRole = req.user.role;
 
+  let filterQuery = "";
+
+  if (userRole === "applicant") {
+    filterQuery = "WHERE job_applications.user_id = ?";
+  } else if (userRole === "recruiter") {
+    filterQuery = "WHERE companies.user_id = ?";
+  } else if (userRole === "admin") {
+    filterQuery = "";
+  } else {
+    return res.status(403).json({ message: "Invalid user role" });
+  }
+
+  try {
     const [userApplications] = await db.query(
-      `SELECT job_applications.*,
-      job_offers.title as title,
-      companies.name as company_name
+      `SELECT 
+        job_applications.*,
+        job_offers.title as title,
+        companies.name as company_name,
+        companies.company_id as company_id
       FROM job_applications
       INNER JOIN job_offers ON job_offers.job_id = job_applications.job_id
       INNER JOIN companies ON companies.company_id = job_offers.company_id
-      WHERE job_applications.user_id = ?`,
+      ${filterQuery}
+      ORDER BY job_applications.application_date DESC`,
       [userId]
     );
-
-    if (userApplications.length === 0) {
-      return res
-        .status(204)
-        .json({ message: "No job applications found for this user." });
-    }
 
     res.status(200).json(userApplications);
   } catch (err) {

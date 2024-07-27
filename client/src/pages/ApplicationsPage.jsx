@@ -9,6 +9,9 @@ import {
   Tr,
   Th,
   Td,
+  Box,
+  Text,
+  Link,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
@@ -38,9 +41,9 @@ const ApplicationsPage = () => {
       <Helmet>
         <title>JobConqueror - Job Applications</title>
       </Helmet>
-      <TableContainer mx="10rem" w="100%">
+      <Box overflowX="auto" mx="10rem" w="100%">
         <Table size="sm">
-          <Thead bg="var(--blue-gray)">
+          <Thead bg="var(--blue-gray)" position="sticky" top={0} zIndex={1}>
             <Tr>
               <Th color="white" fontSize="1.125rem">
                 Submission date
@@ -51,10 +54,25 @@ const ApplicationsPage = () => {
               <Th color="white" fontSize="1.125rem">
                 Company
               </Th>
+              <Th color="white" fontSize="1.125rem">
+                Status
+              </Th>
+              <Th color="white" fontSize="1.125rem">
+                Motivational Letter
+              </Th>
+              <Th color="white" fontSize="1.125rem">
+                Selected Files
+              </Th>
+              <Th color="white" fontSize="1.125rem">
+                Phone Number
+              </Th>
+              <Th color="white" fontSize="1.125rem">
+                LinkedIn
+              </Th>
             </Tr>
           </Thead>
           <Tbody>
-            {applications ? (
+            {applications.length > 0 ? (
               applications.map((application) => (
                 <Tr bg="white" key={application.application_id}>
                   <Td py="2rem" fontSize="1.025rem">
@@ -67,13 +85,12 @@ const ApplicationsPage = () => {
                   <Td fontSize="1.025rem">
                     <ChakraLink
                       as={ReactRouterLink}
-                      to="/"
+                      to={`/job/${application.job_id}`}
                       _hover={{ textDecoration: "none" }}
                     >
                       {application.title}
                     </ChakraLink>
                   </Td>
-
                   <Td fontSize="1.025rem">
                     <ChakraLink
                       as={ReactRouterLink}
@@ -83,14 +100,47 @@ const ApplicationsPage = () => {
                       {application.company_name}
                     </ChakraLink>
                   </Td>
+                  <Td fontSize="1.025rem">{application.status}</Td>
+                  <Td fontSize="1.025rem">
+                    <Text noOfLines={2}>{application.motivational_letter}</Text>
+                  </Td>
+                  <Td fontSize="1.025rem">
+                    {application.selected_files
+                      .split(",")
+                      .map((file, index) => (
+                        <Link
+                          href={file}
+                          isExternal
+                          key={index}
+                          mr={2}
+                          color="blue.500"
+                        >
+                          File {index + 1}
+                        </Link>
+                      ))}
+                  </Td>
+                  <Td fontSize="1.025rem">{application.phone_number}</Td>
+                  <Td fontSize="1.025rem">
+                    <Link
+                      href={application.linkedin_url}
+                      isExternal
+                      color="blue.500"
+                    >
+                      LinkedIn Profile
+                    </Link>
+                  </Td>
                 </Tr>
               ))
             ) : (
-              <Text>No applications found</Text>
+              <Tr>
+                <Td colSpan={8}>
+                  <Text>No applications found</Text>
+                </Td>
+              </Tr>
             )}
           </Tbody>
         </Table>
-      </TableContainer>
+      </Box>
     </>
   );
 };
