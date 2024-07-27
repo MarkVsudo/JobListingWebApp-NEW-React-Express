@@ -86,10 +86,35 @@ const postUserFile = async (req, res) => {
   }
 };
 
+const jobApplication = async (req, res) => {
+  const { jobId, phoneNumber, linkedInURL, selectedFiles, motivationalLetter } =
+    req.body;
+  const userId = req.user.id;
+
+  try {
+    await db.query(
+      "INSERT INTO job_applications (job_id, user_id, motivational_letter, selected_files, phone_number, linkedin_url ) VALUES (?, ?, ?, ?, ?, ?)",
+      [
+        jobId,
+        userId,
+        motivationalLetter,
+        selectedFiles,
+        phoneNumber,
+        linkedInURL,
+      ]
+    );
+    res.status(201).json({ msg: "Job application submitted successfully" });
+  } catch (err) {
+    console.error("An error occurred while submitting job application:", err);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
 export {
   getUserProfile,
   getUserAvatar,
   updateUserAvatar,
   getUserFile,
   postUserFile,
+  jobApplication,
 };

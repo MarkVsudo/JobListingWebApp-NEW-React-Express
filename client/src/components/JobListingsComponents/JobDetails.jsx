@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useContext, useEffect } from "react";
 import DOMPurify from "dompurify";
 import {
   Flex,
@@ -27,15 +27,66 @@ import {
 } from "@chakra-ui/react";
 import { MdOutlinePersonOutline } from "react-icons/md";
 import HomeButton from "../HomeComponents/HomeButton";
+import { AuthContext } from "../../contexts/AuthContext";
+import axios from "axios";
 
 const JobDetails = ({ currentOffer }) => {
+  const { user } = useContext(AuthContext);
+  const [files, setFiles] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = useRef(null);
 
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  useEffect(() => {
+    const fetchUserFiles = async () => {
+      try {
+        const response = await axios.get(`/api/user-file`);
+
+        if (Array.isArray(response.data.files)) {
+          setFiles(response.data.files);
+        } else {
+          setFiles([]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch user files:", err);
+        setFiles([]);
+      }
+    };
+
+    if (user) {
+      fetchUserFiles();
+    }
+  }, [user]);
+
+  const [formData, setFormData] = useState({
+    phoneNumber: "",
+    linkedInURL: "",
+    motivationalLetter: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleJobApplication = async () => {
+    try {
+      await axios.post("/api/job-application", {
+        jobId: currentOffer.job_id,
+        selectedFiles: selectedFiles.join(","),
+        ...formData,
+      });
+    } catch (error) {
+      console.error("An error occurred while applying for a job", error);
+    }
+  };
 
   const handleFileChange = (e) => {
-    const { value } = e.target;
+    const value = e.target.value;
     setSelectedFiles((prev) =>
       prev.includes(value)
         ? prev.filter((file) => file !== value)
@@ -57,46 +108,65 @@ const JobDetails = ({ currentOffer }) => {
           <ModalBody>
             <FormControl isRequired>
               <FormLabel>Phone Number</FormLabel>
-              <Input type="tel" placeholder="Enter your phone number" />
+              <Input
+                name="phoneNumber"
+                type="tel"
+                placeholder="Enter your phone number"
+                value={formData.phoneNumber}
+                onChange={handleInputChange}
+              />
             </FormControl>
             <FormControl my="0.5rem">
               <FormLabel>
                 LinkedIn URL{" "}
                 <span style={{ fontWeight: "normal" }}>(optional)</span>
               </FormLabel>
-              <Input type="url" placeholder="Enter your LinkedIn URL" />
+              <Input
+                name="linkedInURL"
+                type="url"
+                placeholder="Enter your LinkedIn URL"
+                value={formData.linkedInURL}
+                onChange={handleInputChange}
+              />
             </FormControl>
             <FormControl my="0.5rem">
               <FormLabel>Attached files</FormLabel>
               <Menu closeOnSelect={false}>
                 <MenuButton as={Button}>Select Files</MenuButton>
                 <MenuList>
-                  <MenuItemOption>
-                    <Checkbox value="file1" onChange={handleFileChange}>
-                      File 1
-                    </Checkbox>
-                  </MenuItemOption>
-                  <MenuItemOption>
-                    <Checkbox value="file2" onChange={handleFileChange}>
-                      File 2
-                    </Checkbox>
-                  </MenuItemOption>
-                  <MenuItemOption>
-                    <Checkbox value="file3" onChange={handleFileChange}>
-                      File 3
-                    </Checkbox>
-                  </MenuItemOption>
+                  {Array.isArray(files) && files.length > 0 ? (
+                    files.map((file, index) => (
+                      <MenuItemOption key={index}>
+                        <Checkbox
+                          value={file.file_url}
+                          onChange={handleFileChange}
+                        >
+                          {file.file_name}
+                        </Checkbox>
+                      </MenuItemOption>
+                    ))
+                  ) : (
+                    <Text>You haven't uploaded any files yet.</Text>
+                  )}
                 </MenuList>
               </Menu>
             </FormControl>
             <FormControl>
-              <FormLabel>Motivational Letter</FormLabel>
-              <Textarea placeholder="Write your motivational letter" />
+              <FormLabel>
+                Motivational Letter{" "}
+                <span style={{ fontWeight: "normal" }}>(optional)</span>
+              </FormLabel>
+              <Textarea
+                name="motivationalLetter"
+                placeholder="Write your motivational letter"
+                value={formData.motivationalLetter}
+                onChange={handleInputChange}
+              />
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <HomeButton title="Submit" />
+            <HomeButton title="Submit" onClick={handleJobApplication} />
           </ModalFooter>
         </ModalContent>
       </Modal>

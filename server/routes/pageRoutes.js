@@ -7,6 +7,7 @@ import {
   updateUserAvatar,
   getUserFile,
   postUserFile,
+  jobApplication,
 } from "../controllers/userController.js";
 import { uploadAvatar, uploadFile } from "../config/awsS3Config.js";
 
@@ -74,6 +75,8 @@ router.post(
   uploadFile.single("file"),
   postUserFile
 );
+
+router.post("/job-application", authenticateToken, jobApplication);
 
 router.get("/blogs", async (req, res) => {
   try {
