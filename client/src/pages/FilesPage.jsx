@@ -32,11 +32,90 @@ const FilesPage = () => {
     }
   }, [user, uploadStatus]);
 
+  const fileNameTranslation = (word) => {
+    const alphabet = {
+      а: "a",
+      А: "A",
+      б: "b",
+      Б: "B",
+      в: "v",
+      В: "V",
+      г: "g",
+      Г: "G",
+      д: "d",
+      Д: "D",
+      е: "e",
+      Е: "E",
+      ж: "j",
+      Ж: "J",
+      з: "z",
+      З: "Z",
+      и: "i",
+      И: "I",
+      й: "y",
+      Й: "Y",
+      к: "k",
+      К: "K",
+      л: "l",
+      Л: "L",
+      м: "m",
+      М: "M",
+      н: "n",
+      Н: "N",
+      о: "o",
+      О: "O",
+      п: "p",
+      П: "P",
+      р: "r",
+      Р: "R",
+      с: "s",
+      С: "S",
+      т: "t",
+      Т: "T",
+      у: "u",
+      У: "U",
+      ф: "f",
+      Ф: "F",
+      х: "h",
+      Х: "H",
+      ц: "c",
+      Ц: "C",
+      ч: "ch",
+      Ч: "Ch",
+      ш: "sh",
+      Ш: "Sh",
+      щ: "sht",
+      Щ: "Sht",
+      ъ: "y",
+      Ъ: "Y",
+      ь: "y",
+      Ь: "Y",
+      ю: "iu",
+      Ю: "Iu",
+      я: "q",
+      Я: "Q",
+    };
+
+    let translatedWord = "";
+
+    for (let i = 0; i < word.length; i++) {
+      let currentChar = word[i];
+      translatedWord +=
+        alphabet[currentChar] !== undefined
+          ? alphabet[currentChar]
+          : currentChar;
+    }
+
+    return translatedWord;
+  };
+
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setFileName(file.name);
-      setFiles([file]);
+      const translatedName = fileNameTranslation(file.name);
+      const renamedFile = new File([file], translatedName, { type: file.type });
+      setFileName(translatedName);
+      setFiles([renamedFile]);
     }
   };
 
