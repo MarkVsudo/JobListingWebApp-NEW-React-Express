@@ -106,13 +106,18 @@ const JobListingsPage = () => {
 
     setSearchParams((prevParams) => {
       const newParams = new URLSearchParams(prevParams);
-      const selectedFilters = newParams.get(paramKey)?.split(",") || [];
+      const selectedFilters =
+        newParams.get(paramKey)?.split(",").filter(Boolean) || [];
 
       if (selectedFilters.includes(filter)) {
-        newParams.set(
-          paramKey,
-          selectedFilters.filter((item) => item !== filter).join(",")
+        const updatedFilters = selectedFilters.filter(
+          (item) => item !== filter
         );
+        if (updatedFilters.length > 0) {
+          newParams.set(paramKey, updatedFilters.join(","));
+        } else {
+          newParams.delete(paramKey);
+        }
       } else {
         selectedFilters.push(filter);
         newParams.set(paramKey, selectedFilters.join(","));
