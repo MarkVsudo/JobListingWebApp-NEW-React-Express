@@ -2,7 +2,6 @@ import { Helmet } from "react-helmet";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import {
-  TableContainer,
   Table,
   Thead,
   Tbody,
@@ -12,12 +11,28 @@ import {
   Box,
   Text,
   Link,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import { AuthContext } from "../contexts/AuthContext";
 
 const ApplicationsPage = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedMotivationalLetter, setSelectedMotivationalLetter] =
+    useState("");
+
+  const onOpen = (letter) => {
+    setSelectedMotivationalLetter(letter);
+    setIsOpen(true);
+  };
+  const onClose = () => setIsOpen(false);
+
   const { user } = useContext(AuthContext);
   const [applications, setApplications] = useState([]);
 
@@ -42,6 +57,14 @@ const ApplicationsPage = () => {
         <title>JobConqueror - Job Applications</title>
       </Helmet>
       <Box overflowX="auto" mx="10rem" w="100%">
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Motivational letter</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>{selectedMotivationalLetter}</ModalBody>
+          </ModalContent>
+        </Modal>
         <Table size="sm">
           <Thead bg="var(--blue-gray)" position="sticky" top={0} zIndex={1}>
             <Tr>
@@ -102,7 +125,16 @@ const ApplicationsPage = () => {
                   </Td>
                   <Td fontSize="1.025rem">{application.status}</Td>
                   <Td fontSize="1.025rem">
-                    <Text noOfLines={2}>{application.motivational_letter}</Text>
+                    {application.motivational_letter === "Not specified" ? (
+                      <Text>{application.motivational_letter}</Text>
+                    ) : (
+                      <Link
+                        onClick={() => onOpen(application.motivational_letter)}
+                        color="blue.500"
+                      >
+                        Motivational letter
+                      </Link>
+                    )}
                   </Td>
                   <Td fontSize="1.025rem">
                     {application.selected_files
@@ -121,13 +153,17 @@ const ApplicationsPage = () => {
                   </Td>
                   <Td fontSize="1.025rem">{application.phone_number}</Td>
                   <Td fontSize="1.025rem">
-                    <Link
-                      href={application.linkedin_url}
-                      isExternal
-                      color="blue.500"
-                    >
-                      LinkedIn Profile
-                    </Link>
+                    {application.linkedin_url === "Not specified" ? (
+                      <Text>{application.linkedin_url}</Text>
+                    ) : (
+                      <Link
+                        href={application.linkedin_url}
+                        isExternal
+                        color="blue.500"
+                      >
+                        LinkedIn Profile
+                      </Link>
+                    )}
                   </Td>
                 </Tr>
               ))
