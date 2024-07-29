@@ -172,8 +172,11 @@ router.get("/job-listings", async (req, res) => {
     }
 
     if (searchQueryExtracted) {
-      filterQuery += ` AND job_offers.title LIKE ?`;
-      queryParams.push(`%${searchQueryExtracted}%`);
+      filterQuery += ` AND (job_offers.title LIKE ? OR companies.name LIKE ?)`;
+      queryParams.push(
+        `%${searchQueryExtracted}%`,
+        `%${searchQueryExtracted}%`
+      );
     }
 
     const query = `

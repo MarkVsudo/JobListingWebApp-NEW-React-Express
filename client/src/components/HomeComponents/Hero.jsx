@@ -16,7 +16,6 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import HeroSectionSvg from "../../assets/home-page-svg.svg";
 import EllipseHome from "../../assets/ellipse-background-home.svg";
 import HomeButton from "./HomeButton";
-import filterOptions from "../../data/filterOptions.json";
 import { gsap } from "gsap";
 
 const Hero = () => {
@@ -43,6 +42,7 @@ const Hero = () => {
 
     navigate(`/job-listings?${params.toString()}`);
   };
+
   return (
     <Flex p="2rem 4rem" w="100%" h="100vh" pos="relative">
       <Box display="flex" flexDirection="column" gap="2.75rem">

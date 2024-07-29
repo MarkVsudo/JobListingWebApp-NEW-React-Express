@@ -279,7 +279,7 @@ const JobListingsPage = () => {
           </InputLeftElement>
           <Input
             type="text"
-            placeholder="Search jobs..."
+            placeholder="Job title or company"
             list="datalistOptions"
             onChange={handleSearchInput}
           />
