@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Heading,
   Img,
@@ -28,6 +28,13 @@ const Hero = () => {
       repeat: -1,
     });
   }, []);
+
+  const [keyword, setKeyword] = useState("");
+  const [location, setLocation] = useState("");
+
+  useEffect(() => {
+    console.log(keyword);
+  }, [keyword]);
 
   return (
     <Flex p="2rem 4rem" w="100%" h="100vh" pos="relative">
@@ -74,6 +81,8 @@ const Hero = () => {
                 placeholder="Job title, keywords, or company"
                 size="lg"
                 bg="white"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
               />
             </InputGroup>
             <InputGroup>
@@ -84,9 +93,11 @@ const Hero = () => {
               />
               <Input
                 type="text"
-                placeholder="City, state, zip code, or remote"
+                placeholder="City, country, or remote"
                 size="lg"
                 bg="white"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
               />
             </InputGroup>
           </Flex>

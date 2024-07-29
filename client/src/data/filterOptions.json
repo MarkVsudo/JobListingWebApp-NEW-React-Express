@@ -1,0 +1,34 @@
+{
+  "locations": ["Sofia", "Stara Zagora", "Varna", "USA"],
+  "jobTypes": [
+    "Full-time",
+    "Part-time",
+    "Temporary",
+    "Internship",
+    "Freelance"
+  ],
+  "industries": ["IT (Information Technology)", "Finance", "Healthcare"],
+  "experienceLevels": [
+    "Junior level",
+    "Mid level",
+    "Senior level",
+    "0-2 years",
+    "3-5 years",
+    "5+ years",
+    "Internship",
+    "Not Specified"
+  ],
+  "salaries": [
+    "Specified salary",
+    "$500 - $1000",
+    "$1001 - $2000",
+    "$2001 - $4000",
+    "$4001 - $7000",
+    "+$7000"
+  ],
+  "companySizes": [
+    "Small (1-50 employees)",
+    "Medium (51 - 200 employees)",
+    "Large (+200 employees)"
+  ]
+}

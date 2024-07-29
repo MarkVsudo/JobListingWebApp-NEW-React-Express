@@ -23,6 +23,7 @@ import HomeButton from "../components/HomeComponents/HomeButton";
 import JobDetails from "../components/JobListingsComponents/JobDetails";
 import JobOffer from "../components/JobListingsComponents/JobOffer";
 import { AuthContext } from "../contexts/AuthContext";
+import filterOptions from "../data/filterOptions.json";
 
 const rectangleHeaderStyles = {
   width: "50px",
@@ -49,39 +50,6 @@ const recentSearches = [
   "UX/UI Designer",
   "Customer Support Specialist",
   "Marketing Coordinator",
-];
-
-const locations = ["Sofia", "Stara Zagora", "Varna", "USA"];
-const jobTypes = [
-  "Full-time",
-  "Part-time",
-  "Temporary",
-  "Internship",
-  "Freelance",
-];
-const industries = ["IT (Information Technology)", "Finance", "Healthcare"];
-const experienceLevels = [
-  "Junior level",
-  "Mid level",
-  "Senior level",
-  "0-2 years",
-  "3-5 years",
-  "5+ years",
-  "Internship",
-  "Not Specified",
-];
-const salaries = [
-  "Specified salary",
-  "$500 - $1000",
-  "$1001 - $2000",
-  "$2001 - $4000",
-  "$4001 - $7000",
-  "+$7000",
-];
-const companySizes = [
-  "Small (1-50 employees)",
-  "Medium (51 - 200 employees)",
-  "Large (+200 employees)",
 ];
 
 const JobListingsPage = () => {
@@ -338,7 +306,7 @@ const JobListingsPage = () => {
             </MenuButton>
             <MenuList>
               <VStack align="flex-start" px="1rem">
-                {locations.map((location) => (
+                {filterOptions.locations.map((location) => (
                   <Checkbox
                     key={location}
                     isChecked={selectedLocations.includes(location)}
@@ -363,7 +331,7 @@ const JobListingsPage = () => {
             </MenuButton>
             <MenuList>
               <VStack align="flex-start" px="1rem">
-                {jobTypes.map((jobType) => (
+                {filterOptions.jobTypes.map((jobType) => (
                   <Checkbox
                     key={jobType}
                     isChecked={selectedJobType.includes(jobType)}
@@ -388,7 +356,7 @@ const JobListingsPage = () => {
             </MenuButton>
             <MenuList>
               <VStack align="flex-start" px="1rem">
-                {industries.map((industry) => (
+                {filterOptions.industries.map((industry) => (
                   <Checkbox
                     key={industry}
                     isChecked={selectedIndustry.includes(industry)}
@@ -413,7 +381,7 @@ const JobListingsPage = () => {
             </MenuButton>
             <MenuList>
               <VStack align="flex-start" px="1rem">
-                {experienceLevels.map((experienceLevel) => (
+                {filterOptions.experienceLevels.map((experienceLevel) => (
                   <Checkbox
                     key={experienceLevel}
                     isChecked={selectedExperience.includes(experienceLevel)}
@@ -442,7 +410,7 @@ const JobListingsPage = () => {
             </MenuButton>
             <MenuList>
               <VStack align="flex-start" px="1rem">
-                {salaries.map((salary) => (
+                {filterOptions.salaries.map((salary) => (
                   <Checkbox
                     key={salary}
                     isChecked={selectedSalary.includes(salary)}
@@ -467,7 +435,7 @@ const JobListingsPage = () => {
             </MenuButton>
             <MenuList>
               <VStack align="flex-start" px="1rem">
-                {companySizes.map((companySize) => (
+                {filterOptions.companySizes.map((companySize) => (
                   <Checkbox
                     key={companySize}
                     isChecked={selectedCompanySize.includes(companySize)}
