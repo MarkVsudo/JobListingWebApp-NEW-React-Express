@@ -531,10 +531,42 @@ const JobListingsPage = () => {
         </Flex>
         {/* Main */}
         {/* Job Description */}
-        {currentOffer && (
+        {currentOffer && offers.length ? (
           <Box w={{ base: "100%", lg: "70%" }}>
             <JobDetails currentOffer={currentOffer} />
           </Box>
+        ) : (
+          !currentOffer &&
+          offers.length === 0 && (
+            <Box w={{ base: "100%", lg: "70%" }}>
+              <VStack align="flex-start" ml={{ base: "25%", lg: "35%" }}>
+                <Text fontWeight="500">
+                  There are no offers available for your preferences.
+                </Text>
+                <Text fontWeight="500">Please try applying other filters.</Text>
+                <VStack align="flex-start">
+                  {searchParams.get("query") && (
+                    <Text>Search Query: {searchParams.get("query")}</Text>
+                  )}
+                  {searchParams.get("location") && (
+                    <Text>Location: {searchParams.get("location")}</Text>
+                  )}
+                  {searchParams.get("jobType") && (
+                    <Text>Job Type: {searchParams.get("jobType")}</Text>
+                  )}
+                  {searchParams.get("industry") && (
+                    <Text>Industry: {searchParams.get("industry")}</Text>
+                  )}
+                  {searchParams.get("experience") && (
+                    <Text>Experience: {searchParams.get("experience")}</Text>
+                  )}
+                  {searchParams.get("companySize") && (
+                    <Text>Company Size: {searchParams.get("companySize")}</Text>
+                  )}
+                </VStack>
+              </VStack>
+            </Box>
+          )
         )}
       </Flex>
     </>

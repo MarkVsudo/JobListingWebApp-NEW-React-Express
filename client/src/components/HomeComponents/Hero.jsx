@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Heading,
   Img,
@@ -8,15 +9,20 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Button,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import HeroSectionSvg from "../../assets/home-page-svg.svg";
 import EllipseHome from "../../assets/ellipse-background-home.svg";
 import HomeButton from "./HomeButton";
+import filterOptions from "../../data/filterOptions.json";
 import { gsap } from "gsap";
 
 const Hero = () => {
+  const navigate = useNavigate();
+  const [keyword, setKeyword] = useState("");
+  const [location, setLocation] = useState("");
   const ellipseRef = useRef(null);
 
   useEffect(() => {
@@ -29,13 +35,14 @@ const Hero = () => {
     });
   }, []);
 
-  const [keyword, setKeyword] = useState("");
-  const [location, setLocation] = useState("");
+  const handleSubmit = () => {
+    let params = new URLSearchParams();
 
-  useEffect(() => {
-    console.log(keyword);
-  }, [keyword]);
+    params.append("query", keyword);
+    params.append("location", location);
 
+    navigate(`/job-listings?${params.toString()}`);
+  };
   return (
     <Flex p="2rem 4rem" w="100%" h="100vh" pos="relative">
       <Box display="flex" flexDirection="column" gap="2.75rem">
@@ -78,7 +85,7 @@ const Hero = () => {
               />
               <Input
                 type="text"
-                placeholder="Job title, keywords, or company"
+                placeholder="Job title or company"
                 size="lg"
                 bg="white"
                 value={keyword}
@@ -101,7 +108,16 @@ const Hero = () => {
               />
             </InputGroup>
           </Flex>
-          <HomeButton title="Search" onClick={() => console.log("Search")} />
+          <Flex align="center" gap="1rem">
+            <HomeButton title="Search" onClick={handleSubmit} />
+            <Button
+              colorScheme="teal"
+              variant="outline"
+              onClick={() => navigate("/job-listings")}
+            >
+              All job offers
+            </Button>
+          </Flex>
         </Flex>
         <Flex gap={10} color="var(--dark-blue)">
           <Flex direction="column">
