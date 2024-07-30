@@ -26,6 +26,7 @@
 
 **⚙ `.env` variables**
 
+**Server side .env**
 ```
 # Server
 PORT = 8080
@@ -51,6 +52,13 @@ AWS_SECRET_ACCESS_KEY=
 AWS_REGION=
 AWS_S3_BUCKET_NAME=
 ```
+
+**Client side .env**
+```
+# TinyMCE
+VITE_TINYMCE_API_KEY=
+```
+
 
 **📦 AWS S3 Setup**
 
