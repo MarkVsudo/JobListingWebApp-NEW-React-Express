@@ -210,13 +210,14 @@ const JobListingsPage = () => {
           gap=".5rem"
           align={{ base: "center", md: "flex-start" }}
         >
-          <Text as="h1" fontSize="1.5rem" fontWeight={600}>
+          <Text as="h1" fontSize="1.5rem" fontWeight={600} zIndex={1}>
             Find your dream job
           </Text>
           <Text
             as="span"
             fontWeight={300}
             textAlign={{ base: "center", md: "left" }}
+            zIndex={1}
           >
             Looking for jobs? Browse our latest job openings
           </Text>
@@ -268,12 +269,18 @@ const JobListingsPage = () => {
       <Flex
         bg="white"
         w="100%"
-        padding={{ base: "1rem", md: "1rem 5rem" }}
+        padding={{
+          base: "1rem",
+          md: "1rem 3rem",
+          xl: "1rem 4rem",
+          "2xl": "1rem 5rem",
+        }}
         alignItems="center"
         justifyContent="center"
-        direction={{ base: "column", md: "row" }}
+        direction={{ base: "column", xl: "row" }}
+        gap={{ base: "0.75rem", xl: "0" }}
       >
-        <InputGroup gap="1rem" w={{ base: "100%", md: "md" }}>
+        <InputGroup gap="1rem" w={{ base: "sm", md: "lg" }}>
           <InputLeftElement pointerEvents="none">
             <SearchIcon color="gray.300" />
           </InputLeftElement>
@@ -291,175 +298,219 @@ const JobListingsPage = () => {
           <HomeButton title="Search" onClick={handleSearchInputBtn} />
         </InputGroup>
         <Flex
-          mx="0.5rem"
-          direction={{ base: "column", md: "row" }}
+          mx="0.75rem"
+          direction={{ base: "row", md: "row" }}
           mt={{ base: "1rem", md: "0" }}
+          gap={{ base: 1.5, lg: 3 }}
+          flexWrap={{ base: "wrap", md: "nowrap" }}
+          justify={{ base: "center", md: "flex-start" }}
         >
-          <Menu>
-            <MenuButton
-              as={Button}
-              rightIcon={<ChevronDownIcon />}
-              mx={2}
-              {...filterButtonStyles}
-            >
-              Location
-            </MenuButton>
-            <MenuList>
-              <VStack align="flex-start" px="1rem">
-                {filterOptions.locations.map((location) => (
-                  <Checkbox
-                    key={location}
-                    isChecked={selectedLocations.includes(location)}
-                    onChange={() =>
-                      handleChange(location, setSelectedLocations, "location")
-                    }
-                  >
-                    {location}
-                  </Checkbox>
-                ))}
-              </VStack>
-            </MenuList>
-          </Menu>
-          <Menu>
-            <MenuButton
-              as={Button}
-              rightIcon={<ChevronDownIcon />}
-              mx={2}
-              {...filterButtonStyles}
-            >
-              Job Type
-            </MenuButton>
-            <MenuList>
-              <VStack align="flex-start" px="1rem">
-                {filterOptions.jobTypes.map((jobType) => (
-                  <Checkbox
-                    key={jobType}
-                    isChecked={selectedJobType.includes(jobType)}
-                    onChange={() =>
-                      handleChange(jobType, setSelectedJobType, "jobType")
-                    }
-                  >
-                    {jobType}
-                  </Checkbox>
-                ))}
-              </VStack>
-            </MenuList>
-          </Menu>
-          <Menu>
-            <MenuButton
-              as={Button}
-              rightIcon={<ChevronDownIcon />}
-              mx={2}
-              {...filterButtonStyles}
-            >
-              Industry
-            </MenuButton>
-            <MenuList>
-              <VStack align="flex-start" px="1rem">
-                {filterOptions.industries.map((industry) => (
-                  <Checkbox
-                    key={industry}
-                    isChecked={selectedIndustry.includes(industry)}
-                    onChange={() =>
-                      handleChange(industry, setSelectedIndustry, "industry")
-                    }
-                  >
-                    {industry}
-                  </Checkbox>
-                ))}
-              </VStack>
-            </MenuList>
-          </Menu>
-          <Menu>
-            <MenuButton
-              as={Button}
-              rightIcon={<ChevronDownIcon />}
-              mx={2}
-              {...filterButtonStyles}
-            >
-              Experience
-            </MenuButton>
-            <MenuList>
-              <VStack align="flex-start" px="1rem">
-                {filterOptions.experienceLevels.map((experienceLevel) => (
-                  <Checkbox
-                    key={experienceLevel}
-                    isChecked={selectedExperience.includes(experienceLevel)}
-                    onChange={() =>
-                      handleChange(
-                        experienceLevel,
-                        setSelectedExperience,
-                        "experience"
-                      )
-                    }
-                  >
-                    {experienceLevel}
-                  </Checkbox>
-                ))}
-              </VStack>
-            </MenuList>
-          </Menu>
-          <Menu>
-            <MenuButton
-              as={Button}
-              rightIcon={<ChevronDownIcon />}
-              mx={2}
-              {...filterButtonStyles}
-            >
-              Salary
-            </MenuButton>
-            <MenuList>
-              <VStack align="flex-start" px="1rem">
-                {filterOptions.salaries.map((salary) => (
-                  <Checkbox
-                    key={salary}
-                    isChecked={selectedSalary.includes(salary)}
-                    onChange={() =>
-                      handleChange(salary, setSelectedSalary, "salary")
-                    }
-                  >
-                    {salary}
-                  </Checkbox>
-                ))}
-              </VStack>
-            </MenuList>
-          </Menu>
-          <Menu>
-            <MenuButton
-              as={Button}
-              rightIcon={<ChevronDownIcon />}
-              mx={2}
-              {...filterButtonStyles}
-            >
-              Company size
-            </MenuButton>
-            <MenuList>
-              <VStack align="flex-start" px="1rem">
-                {filterOptions.companySizes.map((companySize) => (
-                  <Checkbox
-                    key={companySize}
-                    isChecked={selectedCompanySize.includes(companySize)}
-                    onChange={() =>
-                      handleChange(
-                        companySize,
-                        setSelectedCompanySize,
-                        "companySize"
-                      )
-                    }
-                  >
-                    {companySize}
-                  </Checkbox>
-                ))}
-              </VStack>
-            </MenuList>
-          </Menu>
+          <Box
+            width={{ base: "calc(50% - 0.75rem)", md: "auto" }}
+            mb={{ base: 2, md: 0 }}
+          >
+            <Menu>
+              <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                {...filterButtonStyles}
+                width="100%"
+              >
+                Location
+              </MenuButton>
+              <MenuList>
+                <VStack align="flex-start" px="1rem">
+                  {filterOptions.locations.map((location) => (
+                    <Checkbox
+                      key={location}
+                      isChecked={selectedLocations.includes(location)}
+                      onChange={() =>
+                        handleChange(location, setSelectedLocations, "location")
+                      }
+                    >
+                      {location}
+                    </Checkbox>
+                  ))}
+                </VStack>
+              </MenuList>
+            </Menu>
+          </Box>
+
+          <Box
+            width={{ base: "calc(50% - 0.75rem)", md: "auto" }}
+            mb={{ base: 2, md: 0 }}
+          >
+            <Menu>
+              <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                {...filterButtonStyles}
+                width="100%"
+              >
+                Job Type
+              </MenuButton>
+              <MenuList>
+                <VStack align="flex-start" px="1rem">
+                  {filterOptions.jobTypes.map((jobType) => (
+                    <Checkbox
+                      key={jobType}
+                      isChecked={selectedJobType.includes(jobType)}
+                      onChange={() =>
+                        handleChange(jobType, setSelectedJobType, "jobType")
+                      }
+                    >
+                      {jobType}
+                    </Checkbox>
+                  ))}
+                </VStack>
+              </MenuList>
+            </Menu>
+          </Box>
+
+          <Box
+            width={{ base: "calc(50% - 0.75rem)", md: "auto" }}
+            mb={{ base: 2, md: 0 }}
+          >
+            <Menu>
+              <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                {...filterButtonStyles}
+                width="100%"
+              >
+                Industry
+              </MenuButton>
+              <MenuList>
+                <VStack align="flex-start" px="1rem">
+                  {filterOptions.industries.map((industry) => (
+                    <Checkbox
+                      key={industry}
+                      isChecked={selectedIndustry.includes(industry)}
+                      onChange={() =>
+                        handleChange(industry, setSelectedIndustry, "industry")
+                      }
+                    >
+                      {industry}
+                    </Checkbox>
+                  ))}
+                </VStack>
+              </MenuList>
+            </Menu>
+          </Box>
+
+          <Box
+            width={{ base: "calc(50% - 0.75rem)", md: "auto" }}
+            mb={{ base: 2, md: 0 }}
+          >
+            <Menu>
+              <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                {...filterButtonStyles}
+                width="100%"
+              >
+                Experience
+              </MenuButton>
+              <MenuList>
+                <VStack align="flex-start" px="1rem">
+                  {filterOptions.experienceLevels.map((experienceLevel) => (
+                    <Checkbox
+                      key={experienceLevel}
+                      isChecked={selectedExperience.includes(experienceLevel)}
+                      onChange={() =>
+                        handleChange(
+                          experienceLevel,
+                          setSelectedExperience,
+                          "experience"
+                        )
+                      }
+                    >
+                      {experienceLevel}
+                    </Checkbox>
+                  ))}
+                </VStack>
+              </MenuList>
+            </Menu>
+          </Box>
+
+          <Box
+            width={{ base: "calc(50% - 0.75rem)", md: "auto" }}
+            mb={{ base: 2, md: 0 }}
+          >
+            <Menu>
+              <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                {...filterButtonStyles}
+                width="100%"
+              >
+                Salary
+              </MenuButton>
+              <MenuList>
+                <VStack align="flex-start" px="1rem">
+                  {filterOptions.salaries.map((salary) => (
+                    <Checkbox
+                      key={salary}
+                      isChecked={selectedSalary.includes(salary)}
+                      onChange={() =>
+                        handleChange(salary, setSelectedSalary, "salary")
+                      }
+                    >
+                      {salary}
+                    </Checkbox>
+                  ))}
+                </VStack>
+              </MenuList>
+            </Menu>
+          </Box>
+
+          <Box
+            width={{ base: "calc(50% - 0.75rem)", md: "auto" }}
+            mb={{ base: 2, md: 0 }}
+          >
+            <Menu>
+              <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                {...filterButtonStyles}
+                width="100%"
+              >
+                Company size
+              </MenuButton>
+              <MenuList>
+                <VStack align="flex-start" px="1rem">
+                  {filterOptions.companySizes.map((companySize) => (
+                    <Checkbox
+                      key={companySize}
+                      isChecked={selectedCompanySize.includes(companySize)}
+                      onChange={() =>
+                        handleChange(
+                          companySize,
+                          setSelectedCompanySize,
+                          "companySize"
+                        )
+                      }
+                    >
+                      {companySize}
+                    </Checkbox>
+                  ))}
+                </VStack>
+              </MenuList>
+            </Menu>
+          </Box>
         </Flex>
         <HomeButton title="Apply filters" mt={{ base: "1rem", md: "0" }} />
       </Flex>
       {/* Job Listings */}
       <Flex
         w="100%"
-        p={{ base: "1rem", md: "2rem 5rem" }}
+        p={{
+          base: "1rem",
+          md: "2rem",
+          lg: "2rem 3rem",
+          xl: "2rem 4rem",
+          "2xl": "2rem 5rem",
+        }}
         gap="1rem"
         bg="var(--light-blue)"
         direction={{ base: "column", lg: "row" }}
@@ -510,22 +561,38 @@ const JobListingsPage = () => {
           {/* Job Offers */}
 
           <Flex
-            direction="column"
-            maxH="100vh"
-            gap="1rem"
+            direction={{ base: "column", md: "row", lg: "column" }}
+            maxH={{ base: "auto", md: "300px", lg: "100vh" }}
+            gap={{ base: "1rem", md: "7rem", lg: "1rem" }}
             mt="1rem"
             className="job-listing"
+            overflowX={{ base: "visible", md: "auto", lg: "visible" }}
+            overflowY={{ base: "visible", md: "hidden", lg: "auto" }}
+            css={{
+              "@media screen and (min-width: 48em) and (max-width: 61.99em)": {
+                "&::-webkit-scrollbar": {
+                  display: "none",
+                },
+                "-ms-overflow-style": "none",
+                "scrollbar-width": "none",
+              },
+            }}
           >
             {offers.map((offer) => (
-              <JobOffer
+              <Box
                 key={offer.job_id}
-                offer={offer}
-                currentOffer={currentOffer}
-                setSelectedOffer={setSelectedOffer}
-                saveJobOffer={saveJobOffer}
-                savedJobs={savedJobs}
-                deleteSavedJobOffer={deleteSavedJobOffer}
-              />
+                flexShrink={{ base: 1, md: 0, lg: 1 }}
+                w={{ base: "100%", md: "300px", lg: "100%" }}
+              >
+                <JobOffer
+                  offer={offer}
+                  currentOffer={currentOffer}
+                  setSelectedOffer={setSelectedOffer}
+                  saveJobOffer={saveJobOffer}
+                  savedJobs={savedJobs}
+                  deleteSavedJobOffer={deleteSavedJobOffer}
+                />
+              </Box>
             ))}
           </Flex>
         </Flex>

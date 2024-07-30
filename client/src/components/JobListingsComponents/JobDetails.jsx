@@ -178,7 +178,14 @@ const JobDetails = ({ currentOffer }) => {
         bg="white"
         boxShadow="var(--box-shadow)"
       >
-        <Flex p="0.75rem 2rem" w="100%" justify="space-between" align="center">
+        <Flex
+          p={{ base: "0.75rem 1rem", sm: "0.75rem 2rem" }}
+          w="100%"
+          justify="space-between"
+          align="center"
+          direction={{ base: "column", md: "row" }}
+          gap={{ base: "0.75rem", md: "0" }}
+        >
           <Flex justify="space-between" align="center">
             <Img
               src={currentOffer.company_logo}

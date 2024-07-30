@@ -39,6 +39,8 @@ const JobOffer = ({
           : "none"
       }
       onClick={() => setSelectedOffer(offer)}
+      w={{ base: "100%", md: "25rem", lg: "100%" }}
+      h={{ base: "unset", md: "100%", lg: "unset" }}
     >
       <Flex align="center" justify="space-between">
         <Img
