@@ -26,6 +26,7 @@ import {
   useSteps,
 } from "@chakra-ui/react";
 import { AuthContext } from "../contexts/AuthContext";
+import { Editor } from "@tinymce/tinymce-react";
 
 const steps = [
   {
@@ -131,127 +132,173 @@ const PostJobOfferPage = () => {
       case 0:
         return (
           <>
-            <HStack align="flex-start" spacing={10}>
-              <VStack w="50%">
-                <FormControl isRequired>
-                  <FormLabel>Job Title</FormLabel>
-                  <Input
-                    name="title"
-                    value={formData.title}
-                    onChange={handleInputChange}
-                    placeholder="Enter job title"
-                  />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Experience Level</FormLabel>
-                  <Select
-                    name="experience"
-                    value={formData.experience}
-                    onChange={handleInputChange}
-                  >
-                    <option value="Not Specified">Not specified</option>
-                    <option value="Internship">Internship</option>
-                    <option value="Junior level">Junior level</option>
-                    <option value="Mid level">Mid level</option>
-                    <option value="Senior level">Senior level</option>
-                    <option value="0-2 years">0-2 years experience</option>
-                    <option value="3-5 years">3-5 years experience</option>
-                    <option value="5+ years">5+ years experience</option>
-                  </Select>
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Job Description</FormLabel>
-                  <Textarea
-                    name="description"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                    placeholder="Enter job description"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Short Description</FormLabel>
-                  <Textarea
-                    name="short_description"
-                    value={formData.short_description}
-                    onChange={handleInputChange}
-                    placeholder="Enter short job description"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Benefits</FormLabel>
-                  <Textarea
-                    name="benefits"
-                    value={formData.benefits}
-                    onChange={handleInputChange}
-                    placeholder="Enter job benefits"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Requirements</FormLabel>
-                  <Textarea
-                    name="requirements"
-                    value={formData.requirements}
-                    onChange={handleInputChange}
-                    placeholder="Enter job requirements"
-                  />
-                </FormControl>
-              </VStack>
+            <VStack spacing={3}>
+              <HStack align="flex-start" spacing={10} w="100%">
+                <VStack w="50%">
+                  <FormControl isRequired>
+                    <FormLabel>Job Title</FormLabel>
+                    <Input
+                      name="title"
+                      value={formData.title}
+                      onChange={handleInputChange}
+                      placeholder="Enter job title"
+                    />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Experience Level</FormLabel>
+                    <Select
+                      name="experience"
+                      value={formData.experience}
+                      onChange={handleInputChange}
+                    >
+                      <option value="Not Specified">Not specified</option>
+                      <option value="Internship">Internship</option>
+                      <option value="Junior level">Junior level</option>
+                      <option value="Mid level">Mid level</option>
+                      <option value="Senior level">Senior level</option>
+                      <option value="0-2 years">0-2 years experience</option>
+                      <option value="3-5 years">3-5 years experience</option>
+                      <option value="5+ years">5+ years experience</option>
+                    </Select>
+                  </FormControl>
 
-              <VStack w="50%">
-                <FormControl isRequired>
-                  <FormLabel>Location</FormLabel>
-                  <Input
-                    name="location"
-                    value={formData.location}
-                    onChange={handleInputChange}
-                    placeholder="Enter job location"
-                  />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Employment Type</FormLabel>
-                  <Select
-                    name="employment_type"
-                    value={formData.employment_type}
-                    onChange={handleInputChange}
-                  >
-                    <option value="Full-time">Full-time</option>
-                    <option value="Part-time">Part-time</option>
-                    <option value="Contract">Contract</option>
-                    <option value="Temporary">Temporary</option>
-                    <option value="Internship">Internship</option>
-                    <option value="Freelance">Freelance</option>
-                  </Select>
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Salary</FormLabel>
-                  <Input
-                    name="salary"
-                    value={formData.salary}
-                    onChange={handleInputChange}
-                    placeholder="Enter salary range"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Application Deadline</FormLabel>
-                  <Input
-                    name="application_deadline"
-                    type="date"
-                    value={formData.application_deadline}
-                    onChange={handleInputChange}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Company ID</FormLabel>
-                  <Input
-                    name="company_id"
-                    type="number"
-                    value={formData.company_id}
-                    onChange={handleInputChange}
-                    placeholder="Enter company ID"
-                  />
-                </FormControl>
-              </VStack>
-            </HStack>
+                  <FormControl>
+                    <FormLabel>Job Description</FormLabel>
+                    <Textarea
+                      name="description"
+                      value={formData.description}
+                      onChange={handleInputChange}
+                      placeholder="Enter job description"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Short Description</FormLabel>
+                    <Textarea
+                      name="short_description"
+                      value={formData.short_description}
+                      onChange={handleInputChange}
+                      placeholder="Enter short job description"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Benefits</FormLabel>
+                    <Textarea
+                      name="benefits"
+                      value={formData.benefits}
+                      onChange={handleInputChange}
+                      placeholder="Enter job benefits"
+                    />
+                  </FormControl>
+                </VStack>
+
+                <VStack w="50%">
+                  <FormControl>
+                    <FormLabel>Requirements</FormLabel>
+                    <Textarea
+                      name="requirements"
+                      value={formData.requirements}
+                      onChange={handleInputChange}
+                      placeholder="Enter job requirements"
+                    />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Location</FormLabel>
+                    <Input
+                      name="location"
+                      value={formData.location}
+                      onChange={handleInputChange}
+                      placeholder="Enter job location"
+                    />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Employment Type</FormLabel>
+                    <Select
+                      name="employment_type"
+                      value={formData.employment_type}
+                      onChange={handleInputChange}
+                    >
+                      <option value="Full-time">Full-time</option>
+                      <option value="Part-time">Part-time</option>
+                      <option value="Contract">Contract</option>
+                      <option value="Temporary">Temporary</option>
+                      <option value="Internship">Internship</option>
+                      <option value="Freelance">Freelance</option>
+                    </Select>
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Salary</FormLabel>
+                    <Input
+                      name="salary"
+                      value={formData.salary}
+                      onChange={handleInputChange}
+                      placeholder="Enter salary range"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Application Deadline</FormLabel>
+                    <Input
+                      name="application_deadline"
+                      type="date"
+                      value={formData.application_deadline}
+                      onChange={handleInputChange}
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Company ID</FormLabel>
+                    <Input
+                      name="company_id"
+                      type="number"
+                      value={formData.company_id}
+                      onChange={handleInputChange}
+                      placeholder="Enter company ID"
+                    />
+                  </FormControl>
+                </VStack>
+              </HStack>
+
+              <FormControl isRequired w="100%">
+                <FormLabel>Job Description</FormLabel>
+                <Editor
+                  apiKey={import.meta.env.VITE_TINYMCE_API_KEY}
+                  init={{
+                    height: 400,
+                    menubar: false,
+                    plugins: [
+                      "advlist",
+                      "autolink",
+                      "lists",
+                      "link",
+                      "image",
+                      "charmap",
+                      "preview",
+                      "anchor",
+                      "searchreplace",
+                      "visualblocks",
+                      "code",
+                      "fullscreen",
+                      "insertdatetime",
+                      "media",
+                      "table",
+                      "paste",
+                      "code",
+                      "help",
+                      "wordcount",
+                    ],
+                    toolbar:
+                      "undo redo | formatselect | fontselect fontsizeselect | " +
+                      "bold italic backcolor | alignleft aligncenter alignright alignjustify | " +
+                      "bullist numlist outdent indent | removeformat | ",
+                  }}
+                  value={formData.description}
+                  onEditorChange={(content) => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      description: content,
+                    }));
+                  }}
+                />
+              </FormControl>
+            </VStack>
           </>
         );
       case 1:

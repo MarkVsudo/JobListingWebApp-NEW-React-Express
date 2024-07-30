@@ -603,7 +603,6 @@ const JobListingsPage = () => {
             <JobDetails currentOffer={currentOffer} />
           </Box>
         ) : (
-          !currentOffer &&
           offers.length === 0 && (
             <Box w={{ base: "100%", lg: "70%" }}>
               <VStack align="flex-start" ml={{ base: "25%", lg: "35%" }}>
