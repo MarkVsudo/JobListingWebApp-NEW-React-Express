@@ -126,8 +126,8 @@ const ProfileSidebar = () => {
         direction={{ base: "row", xl: "column" }}
         flexWrap={{ base: "wrap", xl: "nowrap" }}
         align="flex-start"
-        gap="2rem"
-        pl="1rem"
+        gap={{ base: "0", sm: "2rem" }}
+        pl={{ base: "0", sm: "1rem" }}
         justify={{ base: "space-around", xl: "unset" }}
       >
         {userAllowedLinks.map((link, index) => (
@@ -139,8 +139,8 @@ const ProfileSidebar = () => {
               textDecoration: "none",
               backgroundColor: "var(--dark-blue)",
             }}
-            p="1rem 2rem"
-            w={{ base: "12.5rem", xl: "100%" }}
+            p={{ base: "1rem 1.25rem", sm: "1rem 2rem" }}
+            w={{ base: "50%", sm: "12.5rem", xl: "100%" }}
             borderLeftRadius="0.75rem"
             borderRightRadius={{ base: "0.75rem", xl: "0" }}
             bg={location.pathname === link.url ? "var(--dark-blue)" : "inherit"}

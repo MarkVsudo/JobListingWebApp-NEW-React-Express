@@ -142,8 +142,13 @@ const RecruiterVerificationPage = () => {
       case 0:
         return (
           <>
-            <HStack align="flex-start" spacing={10}>
-              <VStack w="50%">
+            <Flex
+              align="flex-start"
+              gap={{ base: 3, sm: 10 }}
+              w="100%"
+              direction={{ base: "column", sm: "row" }}
+            >
+              <VStack w={{ base: "100%", sm: "100%" }}>
                 {/* Company Basic Information */}
                 <FormControl isRequired>
                   <FormLabel>Company Name</FormLabel>
@@ -262,8 +267,7 @@ const RecruiterVerificationPage = () => {
                   />
                 </FormControl>
               </VStack>
-
-              <VStack w="50%">
+              <VStack w={{ base: "100%", sm: "100%" }}>
                 {/* Company Contact Information */}
                 <FormControl isRequired>
                   <FormLabel>Company Address</FormLabel>
@@ -376,7 +380,7 @@ const RecruiterVerificationPage = () => {
                   />
                 </FormControl>
               </VStack>
-            </HStack>
+            </Flex>
           </>
         );
       case 1:
@@ -433,7 +437,9 @@ const RecruiterVerificationPage = () => {
                     </StepIndicator>
                     <Box flexShrink="0" textAlign="left">
                       <StepTitle>{step.title}</StepTitle>
-                      <StepDescription>{step.description}</StepDescription>
+                      <StepDescription display={{ base: "none", sm: "block" }}>
+                        {step.description}
+                      </StepDescription>
                     </Box>
                     <StepSeparator />
                   </Step>
