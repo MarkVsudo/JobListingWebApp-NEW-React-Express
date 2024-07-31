@@ -137,7 +137,11 @@ const RequestItem = ({
     <>
       <Box bg="var(--blue-gray)" borderRadius="md" p={4} mb={3}>
         <Flex alignItems="center" color="white">
-          <HStack align="start" spacing={3}>
+          <Flex
+            align="start"
+            gap="1rem"
+            direction={{ base: "column", sm: "row" }}
+          >
             <Text fontWeight={700}>
               From:{" "}
               <Text as="span" fontWeight={400}>
@@ -156,9 +160,9 @@ const RequestItem = ({
                 {formatDateForEurope(createdAt)}
               </Text>
             </Text>
-          </HStack>
+          </Flex>
           <Spacer />
-          <HStack>
+          <Flex gap="0.5rem" direction={{ base: "column", sm: "row" }}>
             <Button size="sm" colorScheme="blue" onClick={onModalOpen}>
               See details
             </Button>
@@ -168,7 +172,7 @@ const RequestItem = ({
             <Button size="sm" colorScheme="red" onClick={onRejectAlertOpen}>
               Reject
             </Button>
-          </HStack>
+          </Flex>
         </Flex>
       </Box>
 

@@ -133,8 +133,13 @@ const PostJobOfferPage = () => {
         return (
           <>
             <VStack spacing={3}>
-              <HStack align="flex-start" spacing={10} w="100%">
-                <VStack w="50%">
+              <Flex
+                align="flex-start"
+                gap={{ base: 3, sm: 10 }}
+                w="100%"
+                direction={{ base: "column", sm: "row" }}
+              >
+                <VStack w={{ base: "100%", sm: "100%" }}>
                   <FormControl isRequired>
                     <FormLabel>Job Title</FormLabel>
                     <Input
@@ -191,7 +196,7 @@ const PostJobOfferPage = () => {
                   </FormControl>
                 </VStack>
 
-                <VStack w="50%">
+                <VStack w={{ base: "100%", sm: "100%" }}>
                   <FormControl>
                     <FormLabel>Requirements</FormLabel>
                     <Textarea
@@ -254,7 +259,7 @@ const PostJobOfferPage = () => {
                     />
                   </FormControl>
                 </VStack>
-              </HStack>
+              </Flex>
 
               <FormControl isRequired w="100%">
                 <FormLabel>Job Description</FormLabel>
@@ -354,7 +359,9 @@ const PostJobOfferPage = () => {
                     </StepIndicator>
                     <Box flexShrink="0" textAlign="left">
                       <StepTitle>{step.title}</StepTitle>
-                      <StepDescription>{step.description}</StepDescription>
+                      <StepDescription display={{ base: "none", sm: "block" }}>
+                        {step.description}
+                      </StepDescription>
                     </Box>
                     <StepSeparator />
                   </Step>

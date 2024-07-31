@@ -117,10 +117,19 @@ const ProfileSidebar = () => {
       bg="var(--blue-gray)"
       color="white"
       borderRadius="1rem"
-      ml="3.5rem"
+      ml={{ base: "0", xl: "3.5rem" }}
       p="1rem 0"
+      w={{ base: "100%", xl: "max-content" }}
+      mb={{ base: "1.5rem", xl: "0" }}
     >
-      <VStack align="flex-start" gap="2rem" pl="1rem">
+      <Flex
+        direction={{ base: "row", xl: "column" }}
+        flexWrap={{ base: "wrap", xl: "nowrap" }}
+        align="flex-start"
+        gap="2rem"
+        pl="1rem"
+        justify={{ base: "space-around", xl: "unset" }}
+      >
         {userAllowedLinks.map((link, index) => (
           <ChakraLink
             key={index}
@@ -131,8 +140,9 @@ const ProfileSidebar = () => {
               backgroundColor: "var(--dark-blue)",
             }}
             p="1rem 2rem"
-            w="100%"
+            w={{ base: "12.5rem", xl: "100%" }}
             borderLeftRadius="0.75rem"
+            borderRightRadius={{ base: "0.75rem", xl: "0" }}
             bg={location.pathname === link.url ? "var(--dark-blue)" : "inherit"}
           >
             <Flex align="center" gap="1rem" fontSize="1.125rem">
@@ -149,14 +159,15 @@ const ProfileSidebar = () => {
             backgroundColor: "var(--dark-blue)",
           }}
           p="1rem 2rem"
-          w="100%"
+          w={{ base: "12.5rem", xl: "100%" }}
           borderLeftRadius="0.75rem"
+          borderRightRadius={{ base: "0.75rem", xl: "0" }}
         >
           <Flex align="center" gap="1rem" fontSize="1.125rem">
             <TbLogout2 /> Logout
           </Flex>
         </ChakraLink>
-      </VStack>
+      </Flex>
     </Flex>
   );
 };

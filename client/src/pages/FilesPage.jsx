@@ -148,8 +148,14 @@ const FilesPage = () => {
       <Helmet>
         <title>JobConqueror - Files</title>
       </Helmet>
-      <HStack mx="10rem" align="flex-start" w="100%" spacing="10rem">
-        <VStack align="flex-start" w="50%">
+      <Flex
+        mx="10rem"
+        align="flex-start"
+        w="100%"
+        gap={{ base: "1.5rem", md: "5rem", lg: "10rem" }}
+        direction={{ base: "column", md: "row" }}
+      >
+        <VStack align="flex-start" w={{ base: "100%", md: "50%" }}>
           <Text fontSize="1.25rem" fontWeight={700}>
             Upload a file
           </Text>
@@ -183,7 +189,7 @@ const FilesPage = () => {
             onClick={handleUploadButtonClick}
           />
         </VStack>
-        <VStack align="flex-start" w="50%">
+        <VStack align="flex-start" w={{ base: "100%", md: "50%" }}>
           <Text fontSize="1.25rem" fontWeight={700}>
             Uploaded files
           </Text>
@@ -227,7 +233,7 @@ const FilesPage = () => {
             )}
           </Flex>
         </VStack>
-      </HStack>
+      </Flex>
     </>
   );
 };

@@ -8,7 +8,13 @@ const DashboardLayout = () => {
   return (
     <>
       <Navbar />
-      <Flex mt="2rem" mb="8rem" align="flex-start">
+      <Flex
+        mt="2rem"
+        mb="8rem"
+        align={{ base: "center", xl: "flex-start" }}
+        direction={{ base: "column", xl: "row" }}
+        p="1rem"
+      >
         <ProfileSidebar />
         <Outlet />
       </Flex>

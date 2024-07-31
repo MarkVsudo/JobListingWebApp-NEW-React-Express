@@ -131,14 +131,24 @@ const ProfilePage = () => {
       <Helmet>
         <title>JobConqueror - Profile</title>
       </Helmet>
-      <HStack mx="10rem" align="flex-start" w="100%">
-        <VStack align="flex-start" w="33.33%">
+      <Flex
+        mx="10rem"
+        w="100%"
+        justify="space-between"
+        direction={{ base: "column", md: "row" }}
+        flexWrap={{ md: "wrap", lg: "nowrap" }}
+        gap={{ base: "1.5rem", lg: "0" }}
+      >
+        <VStack
+          align="flex-start"
+          w={{ base: "100%", md: "45%", lg: "max-content" }}
+        >
           <Text fontSize="1.25rem" fontWeight={700}>
             Credentials
           </Text>
           <Text>
-            The following credentials will be used for the application when
-            applying for a position at a company.
+            The following credentials will be used for the application <br />
+            when applying for a position at a company.
           </Text>
           <Flex
             direction="column"
@@ -146,7 +156,11 @@ const ProfilePage = () => {
             as="form"
             onSubmit={handleCredentialsChange}
           >
-            <FormControl w="sm" id="fullName" isInvalid={errors.fullName}>
+            <FormControl
+              w={{ base: "100%", lg: "sm" }}
+              id="fullName"
+              isInvalid={errors.fullName}
+            >
               <FormLabel>Full Name</FormLabel>
               <Input
                 onChange={(e) => setFullName(e.target.value)}
@@ -158,7 +172,11 @@ const ProfilePage = () => {
               />
               <FormErrorMessage>{errors.fullName}</FormErrorMessage>
             </FormControl>
-            <FormControl w="sm" id="email" isInvalid={errors.email}>
+            <FormControl
+              w={{ base: "100%", lg: "sm" }}
+              id="email"
+              isInvalid={errors.email}
+            >
               <FormLabel>Email</FormLabel>
               <Input
                 onChange={(e) => setEmail(e.target.value)}
@@ -181,7 +199,40 @@ const ProfilePage = () => {
             />
           </Flex>
         </VStack>
-        <VStack alignItems="center" w="33.33%">
+
+        <VStack
+          align="flex-start"
+          w={{ base: "100%", md: "45%", lg: "max-content" }}
+        >
+          <Text fontSize="1.25rem" fontWeight={700}>
+            Change password
+          </Text>
+          <Text>An email will be sent to you for resetting your password.</Text>
+          <Flex
+            direction="column"
+            gap="0.5rem"
+            as="form"
+            onSubmit={handleResetPassword}
+          >
+            <FormControl w={{ base: "100%", lg: "sm" }} id="resetEmail">
+              <FormLabel>Email</FormLabel>
+              <Input
+                value={email}
+                name="resetEmail"
+                disabled
+                type="email"
+                bg="white"
+                border="1px solid var(--cyan)"
+              />
+            </FormControl>
+            <HomeButton title="Send" onClick={handleResetPassword} />
+          </Flex>
+        </VStack>
+
+        <VStack
+          alignItems="center"
+          w={{ base: "100%", md: "100%", lg: "max-content" }}
+        >
           <Text fontSize="1.25rem" fontWeight={700} pb="0.5rem">
             Profile picture
           </Text>
@@ -217,32 +268,7 @@ const ProfilePage = () => {
           </Box>
           <HomeButton title="Update image" onClick={updateUserAvatar} />
         </VStack>
-        <VStack align="flex-start" w="33.33%">
-          <Text fontSize="1.25rem" fontWeight={700}>
-            Change password
-          </Text>
-          <Text>An email will be sent to you for resetting your password.</Text>
-          <Flex
-            direction="column"
-            gap="0.5rem"
-            as="form"
-            onSubmit={handleResetPassword}
-          >
-            <FormControl w="sm" id="resetEmail">
-              <FormLabel>Email</FormLabel>
-              <Input
-                value={email}
-                name="resetEmail"
-                disabled
-                type="email"
-                bg="white"
-                border="1px solid var(--cyan)"
-              />
-            </FormControl>
-            <HomeButton title="Send" onClick={handleResetPassword} />
-          </Flex>
-        </VStack>
-      </HStack>
+      </Flex>
     </>
   );
 };
