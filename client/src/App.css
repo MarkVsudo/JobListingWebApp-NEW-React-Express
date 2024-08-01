@@ -104,7 +104,6 @@ input[type="text"]::-webkit-calendar-picker-indicator {
 
 /* Scroll bar job offers */
 
-/* styles.css */
 .job-listing {
   overflow-y: auto;
   -ms-overflow-style: none;

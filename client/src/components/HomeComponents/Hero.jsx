@@ -10,6 +10,8 @@ import {
   InputGroup,
   InputLeftElement,
   Button,
+  Stack,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -24,6 +26,22 @@ const Hero = () => {
   const [location, setLocation] = useState("");
   const ellipseRef = useRef(null);
 
+  const headingFontSize = useBreakpointValue({
+    base: "2.5rem",
+    md: "3.5rem",
+    lg: "4.875rem",
+  });
+  const statsFontSize = useBreakpointValue({
+    base: "1.5rem",
+    md: "2rem",
+    lg: "2.5rem",
+  });
+  const statsSubtitleFontSize = useBreakpointValue({
+    base: "1rem",
+    md: "1.125rem",
+    lg: "1.25rem",
+  });
+
   useEffect(() => {
     gsap.to(ellipseRef.current, {
       y: 20,
@@ -36,22 +54,31 @@ const Hero = () => {
 
   const handleSubmit = () => {
     let params = new URLSearchParams();
-
     params.append("query", keyword);
     params.append("location", location);
-
     navigate(`/job-listings?${params.toString()}`);
   };
 
   return (
-    <Flex p="2rem 4rem" w="100%" h="100vh" pos="relative">
-      <Box display="flex" flexDirection="column" gap="2.75rem">
-        <Flex direction="column">
+    <Flex
+      p={{ base: "1rem", md: "2rem 4rem" }}
+      w="100%"
+      minH="100vh"
+      pos="relative"
+      direction={{ base: "column", lg: "row" }}
+    >
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap={{ base: "1.5rem", md: "2.75rem" }}
+      >
+        <Stack spacing={{ base: 2, md: 4 }}>
           <Heading
             as="h1"
             color="var(--dark-blue)"
             fontWeight={500}
-            fontSize="4.875rem"
+            fontSize={headingFontSize}
+            lineHeight="1"
           >
             Empower your career journey
           </Heading>
@@ -59,7 +86,8 @@ const Hero = () => {
             as="h1"
             color="var(--dark-blue)"
             fontWeight={500}
-            fontSize="4.875rem"
+            fontSize={headingFontSize}
+            lineHeight="1"
           >
             Discover{" "}
             <Text as="span" color="var(--cyan)">
@@ -70,13 +98,14 @@ const Hero = () => {
             as="h1"
             color="var(--dark-blue)"
             fontWeight={500}
-            fontSize="4.875rem"
+            fontSize={headingFontSize}
+            lineHeight="1"
           >
             now
           </Heading>
-        </Flex>
-        <Flex direction="column">
-          <Flex direction={{ base: "column", md: "row" }} gap="1rem" mb="1rem">
+        </Stack>
+        <Stack spacing={4}>
+          <Stack direction={{ base: "column", md: "row" }} spacing={4}>
             <InputGroup>
               <InputLeftElement
                 pointerEvents="none"
@@ -107,8 +136,8 @@ const Hero = () => {
                 onChange={(e) => setLocation(e.target.value)}
               />
             </InputGroup>
-          </Flex>
-          <Flex align="center" gap="1rem">
+          </Stack>
+          <Stack direction="row" spacing={4}>
             <HomeButton title="Search" onClick={handleSubmit} />
             <Button
               colorScheme="teal"
@@ -117,22 +146,22 @@ const Hero = () => {
             >
               All job offers
             </Button>
-          </Flex>
-        </Flex>
-        <Flex gap={10} color="var(--dark-blue)">
+          </Stack>
+        </Stack>
+        <Flex gap={{ base: 5, sm: 10 }} color="var(--dark-blue)">
           <Flex direction="column">
-            <Text fontSize="2.5rem" fontWeight={700}>
+            <Text fontSize={statsFontSize} fontWeight={700}>
               7856
             </Text>
-            <Text fontSize="1.25rem" fontWeight={500}>
+            <Text fontSize={statsSubtitleFontSize} fontWeight={500}>
               Available job offers
             </Text>
           </Flex>
           <Flex direction="column">
-            <Text fontSize="2.5rem" fontWeight={700}>
+            <Text fontSize={statsFontSize} fontWeight={700}>
               2004
             </Text>
-            <Text fontSize="1.25rem" fontWeight={500}>
+            <Text fontSize={statsSubtitleFontSize} fontWeight={500}>
               Companies which trust us
             </Text>
           </Flex>
@@ -142,8 +171,12 @@ const Hero = () => {
         src={HeroSectionSvg}
         alt="Hero section image"
         pos="absolute"
+        display={{ base: "none", "2xl": "block" }}
         bottom="4.5rem"
         right="1rem"
+        maxW="40%"
+        zIndex="-1"
+        mt="0"
       />
       <Img
         ref={ellipseRef}
@@ -153,6 +186,7 @@ const Hero = () => {
         left="-1rem"
         bottom="-2rem"
         zIndex="-1"
+        display={{ base: "none", lg: "block" }}
       />
     </Flex>
   );
