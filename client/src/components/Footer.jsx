@@ -12,6 +12,7 @@ import {
   IconButton,
   useColorModeValue,
   Img,
+  Tooltip,
 } from "@chakra-ui/react";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
@@ -149,17 +150,23 @@ export default function Footer() {
                   bg: "whiteAlpha.300",
                 }}
               />
-              <IconButton
-                onClick={subscribeNewsletter}
-                bg="var(--light-blue)"
-                color="var(--dark-blue)"
-                _hover={{
-                  bg: "var(--blue-gray)",
-                  color: "var(--light-blue)",
-                }}
-                aria-label="Subscribe"
-                icon={<BiMailSend />}
-              />
+              <Tooltip
+                hasArrow
+                label="Subscribe to our newsletter"
+                bg="var(--cyan)"
+              >
+                <IconButton
+                  onClick={subscribeNewsletter}
+                  bg="var(--light-blue)"
+                  color="var(--dark-blue)"
+                  _hover={{
+                    bg: "var(--blue-gray)",
+                    color: "var(--light-blue)",
+                  }}
+                  aria-label="Subscribe"
+                  icon={<BiMailSend />}
+                />
+              </Tooltip>
             </Stack>
           </Stack>
         </SimpleGrid>

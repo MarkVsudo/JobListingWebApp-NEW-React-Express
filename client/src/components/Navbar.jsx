@@ -68,6 +68,7 @@ export default function WithSubnavigation() {
           flex={{ base: 1, md: "auto" }}
           ml={{ base: -2 }}
           display={{ base: "flex", md: "none" }}
+          w="max-content"
         >
           <IconButton
             onClick={onToggle}
@@ -78,7 +79,11 @@ export default function WithSubnavigation() {
             aria-label={"Toggle Navigation"}
           />
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
+        <Flex
+          flex={{ base: 2, sm: 1 }}
+          justify={{ base: "center", md: "start" }}
+          mr={{ base: "1rem", sm: "unset" }}
+        >
           <ChakraLink as={ReactRouterLink} to="/">
             <Img src={NavLogo} alt="Navigation Bar Logo" />
           </ChakraLink>
@@ -96,7 +101,7 @@ export default function WithSubnavigation() {
           align="center"
         >
           {user ? (
-            <Stack direction={"row"} spacing={7}>
+            <Stack direction={"row"} spacing={{ base: 3, sm: 7 }}>
               <ChakraLink
                 as={ReactRouterLink}
                 to={
@@ -109,6 +114,7 @@ export default function WithSubnavigation() {
                 <Button
                   bg="var(--blue-gray)"
                   color="white"
+                  fontSize={{ base: "0.875rem", sm: "1rem" }}
                   _hover={{ backgroundColor: "var(--dark-blue)" }}
                 >
                   {user && user.role === "recruiter"
@@ -133,7 +139,7 @@ export default function WithSubnavigation() {
                     }
                   />
                 </MenuButton>
-                <MenuList alignItems={"center"}>
+                <MenuList alignItems={"center"} zIndex={999}>
                   <br />
                   <Center>
                     <Avatar

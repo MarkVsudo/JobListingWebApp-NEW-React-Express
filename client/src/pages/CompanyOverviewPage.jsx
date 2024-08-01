@@ -48,7 +48,7 @@ const CompanyOverviewPage = () => {
         direction="column"
         gap="4rem"
         mx={["1rem", "2rem", "4rem"]}
-        my="4rem"
+        my="2rem"
       >
         <Flex
           bg="var(--dark-blue)"

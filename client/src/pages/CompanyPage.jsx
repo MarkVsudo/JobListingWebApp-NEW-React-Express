@@ -142,7 +142,11 @@ const CompanyPage = () => {
           p={["1rem", "2rem", "3rem"]}
           gap="1rem"
           boxShadow="0 0 25px #00000049"
-          transform="translateY(-50%)"
+          transform={{
+            base: "translateY(-15%)",
+            sm: "translateY(-30%)",
+            lg: "translateY(-50%)",
+          }}
         >
           <Flex
             direction={["column", "row"]}
@@ -237,8 +241,10 @@ const CompanyPage = () => {
           maxW="1330px"
           justify="space-between"
           pb="5rem"
+          px={{ md: "2rem", lg: "" }}
+          align={{ base: "center", md: "flex-start" }}
         >
-          <Flex w={["100%", "100%", "50%"]} gap="2rem" direction="column">
+          <Flex w={["90%", "90%", "55%", "50%"]} gap="2rem" direction="column">
             {/* About */}
             <Box w="100%">
               <Text pb={3} fontSize={["1.25rem", "1.5rem"]} fontWeight={700}>
@@ -490,7 +496,12 @@ const CompanyPage = () => {
               </Grid>
             </Box>
           </Flex>
-          <Flex w={["100%", "100%", "35%"]} gap="2rem" direction="column">
+          <Flex
+            w={["90%", "90%", "35%", "35%"]}
+            gap="2rem"
+            direction="column"
+            mt={{ base: "2rem", md: "0" }}
+          >
             {/* People also view */}
             <Box w="100%">
               <Text pb={3} fontSize={["1.25rem", "1.5rem"]} fontWeight={700}>

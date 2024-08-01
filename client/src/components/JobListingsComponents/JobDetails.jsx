@@ -214,7 +214,7 @@ const JobDetails = ({ currentOffer }) => {
         <Flex
           className="job-description"
           direction="column"
-          p="0 2rem 2rem 2rem"
+          p={{ base: "0 1rem 1rem 1rem", sm: "0 2rem 2rem 2rem" }}
           dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
         />
       </Flex>

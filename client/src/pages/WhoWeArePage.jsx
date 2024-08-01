@@ -175,7 +175,7 @@ const WhoWeArePage = () => {
           direction={{ base: "column", md: "row" }}
           justify="center"
           align="center"
-          gap={5}
+          gap={{ base: 0, md: 5 }}
           py={5}
         >
           {members.map((member, index) => (
@@ -192,13 +192,26 @@ const WhoWeArePage = () => {
                 alignItems="center"
                 justifyContent="space-between"
                 p={3}
+                mx={{ base: "1rem", md: "0" }}
                 mt={3}
-                transform="translateY(20px)"
+                transform={{
+                  base: "translateY(-60px)",
+                  md: "translateY(20px)",
+                }}
                 transition="all 500ms ease-in-out"
                 opacity={0}
                 bg="white"
                 borderRadius="1rem"
-                _groupHover={{ opacity: 1, transform: "translateY(0)" }}
+                _groupHover={{
+                  base: {
+                    opacity: 1,
+                    transform: "translateY(-120px)",
+                  },
+                  md: {
+                    opacity: 1,
+                    transform: "translateY(0)",
+                  },
+                }}
               >
                 <Flex direction="column" align="start">
                   <Text fontWeight="bold">{member.name}</Text>

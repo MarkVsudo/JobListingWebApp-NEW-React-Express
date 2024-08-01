@@ -280,7 +280,7 @@ const JobListingsPage = () => {
         direction={{ base: "column", xl: "row" }}
         gap={{ base: "0.75rem", xl: "0" }}
       >
-        <InputGroup gap="1rem" w={{ base: "sm", md: "lg" }}>
+        <InputGroup gap="1rem" w={{ base: "", md: "lg" }}>
           <InputLeftElement pointerEvents="none">
             <SearchIcon color="gray.300" />
           </InputLeftElement>
