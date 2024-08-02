@@ -17,6 +17,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import HeroSectionSvg from "../../assets/home-page-svg.svg";
 import EllipseHome from "../../assets/ellipse-background-home.svg";
+import EllipseHomeRight from "../../assets/ellipse-background-home-right.svg";
 import HomeButton from "./HomeButton";
 import { gsap } from "gsap";
 
@@ -25,11 +26,13 @@ const Hero = () => {
   const [keyword, setKeyword] = useState("");
   const [location, setLocation] = useState("");
   const ellipseRef = useRef(null);
+  const ellipseRightRef = useRef(null);
 
   const headingFontSize = useBreakpointValue({
     base: "2.5rem",
     md: "3.5rem",
-    lg: "4.875rem",
+    lg: "4rem",
+    xl: "4.875rem",
   });
   const statsFontSize = useBreakpointValue({
     base: "1.5rem",
@@ -49,7 +52,14 @@ const Hero = () => {
       ease: "power1.inOut",
       yoyo: true,
       repeat: -1,
-    });
+    }),
+      gsap.to(ellipseRightRef.current, {
+        y: 20,
+        duration: 1.5,
+        ease: "power1.inOut",
+        yoyo: true,
+        repeat: -1,
+      });
   }, []);
 
   const handleSubmit = () => {
@@ -63,14 +73,14 @@ const Hero = () => {
     <Flex
       p={{ base: "1rem", md: "2rem 4rem" }}
       w="100%"
-      minH="100vh"
+      minH={{ base: "unset", lg: "70vh", "2xl": "100vh" }}
       pos="relative"
       direction={{ base: "column", lg: "row" }}
     >
       <Box
         display="flex"
         flexDirection="column"
-        gap={{ base: "1.5rem", md: "2.75rem" }}
+        gap={{ base: "1.5rem", md: "2rem", lg: "2.75rem" }}
       >
         <Stack spacing={{ base: 2, md: 4 }}>
           <Heading
@@ -172,7 +182,7 @@ const Hero = () => {
         alt="Hero section image"
         pos="absolute"
         display={{ base: "none", "2xl": "block" }}
-        bottom="4.5rem"
+        bottom="4rem"
         right="1rem"
         maxW="40%"
         zIndex="-1"
@@ -184,9 +194,19 @@ const Hero = () => {
         alt="Hero section image"
         pos="absolute"
         left="-1rem"
-        bottom="-2rem"
+        bottom={{ xl: "-7rem", "2xl": "-2rem" }}
         zIndex="-1"
-        display={{ base: "none", lg: "block" }}
+        display={{ base: "none", "2xl": "block" }}
+      />
+      <Img
+        ref={ellipseRightRef}
+        src={EllipseHomeRight}
+        alt="Hero section image"
+        pos="absolute"
+        right="-1rem"
+        bottom={{ lg: "5rem" }}
+        zIndex="-1"
+        display={{ base: "none", lg: "block", "2xl": "none" }}
       />
     </Flex>
   );

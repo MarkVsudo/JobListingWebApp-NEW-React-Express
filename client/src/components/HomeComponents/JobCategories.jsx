@@ -1,5 +1,13 @@
 import { Fragment, useRef, useEffect } from "react";
-import { Heading, Img, Flex, Text, Grid, GridItem } from "@chakra-ui/react";
+import {
+  Heading,
+  Img,
+  Flex,
+  Text,
+  Grid,
+  GridItem,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import CategoryImgIT from "../../assets/it-category-img.svg";
 import CategoryImgRealEstate from "../../assets/house-category-img.svg";
 import CategoryImgEducation from "../../assets/book-category-img.svg";
@@ -69,6 +77,14 @@ const jobCategories = [
 const JobCategories = () => {
   const containerRef = useRef(null);
 
+  const gridColumns = useBreakpointValue({
+    base: 1,
+    sm: 2,
+    md: 2,
+    lg: 3,
+    xl: 4,
+  });
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -117,18 +133,25 @@ const JobCategories = () => {
       color="var(--dark-blue)"
       pos="relative"
     >
-      <Heading as="h2" size="xl" fontWeight={500} pb={3}>
+      <Heading
+        as="h2"
+        size="xl"
+        fontWeight={500}
+        pb={3}
+        textAlign="center"
+        fontSize={{ base: "1.5rem", md: "1.875rem" }}
+      >
         Find the job which suits you the best
       </Heading>
-      <Heading as="h2" size="md" fontWeight={200}>
+      <Heading as="h2" size={{ base: "sm", md: "md" }} fontWeight={200}>
         There are 50+ job categories available
       </Heading>
       <Grid
         className="job-categories-grid"
-        templateColumns="repeat(4, 1fr)"
-        gap={10}
+        templateColumns={`repeat(${gridColumns}, 1fr)`}
+        gap={{ base: 5, md: 7, lg: 10 }}
         p={5}
-        my="2rem"
+        my={{ base: "1rem", md: "2rem" }}
       >
         {jobCategories.map((category, index) => (
           <GridItem
@@ -142,6 +165,7 @@ const JobCategories = () => {
             cursor="pointer"
             transition="all 250ms ease-in-out"
             role="group"
+            minHeight="8rem"
             _hover={{
               bg: "var(--dark-blue)",
               color: "white",
@@ -180,10 +204,16 @@ const JobCategories = () => {
         src={EllipseCategories}
         alt="Categories section image"
         pos="absolute"
-        right="-5rem"
-        bottom="-5rem"
+        right={{ base: "unset", "2xl": "-5rem" }}
+        left={{ base: "-5rem", "2xl": "unset" }}
+        bottom={{
+          lg: "13rem",
+          xl: "1rem",
+          "2xl": "-5rem",
+        }}
         w="25%"
         zIndex="-1"
+        display={{ base: "none", lg: "block" }}
       />
     </Flex>
   );

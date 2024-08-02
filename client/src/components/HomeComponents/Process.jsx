@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import { Img, Flex, Text } from "@chakra-ui/react";
+import { Img, Flex, Text, Box } from "@chakra-ui/react";
 import ProcessImg from "../../assets/process_svg.svg";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -58,15 +58,36 @@ const Process = () => {
   }, []);
 
   return (
-    <Flex
+    <Box
       ref={containerRef}
       bg="var(--blue-gray)"
       borderRadius="12px"
-      my="10rem"
-      w="68vw"
+      my={{ base: "5rem", lg: "7rem", xl: "10rem" }}
+      w={{
+        base: "20rem",
+        sm: "35rem",
+        md: "40rem",
+        lg: "50rem",
+        xl: "72rem",
+        "2xl": "81.5rem",
+      }}
       mx="auto"
+      position="relative"
+      overflow={{ base: "hidden", lg: "visible" }}
     >
-      <Flex gap="5rem" p="3rem" transform="translateX(-7rem)" pos="relative">
+      <Flex
+        p={{ base: "2rem", md: "3rem" }}
+        justify={{ base: "flex-start", lg: "center" }}
+        align="center"
+        transform={{
+          lg: "translateX(-4.5rem)",
+          xl: "translateX(-7.5rem)",
+          "2xl": "translateX(-17rem)",
+        }}
+        overflowX={{ base: "auto", lg: "visible" }}
+        gap={{ base: "2rem", lg: "4rem", xl: "3rem", "2xl": "5rem" }}
+        minW={{ md: "max-content" }}
+      >
         {processData.map((step, index) => (
           <Flex
             key={index}
@@ -75,10 +96,12 @@ const Process = () => {
             p="1rem"
             h="max-content"
             w="15rem"
+            minW="15rem"
             gap="0.5rem"
             bg="white"
             boxShadow="var(--box-shadow)"
             borderRadius="12px"
+            zIndex={1}
           >
             <Flex
               justifyContent="center"
@@ -100,16 +123,19 @@ const Process = () => {
             </Text>
           </Flex>
         ))}
-        <Img
-          src={ProcessImg}
-          alt="Process image"
-          pos="absolute"
-          bottom="0"
-          right="-22vw"
-          h="125%"
-        />
       </Flex>
-    </Flex>
+      <Img
+        src={ProcessImg}
+        alt="Process image"
+        position="absolute"
+        bottom="0"
+        right={{ xl: "0", "2xl": "2rem" }}
+        h={{ xl: "115%", "2xl": "125%" }}
+        display={{ base: "none", xl: "block" }}
+        maxW="100%"
+        zIndex={0}
+      />
+    </Box>
   );
 };
 
