@@ -66,7 +66,7 @@ const Process = () => {
       w={{
         base: "20rem",
         sm: "35rem",
-        md: "40rem",
+        md: "37rem",
         lg: "50rem",
         xl: "72rem",
         "2xl": "81.5rem",
@@ -86,7 +86,7 @@ const Process = () => {
         }}
         overflowX={{ base: "auto", lg: "visible" }}
         gap={{ base: "2rem", lg: "4rem", xl: "3rem", "2xl": "5rem" }}
-        minW={{ md: "max-content" }}
+        minW={{ lg: "max-content" }}
       >
         {processData.map((step, index) => (
           <Flex

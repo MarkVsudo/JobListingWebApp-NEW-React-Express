@@ -149,7 +149,7 @@ const JobCategories = () => {
       <Grid
         className="job-categories-grid"
         templateColumns={`repeat(${gridColumns}, 1fr)`}
-        gap={{ base: 5, md: 7, lg: 10 }}
+        gap={{ base: 5, md: 6, lg: 7, xl: 8, "2xl": 9 }}
         p={5}
         my={{ base: "1rem", md: "2rem" }}
       >
