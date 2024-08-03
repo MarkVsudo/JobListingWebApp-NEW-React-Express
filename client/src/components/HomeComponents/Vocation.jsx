@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import {
   Flex,
   Heading,
@@ -8,10 +8,9 @@ import {
   Button,
   Text,
   VStack,
-  HStack,
   Img,
   ChakraProvider,
-  useToast,
+  Box,
 } from "@chakra-ui/react";
 import VocationImg from "../../assets/vocation-img.png";
 import { theme } from "../../themes/InputTheme";
@@ -21,8 +20,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const Vocation = () => {
-  const toast = useToast();
   const containerRef = useRef(null);
+  const [fileName, setFileName] = useState("");
 
   useEffect(() => {
     const container = containerRef.current;
@@ -69,19 +68,41 @@ const Vocation = () => {
     // ... (keep the existing handleSubmit function)
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFileName(file.name);
+    }
+  };
+
   return (
     <ChakraProvider theme={theme}>
       <Flex
         ref={containerRef}
-        m="10rem 20rem"
+        m={{
+          base: "3rem 1rem ",
+          md: "5rem",
+          lg: "10rem 20rem",
+        }}
         bg="var(--blue-gray)"
         borderRadius="12px"
         color="white"
-        boxShadow="20px -20px var(--dark-blue)"
+        boxShadow={{ base: "none", md: "20px -20px var(--dark-blue)" }}
+        direction="column"
       >
-        <Flex gap="5rem" p={10} align="center">
+        <Flex
+          gap={{ base: "2rem", md: "3rem", lg: "5rem" }}
+          p={{ base: "1rem", md: "2rem", lg: "2.5rem", xl: "4rem" }}
+          align={{ base: "stretch", lg: "center" }}
+          direction={{ base: "column", xl: "row" }}
+        >
           <VStack spacing={5} flex="1" align="stretch">
-            <Heading as="h1" size="xl" fontWeight="bold">
+            <Heading
+              as="h1"
+              fontSize={{ base: "xl", md: "2xl", lg: "3xl" }}
+              fontWeight="bold"
+              textAlign={{ base: "center", lg: "left" }}
+            >
               Haven't discovered your vocation yet?
             </Heading>
             <form
@@ -90,7 +111,12 @@ const Vocation = () => {
               method="post"
               encType="multipart/form-data"
             >
-              <Text className="description" textAlign="justify" mb={5}>
+              <Text
+                className="description"
+                textAlign="justify"
+                mb={5}
+                fontSize={{ base: "sm", md: "md" }}
+              >
                 Send us a resume with which we can decide which job suits your
                 persona. Your resume is a key tool in helping us understand your
                 professional background, skills, and experience. Additionally,
@@ -100,44 +126,81 @@ const Vocation = () => {
                 getting to know you better and finding the perfect match for
                 your career aspirations.
               </Text>
-              <HStack spacing={5} align="stretch">
-                <FormControl variant="floating" id="email" isRequired>
+              <VStack spacing={5} align="stretch">
+                <Flex
+                  gap="1rem"
+                  direction={{ base: "column", md: "row" }}
+                  align="flex-end"
+                >
+                  <FormControl id="resume" isRequired width="full">
+                    <FormLabel>Upload Resume (.doc(x)/.rtf/.pdf)</FormLabel>
+                    <Input
+                      value={fileName}
+                      isReadOnly
+                      border="1px solid var(--cyan)"
+                      placeholder="No file chosen"
+                    />
+                    <Input
+                      type="file"
+                      id="fileInput"
+                      name="resume"
+                      accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf"
+                      style={{ display: "none" }}
+                      onChange={handleFileChange}
+                    />
+                  </FormControl>
+
+                  <Button
+                    width={{ base: "full", md: "sm" }}
+                    paddingInline="2rem"
+                    fontWeight="500"
+                    backgroundColor="var(--cyan)"
+                    color="white"
+                    _hover={{
+                      bg: "#00909A",
+                    }}
+                    onClick={() => document.getElementById("fileInput").click()}
+                  >
+                    Choose a file
+                  </Button>
+                </Flex>
+                <FormControl
+                  variant="floating"
+                  id="email"
+                  isRequired
+                  width="full"
+                >
                   <Input type="email" name="email" placeholder=" " />
                   <FormLabel>Email address</FormLabel>
                 </FormControl>
-                <FormControl variant="floating" id="resume" isRequired>
-                  <Input
-                    type="file"
-                    name="resume"
-                    accept=".doc, .docx, .rtf, .pdf"
-                    pt="3px"
-                  />
-                </FormControl>
-                <FormLabel htmlFor="resume">
-                  Upload Resume (.doc(x)/.rtf/.pdf)
-                </FormLabel>
-              </HStack>
-              <Button
-                type="submit"
-                width="max-content"
-                paddingInline="2rem"
-                fontWeight="500"
-                backgroundColor="var(--cyan)"
-                color="white"
-                _hover={{
-                  bg: "#00909A",
-                }}
-              >
-                Send email
-              </Button>
+
+                <Button
+                  type="submit"
+                  width="full"
+                  paddingInline="2rem"
+                  fontWeight="500"
+                  backgroundColor="var(--cyan)"
+                  color="white"
+                  _hover={{
+                    bg: "#00909A",
+                  }}
+                >
+                  Send email
+                </Button>
+              </VStack>
             </form>
           </VStack>
 
-          <Img
-            className="vocation-image"
-            src={VocationImg}
-            alt="Vocation Image"
-          />
+          <Box display="flex" justifyContent="center">
+            <Img
+              className="vocation-image"
+              src={VocationImg}
+              alt="Vocation Image"
+              width={{ base: "100%", md: "80%", lg: "auto" }}
+              maxHeight={{ base: "300px", lg: "auto" }}
+              objectFit="contain"
+            />
+          </Box>
         </Flex>
       </Flex>
     </ChakraProvider>

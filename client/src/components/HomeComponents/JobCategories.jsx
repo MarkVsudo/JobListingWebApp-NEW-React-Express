@@ -135,11 +135,10 @@ const JobCategories = () => {
     >
       <Heading
         as="h2"
-        size="xl"
         fontWeight={500}
         pb={3}
         textAlign="center"
-        fontSize={{ base: "1.5rem", md: "1.875rem" }}
+        size={{ base: "md", md: "lg", lg: "xl" }}
       >
         Find the job which suits you the best
       </Heading>

@@ -117,7 +117,7 @@ const RegisterPage = () => {
           alt="Ellipse mobile svg"
           position="absolute"
           left="0"
-          bottom="0"
+          bottom={{ base: "-3rem", sm: "0" }}
           height="max-content"
           width="100%"
           animation="shrinkAndEnlarge 1s ease-in-out"

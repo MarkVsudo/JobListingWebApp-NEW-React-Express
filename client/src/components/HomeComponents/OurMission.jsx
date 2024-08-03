@@ -30,8 +30,8 @@ const OurMission = () => {
         gsap.to(textContent, { opacity: 1, y: 0, duration: 0.7, delay: 0.3 });
         gsap.to(image, {
           opacity: 1,
-          y: -20,
-          x: -20,
+          y: 0,
+          x: 0,
           duration: 0.7,
           delay: 0.6,
           ease: "back.out(1.7)",
@@ -46,8 +46,14 @@ const OurMission = () => {
   }, []);
 
   return (
-    <Box ref={containerRef} mx="20rem">
-      <Heading as="h2" textAlign="center" color="var(--dark-blue)" mb="3rem">
+    <Box ref={containerRef} mx={{ base: "1rem", md: "5rem", lg: "20rem" }}>
+      <Heading
+        as="h2"
+        textAlign="center"
+        color="var(--dark-blue)"
+        mb="3rem"
+        size={{ base: "md", md: "lg", lg: "xl" }}
+      >
         Our mission
       </Heading>
       <Flex
@@ -57,17 +63,21 @@ const OurMission = () => {
         color="white"
         bg="var(--blue-gray)"
         borderRadius="12px"
+        direction={{ base: "column", xl: "row" }}
+        p={{ base: "1rem", md: "3rem" }}
       >
         <Flex
           className="text-content"
           direction="column"
           gap={2}
           fontWeight="light"
-          p={3}
           flex="1"
-          px="2rem"
         >
-          <Text as="span" fontSize="2.5rem" fontWeight="bold">
+          <Text
+            as="span"
+            fontSize={{ base: "xl", md: "2xl", lg: "3xl" }}
+            fontWeight="bold"
+          >
             We help you make{" "}
             <Text
               as="span"
@@ -77,20 +87,22 @@ const OurMission = () => {
               the first step
             </Text>
           </Text>
-          <Text mt={4} fontSize="lg">
-            It was a blast! DEV.BG started with the idea to gather all tech
-            people in Bulgaria in a single place where they can interact with
-            each other, gain insights into their career, level up their
-            professional development and can also easily land at their next tech
-            job. <br />
-            <br />
-            Today at DEV.BG there are 30,000+ of them. Along with more than 1200
-            partners – tech companies from any type and size – we made the
-            difference we were all looking for – Bulgaria now is a great place
-            for tech business and a destination for hiring top talents. <br />
-            <br />
-            This has been an awesome journey, and we are thrilled to be playing
-            the leading role in it!
+          <Text mt={4} fontSize={{ base: "md", md: "lg" }} textAlign="justify">
+            It's been an amazing journey! JobConqueror was founded with the
+            vision of creating a platform where job seekers and employers could
+            easily connect. We wanted to be more than just a job board, offering
+            a space where individuals could discover career opportunities,
+            enhance their skills, and find the right job fit. <br />
+            <br /> Today, JobConqueror boasts a thriving community of over
+            30,000 active job seekers and more than 1,200 partner companies from
+            various industries. Together, we've revolutionized the job search
+            experience, making it easier for top talent to find their next
+            career move. <br />
+            <br /> We're proud of the impact we've made. JobConqueror is not
+            just a platform; it's a community where careers are built. As we
+            continue to grow, we're excited to lead the way in transforming the
+            job market and making a difference. The future is promising, and
+            we're eager to see what comes next!
           </Text>
         </Flex>
         <Img
@@ -98,8 +110,10 @@ const OurMission = () => {
           src={OurMissionImg}
           alt="Mission Image"
           objectFit="cover"
-          ml={4}
+          mt={{ base: "2rem", lg: 0 }}
+          ml={{ base: 0, lg: 4 }}
           borderRadius="12px"
+          maxW={{ base: "100%", lg: "40%" }}
         />
       </Flex>
     </Box>

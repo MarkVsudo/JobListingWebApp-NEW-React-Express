@@ -1,5 +1,13 @@
 import { useRef, useEffect } from "react";
-import { Heading, Img, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+import {
+  Heading,
+  Img,
+  Flex,
+  Grid,
+  GridItem,
+  Text,
+  Box,
+} from "@chakra-ui/react";
 import LearnFromExpertsImg from "../../assets/experts-section-img.png";
 import TutorialSvg from "../../assets/tutorial-svg.svg";
 import { FaArrowRight } from "react-icons/fa6";
@@ -79,20 +87,35 @@ const LearnFromExperts = () => {
       justifyContent="center"
       alignItems="center"
       color="var(--dark-blue)"
-      m="10rem 20rem"
+      m={{ base: "2rem", md: "5rem", lg: "10rem 20rem" }}
       gap="1rem"
     >
-      <Heading as="h2" size="xl" fontWeight={500}>
+      <Heading
+        as="h2"
+        size={{ base: "md", md: "lg", lg: "xl" }}
+        fontWeight={500}
+        textAlign="center"
+      >
         Learn from our experts
       </Heading>
-      <Heading as="h2" size="md" fontWeight={200} textAlign="center">
+      <Heading
+        as="h2"
+        size={{ base: "sm", lg: "md" }}
+        fontWeight={200}
+        textAlign="center"
+        px={{ base: "1rem", md: "2rem" }}
+      >
         Explore our curated resources at JobConqueror, designed by industry
         experts, to empower you with valuable insights and knowledge as you
         prepare for your job search journey.
       </Heading>
 
-      <Grid templateColumns="repeat(4, 1fr)" gap="2rem">
-        <GridItem colSpan={4} borderRadius="12px">
+      <Grid
+        templateColumns={`repeat({ base: 1, md: 2, lg: 4 }, 1fr)`}
+        gap="2rem"
+        w="100%"
+      >
+        <GridItem colSpan={{ base: 1, md: 2, lg: 4 }} borderRadius="12px">
           <Img
             className="main-image"
             src={LearnFromExpertsImg}
@@ -115,28 +138,32 @@ const LearnFromExperts = () => {
               alignItems="center"
               textAlign="center"
             >
-              <Grid
+              <Box
                 bg="white"
-                w="65px"
-                h="65px"
+                w={{ base: "50px", md: "65px" }}
+                h={{ base: "50px", md: "65px" }}
                 borderRadius="50%"
-                placeItems="center"
                 pos="relative"
                 overflow="hidden"
                 border="3px solid var(--blue-gray)"
                 top="-25px"
+                display="grid"
+                placeItems="center"
               >
                 <Img
                   src={advice.icon}
                   alt="Tutorial svg"
                   pos="absolute"
                   left="10px"
+                  w={{ base: "30px", md: "40px" }}
                 />
-              </Grid>
-              <Text fontWeight={700} fontSize="1.125rem">
+              </Box>
+              <Text fontWeight={700} fontSize={{ base: "md", md: "lg" }} mb={2}>
                 {advice.title}
               </Text>
-              <Text textAlign="justify">{advice.text}</Text>
+              <Text textAlign="justify" fontSize={{ base: "sm", md: "md" }}>
+                {advice.text}
+              </Text>
               <ChakraLink
                 as={ReactRouterLink}
                 to="/recommendations"
@@ -144,10 +171,10 @@ const LearnFromExperts = () => {
                 placeSelf="end"
                 placeItems="center"
                 pos="relative"
-                right="-35px"
+                right={{ base: "-20px", md: "-35px" }}
                 bottom="10px"
-                w="55px"
-                h="55px"
+                w={{ base: "45px", md: "55px" }}
+                h={{ base: "45px", md: "55px" }}
                 overflow="hidden"
                 borderRadius="50%"
                 border="3px solid var(--blue-gray)"
@@ -164,7 +191,7 @@ const LearnFromExperts = () => {
                 <FaArrowRight
                   className="fa-arrow-right"
                   color="black"
-                  fontSize="1.25rem"
+                  fontSize={{ base: "1rem", md: "1.25rem" }}
                 />
               </ChakraLink>
             </Flex>
