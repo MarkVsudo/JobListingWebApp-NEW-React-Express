@@ -132,6 +132,16 @@ const Vocation = () => {
                   direction={{ base: "column", md: "row" }}
                   align="flex-end"
                 >
+                  <FormControl
+                    variant="floating"
+                    id="email"
+                    isRequired
+                    width="full"
+                  >
+                    <Input type="email" name="email" placeholder=" " />
+                    <FormLabel>Email address</FormLabel>
+                  </FormControl>
+
                   <FormControl id="resume" isRequired width="full">
                     <FormLabel>Upload Resume (.doc(x)/.rtf/.pdf)</FormLabel>
                     <Input
@@ -164,15 +174,6 @@ const Vocation = () => {
                     Choose a file
                   </Button>
                 </Flex>
-                <FormControl
-                  variant="floating"
-                  id="email"
-                  isRequired
-                  width="full"
-                >
-                  <Input type="email" name="email" placeholder=" " />
-                  <FormLabel>Email address</FormLabel>
-                </FormControl>
 
                 <Button
                   type="submit"

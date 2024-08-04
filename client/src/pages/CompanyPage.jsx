@@ -1,51 +1,50 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Helmet } from "react-helmet";
+import { useParams, useNavigate } from "react-router-dom";
+import { Link as ReactRouterLink } from "react-router-dom";
+import { GoGift } from "react-icons/go";
+import { BsLungs } from "react-icons/bs";
+import { FiPhone } from "react-icons/fi";
+import { FaRegStar } from "react-icons/fa6";
+import { LuHeartPulse } from "react-icons/lu";
+import { SlLocationPin } from "react-icons/sl";
+import { BsGraphUpArrow } from "react-icons/bs";
+import { RxDotsVertical } from "react-icons/rx";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { VscDebugDisconnect } from "react-icons/vsc";
+import { Link as ChakraLink } from "@chakra-ui/react";
+import { Autoplay, Navigation } from "swiper/modules";
+import { FaRegShareFromSquare } from "react-icons/fa6";
+import { PiPlugsConnectedLight } from "react-icons/pi";
+import { MdOutlineHealthAndSafety } from "react-icons/md";
 import {
-  Flex,
-  Button,
   Box,
-  Img,
-  Text,
-  VStack,
-  HStack,
-  Spinner,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  useDisclosure,
+  Button,
+  Flex,
   Grid,
   GridItem,
+  Img,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
+  Spinner,
+  Text,
   Tooltip,
+  useDisclosure,
+  VStack,
 } from "@chakra-ui/react";
-import { FaRegShareFromSquare } from "react-icons/fa6";
-import { VscDebugDisconnect } from "react-icons/vsc";
-import { PiPlugsConnectedLight } from "react-icons/pi";
-import { IoBookmarkOutline } from "react-icons/io5";
-import { IoBookmark } from "react-icons/io5";
-import { Link as ReactRouterLink } from "react-router-dom";
-import { Link as ChakraLink } from "@chakra-ui/react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation } from "swiper/modules";
+import JobOffer from "../components/JobListingsComponents/JobOffer";
 import "swiper/css";
 import "swiper/css/navigation";
-import { MdOutlineHealthAndSafety } from "react-icons/md";
-import { BsLungs } from "react-icons/bs";
-import { LuHeartPulse } from "react-icons/lu";
-import { GoGift } from "react-icons/go";
-import { BsGraphUpArrow } from "react-icons/bs";
-import { FaRegStar } from "react-icons/fa6";
-import { RxDotsVertical } from "react-icons/rx";
-import { SlLocationPin } from "react-icons/sl";
-import { FiPhone } from "react-icons/fi";
-
-import { Helmet } from "react-helmet";
-import axios from "axios";
 
 const CompanyPage = () => {
   const { companyName } = useParams();
+  const navigate = useNavigate();
   const [company, setCompany] = useState(null);
   const [companies, setCompanies] = useState(null);
+  const [offers, setOffers] = useState([]);
   const [followed, setFollowed] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -55,11 +54,13 @@ const CompanyPage = () => {
         const response = await axios.get(`/api/company/${companyName}`);
         setCompany(response.data.company);
         setCompanies(response.data.companies);
+        setOffers(response.data.offers[0]);
       } catch (error) {
         console.error("Error fetching company data:", error);
       }
     };
 
+    console.log(offers);
     fetchCompanyData();
   }, [companyName]);
 
@@ -273,112 +274,49 @@ const CompanyPage = () => {
             <Box w="100%">
               <Flex justify="space-between" align="center" pb={3}>
                 <Text fontSize={["1.25rem", "1.5rem"]} fontWeight={700}>
-                  Jobs From {company[0].name}
+                  Job Offers From {company[0].name}
                 </Text>
                 <ChakraLink
                   as={ReactRouterLink}
-                  to="/job-listings"
+                  to={`/job-listings?query=${encodeURIComponent(
+                    company[0].name
+                  )}`}
                   _hover={{ textDecoration: "none" }}
                   color="rgb(13,110,253)"
                 >
                   View All Jobs
                 </ChakraLink>
               </Flex>
-              <VStack spacing="1rem">
-                <Flex
-                  direction="column"
-                  bg="white"
-                  boxShadow="0 0 25px #00000049"
-                  borderRadius="1rem"
-                  gap="0.75rem"
-                  p="1rem"
-                  w="100%"
-                >
-                  <HStack justify="space-between" align="start">
-                    <Flex gap="0.5rem" align="center">
-                      <Img
-                        src={company[0].logo}
-                        alt="Company logo"
-                        w="3.5rem"
-                        h="3.5rem"
-                        objectFit="contain"
-                        pr={1}
+              <VStack spacing="1rem" alignItems="flex-start">
+                {offers.length ? (
+                  offers.map((offer) => (
+                    <Flex key={offer.job_id} w="100%" alignItems="flex-start">
+                      <JobOffer
+                        offer={offer}
+                        setSelectedOffer={() => {
+                          navigate(
+                            `/job-listings?query=${encodeURIComponent(
+                              company[0].name
+                            )}`
+                          );
+                        }}
                       />
-                      <VStack justify="space-between" align="flex-start">
-                        <Text
-                          as="span"
-                          fontWeight={700}
-                          fontSize={["1rem", "1.25rem"]}
-                        >
-                          Back-end engineer
-                        </Text>
-                        <Text as="span">Varna, Bulgaria</Text>
-                      </VStack>
                     </Flex>
-                    <IoBookmarkOutline color="var(--cyan)" fontSize="1.5rem" />
-                  </HStack>
-                  <HStack spacing={2}>
-                    <Text as="span" bg="#f8f8f8" p=".25rem">
-                      Internship
+                  ))
+                ) : (
+                  <Flex direction="column">
+                    <Text fontWeight={500}>
+                      {company[0].name} currently do not have open job offers.
                     </Text>
-                    <Text as="span" bg="#f8f8f8" p=".25rem">
-                      Onsite
+                    <Text fontWeight={500}>
+                      Feel free to check out the{" "}
+                      <ChakraLink as={ReactRouterLink} to="/" color="blue.700">
+                        job openings{" "}
+                      </ChakraLink>
+                      other companies have offered.
                     </Text>
-                    <Text as="span" bg="#f8f8f8" p=".25rem">
-                      Fresh Graduate
-                    </Text>
-                  </HStack>
-                  <Text color="rgba(33, 37, 41, 0.75)">
-                    12 days ago | 47 applicants
-                  </Text>
-                </Flex>
-                <Flex
-                  direction="column"
-                  bg="white"
-                  boxShadow="0 0 25px #00000049"
-                  borderRadius="1rem"
-                  gap="0.75rem"
-                  p="1rem"
-                  w="100%"
-                >
-                  <HStack justify="space-between" align="start">
-                    <Flex gap="0.5rem" align="center">
-                      <Img
-                        src={company[0].logo}
-                        alt="Company logo"
-                        w="3.5rem"
-                        h="3.5rem"
-                        objectFit="contain"
-                        pr={1}
-                      />
-                      <VStack justify="space-between" align="flex-start">
-                        <Text
-                          as="span"
-                          fontWeight={700}
-                          fontSize={["1rem", "1.25rem"]}
-                        >
-                          Web Developer
-                        </Text>
-                        <Text as="span">Sofia, Bulgaria</Text>
-                      </VStack>
-                    </Flex>
-                    <IoBookmark color="var(--cyan)" fontSize="1.5rem" />
-                  </HStack>
-                  <HStack spacing={2}>
-                    <Text as="span" bg="#f8f8f8" p=".25rem">
-                      Full Time
-                    </Text>
-                    <Text as="span" bg="#f8f8f8" p=".25rem">
-                      Remote
-                    </Text>
-                    <Text as="span" bg="#f8f8f8" p=".25rem">
-                      2-4 years
-                    </Text>
-                  </HStack>
-                  <Text color="rgba(33, 37, 41, 0.75)">
-                    5 days ago | 135 applicants
-                  </Text>
-                </Flex>
+                  </Flex>
+                )}
               </VStack>
             </Box>
             {/* Photos */}

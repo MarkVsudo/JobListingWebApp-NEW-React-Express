@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import {
@@ -22,7 +22,6 @@ import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import HomeButton from "../components/HomeComponents/HomeButton";
 import JobDetails from "../components/JobListingsComponents/JobDetails";
 import JobOffer from "../components/JobListingsComponents/JobOffer";
-import { AuthContext } from "../contexts/AuthContext";
 import filterOptions from "../data/filterOptions.json";
 
 const rectangleHeaderStyles = {
@@ -147,46 +146,6 @@ const JobListingsPage = () => {
   }, [searchParams]);
 
   const currentOffer = selectedOffer || offers[0];
-
-  const { user } = useContext(AuthContext);
-  const [savedJobs, setSavedJobs] = useState([]);
-
-  const saveJobOffer = async (jobId) => {
-    try {
-      const userId = user.user_id;
-      await axios.post("/api/save-job-offer", { jobId, userId });
-      setSavedJobs((prev) => [...prev, jobId]);
-    } catch (error) {
-      console.error("Error saving job offer:", error);
-    }
-  };
-
-  useEffect(() => {
-    const fetchSavedJobs = async () => {
-      try {
-        const response = await axios.get(
-          `/api/save-job-offer?userId=${user.user_id}`
-        );
-        setSavedJobs(response.data);
-      } catch (error) {
-        console.error("Error fetching saved jobs:", error);
-      }
-    };
-
-    if (user) {
-      fetchSavedJobs();
-    }
-  }, [user]);
-
-  const deleteSavedJobOffer = async (jobId) => {
-    try {
-      const userId = user.user_id;
-      await axios.delete("/api/save-job-offer", { data: { userId, jobId } });
-      setSavedJobs(savedJobs.filter((savedJob) => savedJob !== jobId));
-    } catch (error) {
-      console.error("Error deleting saved job offer:", error);
-    }
-  };
 
   return (
     <>
@@ -588,9 +547,6 @@ const JobListingsPage = () => {
                   offer={offer}
                   currentOffer={currentOffer}
                   setSelectedOffer={setSelectedOffer}
-                  saveJobOffer={saveJobOffer}
-                  savedJobs={savedJobs}
-                  deleteSavedJobOffer={deleteSavedJobOffer}
                 />
               </Box>
             ))}

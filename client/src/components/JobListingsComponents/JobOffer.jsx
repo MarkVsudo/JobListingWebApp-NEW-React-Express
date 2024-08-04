@@ -1,4 +1,4 @@
-import React from "react";
+import { useContext, useState, useEffect } from "react";
 import {
   Box,
   Flex,
@@ -8,21 +8,54 @@ import {
   IconButton,
   Divider,
 } from "@chakra-ui/react";
-import { IoBookmarkOutline } from "react-icons/io5";
-import { IoBookmark } from "react-icons/io5";
-
+import { IoBookmarkOutline, IoBookmark } from "react-icons/io5";
 import { FaRegBuilding } from "react-icons/fa";
 import { TbPigMoney } from "react-icons/tb";
 import { LuBrain } from "react-icons/lu";
+import { AuthContext } from "../../contexts/AuthContext";
+import axios from "axios";
 
-const JobOffer = ({
-  offer,
-  currentOffer,
-  setSelectedOffer,
-  saveJobOffer,
-  savedJobs,
-  deleteSavedJobOffer,
-}) => {
+const JobOffer = ({ offer, currentOffer = {}, setSelectedOffer }) => {
+  const { user } = useContext(AuthContext);
+  const [savedJobs, setSavedJobs] = useState([]);
+
+  useEffect(() => {
+    const fetchSavedJobs = async () => {
+      try {
+        const response = await axios.get(
+          `/api/save-job-offer?userId=${user.user_id}`
+        );
+        setSavedJobs(response.data);
+      } catch (error) {
+        console.error("Error fetching saved jobs:", error);
+      }
+    };
+
+    if (user) {
+      fetchSavedJobs();
+    }
+  }, [user]);
+
+  const saveJobOffer = async (jobId) => {
+    try {
+      const userId = user.user_id;
+      await axios.post("/api/save-job-offer", { jobId, userId });
+      setSavedJobs((prev) => [...prev, jobId]);
+    } catch (error) {
+      console.error("Error saving job offer:", error);
+    }
+  };
+
+  const deleteSavedJobOffer = async (jobId) => {
+    try {
+      const userId = user.user_id;
+      await axios.delete("/api/save-job-offer", { data: { userId, jobId } });
+      setSavedJobs(savedJobs.filter((savedJob) => savedJob !== jobId));
+    } catch (error) {
+      console.error("Error deleting saved job offer:", error);
+    }
+  };
+
   const isSaved = savedJobs.includes(offer.job_id);
 
   return (
@@ -59,11 +92,9 @@ const JobOffer = ({
         <IconButton
           onClick={(e) => {
             e.stopPropagation();
-            {
-              isSaved
-                ? deleteSavedJobOffer(offer.job_id)
-                : saveJobOffer(offer.job_id);
-            }
+            isSaved
+              ? deleteSavedJobOffer(offer.job_id)
+              : saveJobOffer(offer.job_id);
           }}
           aria-label="Save job offer"
           icon={isSaved ? <IoBookmark /> : <IoBookmarkOutline />}

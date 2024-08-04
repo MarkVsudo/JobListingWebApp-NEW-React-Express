@@ -42,9 +42,18 @@ router.get("/company/:companyName", async (req, res) => {
       "SELECT name, company_address, logo FROM companies"
     );
 
+    const offers = await db.query(
+      `SELECT job_offers.*, companies.logo AS company_logo
+      FROM job_offers
+      INNER JOIN companies ON job_offers.company_id = companies.company_id
+      WHERE companies.name = ?
+      `,
+      [companyName]
+    );
+
     if (rows.length > 0) {
       const company = rows[0];
-      res.json({ company, companies });
+      res.json({ company, companies, offers });
     } else {
       res.status(404).json({ error: "Company not found" });
     }
