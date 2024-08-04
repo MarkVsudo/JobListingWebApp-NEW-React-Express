@@ -1,10 +1,14 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import multer from "multer";
 import multerS3 from "multer-s3";
-import mime from "mime-types";
 import dotenv from "dotenv";
 import urlencode from "urlencode";
+import db from "./dbConfig.js";
 
 dotenv.config();
 
@@ -54,4 +58,50 @@ const uploadFile = multer({
   }),
 });
 
-export { s3Client, uploadAvatar, uploadFile, getSignedUrl, PutObjectCommand };
+const deleteUserFile = async (req, res) => {
+  const fileId = req.body.fileId;
+
+  try {
+    // Get file url from DB
+    const [file] = await db.query(
+      "SELECT file_url FROM user_files WHERE user_id = ? AND id = ?",
+      [req.user.id, fileId]
+    );
+
+    if (!file) {
+      return res.status(404).json({ msg: "File not found" });
+    }
+
+    // Extract S3 key from file URL
+    const fileKey = file[0].file_url.split("/files/")[1];
+
+    // Delete file from S3
+    const deleteParams = {
+      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Key: `files/${fileKey}`,
+    };
+
+    const deleteCommand = new DeleteObjectCommand(deleteParams);
+    await s3Client.send(deleteCommand);
+
+    // Delete file record from DB
+    await db.query("DELETE FROM user_files WHERE user_id = ? AND id = ?", [
+      req.user.id,
+      fileId,
+    ]);
+
+    res.status(200).json({ msg: "File deleted successfully" });
+  } catch (err) {
+    console.error("An error occurred while deleting user file:", err);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
+export {
+  s3Client,
+  uploadAvatar,
+  uploadFile,
+  deleteUserFile,
+  getSignedUrl,
+  PutObjectCommand,
+};

@@ -9,7 +9,11 @@ import {
   postUserFile,
   jobApplication,
 } from "../controllers/userController.js";
-import { uploadAvatar, uploadFile } from "../config/awsS3Config.js";
+import {
+  uploadAvatar,
+  uploadFile,
+  deleteUserFile,
+} from "../config/awsS3Config.js";
 
 import transporter from "../config/nodemailerConfig.js";
 
@@ -84,6 +88,8 @@ router.post(
   uploadFile.single("file"),
   postUserFile
 );
+
+router.delete("/user-file", authenticateToken, deleteUserFile);
 
 router.post("/job-application", authenticateToken, jobApplication);
 

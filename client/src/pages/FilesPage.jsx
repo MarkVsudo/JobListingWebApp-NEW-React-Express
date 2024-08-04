@@ -143,6 +143,15 @@ const FilesPage = () => {
     }
   };
 
+  const handleFileDeletion = async (fileId) => {
+    try {
+      await axios.delete("/api/user-file", { data: { fileId } });
+      setFiles(files.filter((file) => file.id !== fileId));
+    } catch (err) {
+      console.error("An error occurred while deleting user file:", err);
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -224,7 +233,7 @@ const FilesPage = () => {
                   </Text>
                   <HomeButton
                     title="Remove"
-                    onClick={() => handleRemoveFile(file.id)}
+                    onClick={() => handleFileDeletion(file.id)}
                   />
                 </HStack>
               ))
