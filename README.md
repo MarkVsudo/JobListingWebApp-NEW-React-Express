@@ -117,11 +117,12 @@ For best practices create an Identity and Access Management (IAM) user. Click on
 			"Action": [
 				"s3:PutObject",
 				"s3:GetObject",
-				"s3:ListBucket"
+				"s3:ListBucket",
+				"s3:DeleteObject"
 			],
 			"Resource": [
-				"arn:aws:s3:::your-bucket-name",
-				"arn:aws:s3:::your-bucket-name/*"
+				"arn:aws:s3:::joboffersbucket",
+				"arn:aws:s3:::joboffersbucket/*"
 			]
 		}
 	]
