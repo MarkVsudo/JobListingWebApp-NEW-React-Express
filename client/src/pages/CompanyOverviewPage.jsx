@@ -192,7 +192,7 @@ const CompanyOverviewPage = () => {
           </Flex>
           <Flex
             direction="column"
-            px={["1rem", "2rem", "3rem", "4rem", "15rem"]}
+            px={["1rem", "2rem", "3rem", "4rem", "7rem", "15rem"]}
             justify="center"
             align="center"
             zIndex="1"
@@ -202,15 +202,14 @@ const CompanyOverviewPage = () => {
               fontWeight={500}
               py="1.25rem"
             >
-              Best companies on our platform
+              Most loyal companies on our platform
             </Text>
             <Grid
-              templateColumns={[
-                "repeat(1, 1fr)",
-                "repeat(2, 1fr)",
-                "repeat(2, 1fr)",
-                "repeat(3, 1fr)",
-              ]}
+              templateColumns={{
+                base: "repeat(1, 1fr)",
+                md: "repeat(2, 1fr)",
+                lg: "repeat(3, 1fr)",
+              }}
               gap="1.5rem"
             >
               {companies.map((company) => (

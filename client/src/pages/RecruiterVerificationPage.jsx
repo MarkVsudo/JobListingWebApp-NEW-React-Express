@@ -26,6 +26,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { AuthContext } from "../contexts/AuthContext";
+import filterOptions from "../data/filterOptions.json";
 
 const steps = [
   {
@@ -178,11 +179,11 @@ const RecruiterVerificationPage = () => {
                       onChange={handleInputChange}
                       placeholder="Select industry"
                     >
-                      <option value="tech">Technology</option>
-                      <option value="finance">Finance</option>
-                      <option value="healthcare">Healthcare</option>
-                      <option value="education">Education</option>
-                      <option value="other">Other</option>
+                      {filterOptions.jobSectors.map((industry, index) => (
+                        <option key={index} value={industry}>
+                          {industry}
+                        </option>
+                      ))}
                     </Select>
                   </FormControl>
                   <FormControl isRequired>

@@ -35,6 +35,7 @@ import {
   NumberDecrementStepper,
 } from "@chakra-ui/react";
 import { AuthContext } from "../contexts/AuthContext";
+import filterOptions from "../data/filterOptions.json";
 
 const steps = [
   {
@@ -199,44 +200,11 @@ const PostJobOfferPage = () => {
                       value={formData.job_sector}
                       onChange={handleInputChange}
                     >
-                      <option value="IT (Information Technology)">
-                        IT (Information Technology)
-                      </option>
-                      <option value="Real Estate Business">
-                        Real Estate Business
-                      </option>
-                      <option value="Education">Education</option>
-                      <option value="Engineering">Engineering</option>
-                      <option value="Finance & Banking">
-                        Finance & Banking
-                      </option>
-                      <option value="Restaurant Services">
-                        Restaurant Services
-                      </option>
-                      <option value="Marketing & Advertising">
-                        Marketing & Advertising
-                      </option>
-                      <option value="Human Resources (HR)">
-                        Human Resources (HR)
-                      </option>
-                      <option value="Healthcare">Healthcare</option>
-                      <option value="Retail">Retail</option>
-                      <option value="Manufacturing">Manufacturing</option>
-                      <option value="Hospitality">Hospitality</option>
-                      <option value="Telecommunications">
-                        Telecommunications
-                      </option>
-                      <option value="Art & Design">Art & Design</option>
-                      <option value="Legal">Legal</option>
-                      <option value="Nonprofit & Social Services">
-                        Nonprofit & Social Services
-                      </option>
-                      <option value="Sales">Sales</option>
-                      <option value="Customer Service">Customer Service</option>
-                      <option value="Media & Entertainment">
-                        Media & Entertainment
-                      </option>
-                      <option value="Government">Government</option>
+                      {filterOptions.jobSectors.map((jobSector, index) => (
+                        <option key={index} value={jobSector}>
+                          {jobSector}
+                        </option>
+                      ))}
                     </Select>
                   </FormControl>
                   <FormControl>

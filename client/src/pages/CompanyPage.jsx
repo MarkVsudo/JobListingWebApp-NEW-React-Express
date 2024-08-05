@@ -330,12 +330,14 @@ const CompanyPage = () => {
                     src={images[1]}
                     alt="Company image 1"
                     borderRadius="1rem"
+                    h="100%"
                   />
-                  <Box position="relative" display="inline-block">
+                  <Box position="relative" display="inline-block" height="100%">
                     <Img
                       src={images[2]}
                       alt="Company image 2"
                       borderRadius="1rem"
+                      height="100%"
                     />
                     <Box
                       position="absolute"

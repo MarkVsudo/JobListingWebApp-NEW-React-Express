@@ -249,6 +249,7 @@ const JobListingsPage = () => {
             type="text"
             placeholder="Job title or company"
             list="datalistOptions"
+            value={searchQuery}
             onChange={handleSearchInput}
           />
           <datalist id="datalistOptions">
