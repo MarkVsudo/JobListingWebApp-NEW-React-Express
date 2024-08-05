@@ -57,8 +57,8 @@ const JobListingsPage = () => {
 
   let [searchParams, setSearchParams] = useSearchParams();
   const [selectedLocations, setSelectedLocations] = useState([]);
-  const [selectedJobType, setSelectedJobType] = useState([]);
-  const [selectedIndustry, setSelectedIndustry] = useState([]);
+  const [selectedEmploymentType, setSelectedEmploymentType] = useState([]);
+  const [selectedJobSector, setSelectedJobSector] = useState([]);
   const [selectedExperience, setSelectedExperience] = useState([]);
   const [selectedSalary, setSelectedSalary] = useState([]);
   const [selectedCompanySize, setSelectedCompanySize] = useState([]);
@@ -117,9 +117,11 @@ const JobListingsPage = () => {
     setSelectedLocations(
       params.get("location")?.split(",").filter(Boolean) || []
     );
-    setSelectedJobType(params.get("jobType")?.split(",").filter(Boolean) || []);
-    setSelectedIndustry(
-      params.get("industry")?.split(",").filter(Boolean) || []
+    setSelectedEmploymentType(
+      params.get("employmentType")?.split(",").filter(Boolean) || []
+    );
+    setSelectedJobSector(
+      params.get("jobSector")?.split(",").filter(Boolean) || []
     );
     setSelectedExperience(
       params.get("experience")?.split(",").filter(Boolean) || []
@@ -306,19 +308,25 @@ const JobListingsPage = () => {
                 {...filterButtonStyles}
                 width="100%"
               >
-                Job Type
+                Employment Type
               </MenuButton>
               <MenuList>
                 <VStack align="flex-start" px="1rem">
-                  {filterOptions.jobTypes.map((jobType) => (
+                  {filterOptions.employmentTypes.map((employmentType) => (
                     <Checkbox
-                      key={jobType}
-                      isChecked={selectedJobType.includes(jobType)}
+                      key={employmentType}
+                      isChecked={selectedEmploymentType.includes(
+                        employmentType
+                      )}
                       onChange={() =>
-                        handleChange(jobType, setSelectedJobType, "jobType")
+                        handleChange(
+                          employmentType,
+                          setSelectedEmploymentType,
+                          "employmentType"
+                        )
                       }
                     >
-                      {jobType}
+                      {employmentType}
                     </Checkbox>
                   ))}
                 </VStack>
@@ -337,19 +345,23 @@ const JobListingsPage = () => {
                 {...filterButtonStyles}
                 width="100%"
               >
-                Industry
+                Job Sector
               </MenuButton>
               <MenuList>
                 <VStack align="flex-start" px="1rem">
-                  {filterOptions.industries.map((industry) => (
+                  {filterOptions.jobSectors.map((jobSector) => (
                     <Checkbox
-                      key={industry}
-                      isChecked={selectedIndustry.includes(industry)}
+                      key={jobSector}
+                      isChecked={selectedJobSector.includes(jobSector)}
                       onChange={() =>
-                        handleChange(industry, setSelectedIndustry, "industry")
+                        handleChange(
+                          jobSector,
+                          setSelectedJobSector,
+                          "jobSector"
+                        )
                       }
                     >
-                      {industry}
+                      {jobSector}
                     </Checkbox>
                   ))}
                 </VStack>
@@ -573,11 +585,13 @@ const JobListingsPage = () => {
                   {searchParams.get("location") && (
                     <Text>Location: {searchParams.get("location")}</Text>
                   )}
-                  {searchParams.get("jobType") && (
-                    <Text>Job Type: {searchParams.get("jobType")}</Text>
+                  {searchParams.get("employmentType") && (
+                    <Text>
+                      Employment Type: {searchParams.get("employmentType")}
+                    </Text>
                   )}
-                  {searchParams.get("industry") && (
-                    <Text>Industry: {searchParams.get("industry")}</Text>
+                  {searchParams.get("jobSector") && (
+                    <Text>Job Sector: {searchParams.get("jobSector")}</Text>
                   )}
                   {searchParams.get("experience") && (
                     <Text>Experience: {searchParams.get("experience")}</Text>

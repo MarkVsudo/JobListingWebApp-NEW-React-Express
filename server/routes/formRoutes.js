@@ -175,6 +175,7 @@ router.post("/job-offer", async (req, res) => {
     short_description,
     experience,
     user_id,
+    job_sector,
   } = req.body;
 
   try {
@@ -203,8 +204,9 @@ router.post("/job-offer", async (req, res) => {
         application_deadline,
         short_description,
         experience,
-        user_id
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        user_id,
+        job_sector
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
       [
         title,
@@ -219,6 +221,7 @@ router.post("/job-offer", async (req, res) => {
         short_description,
         experience,
         user_id,
+        job_sector,
       ]
     );
 

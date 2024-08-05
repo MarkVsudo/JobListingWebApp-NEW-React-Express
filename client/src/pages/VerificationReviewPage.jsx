@@ -65,7 +65,8 @@ const RequestItem = ({
   jobId,
   applicationDeadline,
   benefits,
-  employementType,
+  employmentType,
+  jobSector,
   experience,
   location,
   requirements,
@@ -214,7 +215,10 @@ const RequestItem = ({
                   <strong>Benefits:</strong> {benefits}
                 </Text>
                 <Text>
-                  <strong>Employement Type:</strong> {employementType}
+                  <strong>Employment Type:</strong> {employmentType}
+                </Text>
+                <Text>
+                  <strong>Job Sector:</strong> {jobSector}
                 </Text>
                 <Text>
                   <strong>Level of experience:</strong> {experience}
@@ -442,7 +446,8 @@ const VerificationReviewPage = () => {
                 jobId={request.job_id || ""}
                 applicationDeadline={request.application_deadline || ""}
                 benefits={request.benefits || ""}
-                employementType={request.employement_type || ""}
+                employmentType={request.employment_type || ""}
+                jobSector={request.jobSector || ""}
                 experience={request.experience || ""}
                 location={request.location || ""}
                 requirements={request.requirements || ""}

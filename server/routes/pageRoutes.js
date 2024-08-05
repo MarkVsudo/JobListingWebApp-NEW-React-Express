@@ -131,8 +131,14 @@ router.get("/blog/:blogId", async (req, res) => {
 
 router.get("/job-listings", async (req, res) => {
   try {
-    const { location, jobType, industry, experience, salary, companySize } =
-      req.query;
+    const {
+      location,
+      employmentType,
+      jobSector,
+      experience,
+      salary,
+      companySize,
+    } = req.query;
     const searchQueryExtracted = req.query.query;
     console.log("Query Parameters:", req.query);
 
@@ -146,20 +152,20 @@ router.get("/job-listings", async (req, res) => {
       locations.forEach((loc) => queryParams.push(`%${loc.trim()}%`));
     }
 
-    if (jobType) {
-      const jobTypes = jobType.split(",");
-      filterQuery += ` AND job_offers.employment_type IN (${jobTypes
+    if (employmentType) {
+      const employmentTypes = employmentType.split(",");
+      filterQuery += ` AND job_offers.employment_type IN (${employmentTypes
         .map(() => "?")
         .join(",")})`;
-      jobTypes.forEach((type) => queryParams.push(type.trim()));
+      employmentTypes.forEach((type) => queryParams.push(type.trim()));
     }
 
-    if (industry) {
-      const industries = industry.split(",");
-      filterQuery += ` AND companies.industry IN (${industries
+    if (jobSector) {
+      const jobSectors = jobSector.split(",");
+      filterQuery += ` AND job_offers.job_sector IN (${jobSectors
         .map(() => "?")
         .join(",")})`;
-      industries.forEach((ind) => queryParams.push(ind.trim()));
+      jobSectors.forEach((ind) => queryParams.push(ind.trim()));
     }
 
     if (experience) {
@@ -195,7 +201,7 @@ router.get("/job-listings", async (req, res) => {
     }
 
     const query = `
-      SELECT job_offers.*, companies.logo AS company_logo, companies.size AS company_size, companies.industry AS company_industry
+      SELECT job_offers.*, companies.logo AS company_logo, companies.size AS company_size
       FROM job_offers
       INNER JOIN companies ON job_offers.company_id = companies.company_id
       ${filterQuery};`;
