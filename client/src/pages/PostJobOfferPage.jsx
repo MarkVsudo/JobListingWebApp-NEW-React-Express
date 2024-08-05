@@ -1,32 +1,40 @@
-import { useState, useContext, useEffect } from "react";
-import { Helmet } from "react-helmet";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import { Editor } from "@tinymce/tinymce-react";
 import {
   Box,
   Button,
   Flex,
   FormControl,
   FormLabel,
-  Text,
   Input,
   Select,
-  Textarea,
-  VStack,
-  HStack,
-  useToast,
   Step,
   StepDescription,
   StepIcon,
   StepIndicator,
   StepNumber,
+  Stepper,
   StepSeparator,
   StepStatus,
   StepTitle,
-  Stepper,
+  Text,
+  Textarea,
   useSteps,
+  useToast,
+  VStack,
+  HStack,
+  Radio,
+  RadioGroup,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/react";
 import { AuthContext } from "../contexts/AuthContext";
-import { Editor } from "@tinymce/tinymce-react";
 
 const steps = [
   {
@@ -38,19 +46,30 @@ const steps = [
 
 const PostJobOfferPage = () => {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const toast = useToast();
+
+  const [salaryRadioValue, setSalaryRadioValue] = useState("1");
+  const format = (val) => `$` + val;
+  const parse = (val) => val.replace(/^\$/, "");
+
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
     count: steps.length,
   });
 
+  const [minSalary, setMinSalary] = useState("1");
+  const [maxSalary, setMaxSalary] = useState("1");
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    company_id: "",
     location: "",
     employment_type: "",
-    salary: "",
+    salary:
+      salaryRadioValue === "1"
+        ? "Not specified"
+        : `${minSalary} - ${maxSalary}`,
     requirements: "",
     benefits: "",
     application_deadline: "",
@@ -95,31 +114,40 @@ const PostJobOfferPage = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleFormData = (e) => {
     e.preventDefault();
+  };
 
+  const handleReviewBtn = () => {
+    toast({
+      title: "Review your information",
+      description: "Please review your information before submitting the form.",
+      status: "info",
+      duration: 5000,
+      isClosable: true,
+    });
+  };
+
+  const handleFormSubmissionBtn = async () => {
     try {
       const formDataWithUserId = { ...formData, user_id: user.user_id };
-
       await axios.post("/api/job-offer", formDataWithUserId);
 
-      setVerificationStatus("awaiting");
-
       toast({
-        title: "Form submitted.",
-        description: "We'll verify your information and get back to you soon.",
+        title: "Form submitted successfully",
+        description: "Your job offer has been send for review.",
         status: "success",
         duration: 5000,
         isClosable: true,
       });
+
+      setFormData({});
+      navigate("/profile");
     } catch (error) {
-      console.error(
-        "Error while processing recruiter verification form:",
-        error
-      );
+      console.error("Error submitting job offer:", error);
       toast({
-        title: "Form submission failed.",
-        description: "An error occurred while submitting the form.",
+        title: "Submission failed",
+        description: "An error occurred while submitting the job offer.",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -149,7 +177,7 @@ const PostJobOfferPage = () => {
                       placeholder="Enter job title"
                     />
                   </FormControl>
-                  <FormControl isRequired>
+                  <FormControl>
                     <FormLabel>Experience Level</FormLabel>
                     <Select
                       name="experience"
@@ -158,23 +186,10 @@ const PostJobOfferPage = () => {
                     >
                       <option value="Not Specified">Not specified</option>
                       <option value="Internship">Internship</option>
-                      <option value="Junior level">Junior level</option>
-                      <option value="Mid level">Mid level</option>
-                      <option value="Senior level">Senior level</option>
                       <option value="0-2 years">0-2 years experience</option>
                       <option value="3-5 years">3-5 years experience</option>
                       <option value="5+ years">5+ years experience</option>
                     </Select>
-                  </FormControl>
-
-                  <FormControl>
-                    <FormLabel>Job Description</FormLabel>
-                    <Textarea
-                      name="description"
-                      value={formData.description}
-                      onChange={handleInputChange}
-                      placeholder="Enter job description"
-                    />
                   </FormControl>
                   <FormControl>
                     <FormLabel>Short Description</FormLabel>
@@ -215,7 +230,7 @@ const PostJobOfferPage = () => {
                       placeholder="Enter job location"
                     />
                   </FormControl>
-                  <FormControl isRequired>
+                  <FormControl>
                     <FormLabel>Employment Type</FormLabel>
                     <Select
                       name="employment_type"
@@ -224,38 +239,87 @@ const PostJobOfferPage = () => {
                     >
                       <option value="Full-time">Full-time</option>
                       <option value="Part-time">Part-time</option>
-                      <option value="Contract">Contract</option>
                       <option value="Temporary">Temporary</option>
-                      <option value="Internship">Internship</option>
                       <option value="Freelance">Freelance</option>
                     </Select>
                   </FormControl>
-                  <FormControl>
-                    <FormLabel>Salary</FormLabel>
-                    <Input
-                      name="salary"
-                      value={formData.salary}
-                      onChange={handleInputChange}
-                      placeholder="Enter salary range"
-                    />
-                  </FormControl>
-                  <FormControl>
+                  <VStack w="100%" alignItems="baseline" my="0.25rem">
+                    <RadioGroup
+                      onChange={(value) => {
+                        setSalaryRadioValue(value);
+                        setFormData((prevData) => ({
+                          ...prevData,
+                          salary:
+                            value === "1"
+                              ? "Not specified"
+                              : `$${minSalary} - $${maxSalary}`,
+                        }));
+                      }}
+                      value={salaryRadioValue}
+                    >
+                      <HStack>
+                        <Radio value="1">Not specified</Radio>
+                        <Radio value="2">Monthly rate</Radio>
+                      </HStack>
+                    </RadioGroup>
+
+                    {salaryRadioValue === "1" ? (
+                      <strong>No specified salary</strong>
+                    ) : (
+                      <HStack
+                        textAlign="center"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <NumberInput
+                          min={1}
+                          max={maxSalary}
+                          onChange={(valueString) => {
+                            const value = parse(valueString);
+                            setMinSalary(value);
+                            setFormData((prevData) => ({
+                              ...prevData,
+                              salary: `$${value} - $${maxSalary}`,
+                            }));
+                          }}
+                          value={format(minSalary)}
+                        >
+                          <NumberInputField />
+                          <NumberInputStepper>
+                            <NumberIncrementStepper />
+                            <NumberDecrementStepper />
+                          </NumberInputStepper>
+                        </NumberInput>
+                        <strong>-</strong>
+                        <NumberInput
+                          min={1}
+                          onChange={(valueString) => {
+                            const value = parse(valueString);
+                            setMaxSalary(value);
+                            setFormData((prevData) => ({
+                              ...prevData,
+                              salary: `$${minSalary} - $${value}`,
+                            }));
+                          }}
+                          value={format(maxSalary)}
+                        >
+                          <NumberInputField />
+                          <NumberInputStepper>
+                            <NumberIncrementStepper />
+                            <NumberDecrementStepper />
+                          </NumberInputStepper>
+                        </NumberInput>
+                      </HStack>
+                    )}
+                  </VStack>
+                  <FormControl isRequired>
                     <FormLabel>Application Deadline</FormLabel>
                     <Input
                       name="application_deadline"
                       type="date"
+                      min={minDate}
                       value={formData.application_deadline}
                       onChange={handleInputChange}
-                    />
-                  </FormControl>
-                  <FormControl>
-                    <FormLabel>Company ID</FormLabel>
-                    <Input
-                      name="company_id"
-                      type="number"
-                      value={formData.company_id}
-                      onChange={handleInputChange}
-                      placeholder="Enter company ID"
                     />
                   </FormControl>
                 </VStack>
@@ -321,6 +385,17 @@ const PostJobOfferPage = () => {
         return null;
     }
   };
+
+  const currentDate = new Date();
+  const date = currentDate.getDate() + 1;
+  const month = currentDate.getMonth() + 1;
+  const year = currentDate.getFullYear();
+
+  const paddedDate = date < 10 ? `0${date}` : date;
+  const paddedMonth = month < 10 ? `0${month}` : month;
+
+  const minDate = `${year}-${paddedMonth}-${paddedDate}`;
+
   return (
     <>
       <Helmet>
@@ -367,7 +442,7 @@ const PostJobOfferPage = () => {
                   </Step>
                 ))}
               </Stepper>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleFormData}>
                 <VStack spacing={4} align="stretch">
                   {renderFormStep()}
                   <Flex justifyContent="space-between" mt={4}>
@@ -378,7 +453,10 @@ const PostJobOfferPage = () => {
                     )}
                     {activeStep < steps.length - 1 ? (
                       <Button
-                        onClick={() => setActiveStep((prev) => prev + 1)}
+                        onClick={() => {
+                          setActiveStep((prev) => prev + 1);
+                          handleReviewBtn();
+                        }}
                         ml="auto"
                       >
                         Review Information
@@ -388,7 +466,7 @@ const PostJobOfferPage = () => {
                         type="submit"
                         colorScheme="blue"
                         ml="auto"
-                        onClick={handleSubmit}
+                        onClick={handleFormSubmissionBtn}
                       >
                         Submit for Verification
                       </Button>

@@ -166,7 +166,6 @@ router.post("/job-offer", async (req, res) => {
   const {
     title,
     description,
-    company_id,
     location,
     employment_type,
     salary,
@@ -179,6 +178,17 @@ router.post("/job-offer", async (req, res) => {
   } = req.body;
 
   try {
+    const [companyResult] = await db.query(
+      "SELECT company_id FROM companies WHERE user_id=?",
+      [user_id]
+    );
+
+    if (companyResult.length === 0) {
+      return res.status(404).json({ error: "Company not found for the user" });
+    }
+
+    const company_id = companyResult[0].company_id;
+
     await db.query(
       `
       INSERT INTO job_offers (
@@ -193,7 +203,7 @@ router.post("/job-offer", async (req, res) => {
         application_deadline,
         short_description,
         experience,
-        user_id,
+        user_id
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
       [
@@ -211,14 +221,15 @@ router.post("/job-offer", async (req, res) => {
         user_id,
       ]
     );
+
     res
       .status(200)
       .json({ message: "Job offer details submitted successfully" });
   } catch (err) {
-    console.error("Error submitting job offer details:", err);
+    console.error("Error processing job offer:", err);
     res
       .status(500)
-      .json({ error: "An error occurred while submitting job offer details" });
+      .json({ error: "An error occurred while processing job offer" });
   }
 });
 
