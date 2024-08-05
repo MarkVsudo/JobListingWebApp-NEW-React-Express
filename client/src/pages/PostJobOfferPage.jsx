@@ -167,7 +167,7 @@ const PostJobOfferPage = () => {
                 w="100%"
                 direction={{ base: "column", sm: "row" }}
               >
-                <VStack w={{ base: "100%", sm: "100%" }}>
+                <VStack w="100%">
                   <FormControl isRequired>
                     <FormLabel>Job Title</FormLabel>
                     <Input
@@ -211,7 +211,7 @@ const PostJobOfferPage = () => {
                   </FormControl>
                 </VStack>
 
-                <VStack w={{ base: "100%", sm: "100%" }}>
+                <VStack w="100%">
                   <FormControl>
                     <FormLabel>Requirements</FormLabel>
                     <Textarea

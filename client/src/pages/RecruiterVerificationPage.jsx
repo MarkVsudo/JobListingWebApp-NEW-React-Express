@@ -1,29 +1,29 @@
-import { useState, useContext, useEffect } from "react";
-import { Helmet } from "react-helmet";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { Helmet } from "react-helmet";
+import { Editor } from "@tinymce/tinymce-react";
 import {
   Box,
   Button,
   Flex,
   FormControl,
   FormLabel,
-  Text,
   Input,
   Select,
-  Textarea,
-  VStack,
-  HStack,
-  useToast,
   Step,
   StepDescription,
   StepIcon,
   StepIndicator,
   StepNumber,
+  Stepper,
   StepSeparator,
   StepStatus,
   StepTitle,
-  Stepper,
+  Text,
+  Textarea,
   useSteps,
+  useToast,
+  VStack,
 } from "@chakra-ui/react";
 import { AuthContext } from "../contexts/AuthContext";
 
@@ -142,245 +142,264 @@ const RecruiterVerificationPage = () => {
       case 0:
         return (
           <>
-            <Flex
-              align="flex-start"
-              gap={{ base: 3, sm: 10 }}
-              w="100%"
-              direction={{ base: "column", sm: "row" }}
-            >
-              <VStack w={{ base: "100%", sm: "100%" }}>
-                {/* Company Basic Information */}
-                <FormControl isRequired>
-                  <FormLabel>Company Name</FormLabel>
-                  <Input
-                    name="companyName"
-                    value={formData.companyName}
-                    onChange={handleInputChange}
-                    placeholder="Enter your company name"
-                  />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Company Website</FormLabel>
-                  <Input
-                    name="companyWebsite"
-                    value={formData.companyWebsite}
-                    onChange={handleInputChange}
-                    type="url"
-                    placeholder="https://www.example.com"
-                  />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Industry</FormLabel>
-                  <Select
-                    name="industry"
-                    value={formData.industry}
-                    onChange={handleInputChange}
-                    placeholder="Select industry"
-                  >
-                    <option value="tech">Technology</option>
-                    <option value="finance">Finance</option>
-                    <option value="healthcare">Healthcare</option>
-                    <option value="education">Education</option>
-                    <option value="other">Other</option>
-                  </Select>
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Company Size</FormLabel>
-                  <Select
-                    name="companySize"
-                    value={formData.companySize}
-                    onChange={handleInputChange}
-                    placeholder="Select company size"
-                  >
-                    <option value="1-10">1-50 employees</option>
-                    <option value="11-50">51-200 employees</option>
-                    <option value="51-200">+200 employees</option>
-                  </Select>
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Number of Employees</FormLabel>
-                  <Input
-                    name="numEmployees"
-                    value={formData.numEmployees}
-                    onChange={handleInputChange}
-                    type="number"
-                    placeholder="Enter number of employees"
-                  />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Founded Year</FormLabel>
-                  <Input
-                    name="foundedYear"
-                    value={formData.foundedYear}
-                    onChange={handleInputChange}
-                    type="number"
-                    placeholder="Enter founded year"
-                  />
-                </FormControl>
+            <VStack spacing={3}>
+              <Flex
+                align="flex-start"
+                gap={{ base: 3, sm: 10 }}
+                w="100%"
+                direction={{ base: "column", sm: "row" }}
+              >
+                <VStack w="100%">
+                  {/* Company Basic Information */}
+                  <FormControl isRequired>
+                    <FormLabel>Company Name</FormLabel>
+                    <Input
+                      name="companyName"
+                      value={formData.companyName}
+                      onChange={handleInputChange}
+                      placeholder="Enter your company name"
+                    />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Company Website</FormLabel>
+                    <Input
+                      name="companyWebsite"
+                      value={formData.companyWebsite}
+                      onChange={handleInputChange}
+                      type="url"
+                      placeholder="https://www.example.com"
+                    />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Industry</FormLabel>
+                    <Select
+                      name="industry"
+                      value={formData.industry}
+                      onChange={handleInputChange}
+                      placeholder="Select industry"
+                    >
+                      <option value="tech">Technology</option>
+                      <option value="finance">Finance</option>
+                      <option value="healthcare">Healthcare</option>
+                      <option value="education">Education</option>
+                      <option value="other">Other</option>
+                    </Select>
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Company Size</FormLabel>
+                    <Select
+                      name="companySize"
+                      value={formData.companySize}
+                      onChange={handleInputChange}
+                      placeholder="Select company size"
+                    >
+                      <option value="1-10">1-50 employees</option>
+                      <option value="11-50">51-200 employees</option>
+                      <option value="51-200">+200 employees</option>
+                    </Select>
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Number of Employees</FormLabel>
+                    <Input
+                      name="numEmployees"
+                      value={formData.numEmployees}
+                      onChange={handleInputChange}
+                      type="number"
+                      placeholder="Enter number of employees"
+                    />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Founded Year</FormLabel>
+                    <Input
+                      name="foundedYear"
+                      value={formData.foundedYear}
+                      onChange={handleInputChange}
+                      type="number"
+                      placeholder="Enter founded year"
+                    />
+                  </FormControl>
 
-                {/* Company Description */}
-                <FormControl>
-                  <FormLabel>Company Description</FormLabel>
-                  <Textarea
-                    name="description"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                    placeholder="Enter company description"
-                  />
-                </FormControl>
+                  {/* Company Visuals */}
+                  <FormControl>
+                    <FormLabel>Logo URL</FormLabel>
+                    <Input
+                      name="logo"
+                      value={formData.logo}
+                      onChange={handleInputChange}
+                      placeholder="Enter logo URL"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Banner URL</FormLabel>
+                    <Input
+                      name="banner"
+                      value={formData.banner}
+                      onChange={handleInputChange}
+                      placeholder="Enter banner URL"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Company Images (comma-separated URLs)</FormLabel>
+                    <Input
+                      name="companyImages"
+                      value={formData.companyImages}
+                      onChange={handleInputChange}
+                      placeholder="Enter comma-separated image URLs"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Company Perks (comma-separated)</FormLabel>
+                    <Input
+                      name="companyPerks"
+                      value={formData.companyPerks}
+                      onChange={handleInputChange}
+                      placeholder="Enter comma-separated perks"
+                    />
+                  </FormControl>
+                  {/* CEO Information */}
+                  <FormControl isRequired>
+                    <FormLabel>CEO Full Name</FormLabel>
+                    <Input
+                      name="CEOfullName"
+                      value={formData.CEOfullName}
+                      onChange={handleInputChange}
+                      placeholder="Enter CEO full name"
+                    />
+                  </FormControl>
+                </VStack>
+                <VStack w="100%">
+                  {/* Company Contact Information */}
+                  <FormControl isRequired>
+                    <FormLabel>Company Address</FormLabel>
+                    <Input
+                      name="companyAddress"
+                      value={formData.companyAddress}
+                      onChange={handleInputChange}
+                      placeholder="Enter company address"
+                    />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Work Email</FormLabel>
+                    <Input
+                      name="workEmail"
+                      value={formData.workEmail}
+                      onChange={handleInputChange}
+                      type="email"
+                      placeholder="company@company.com"
+                    />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Phone Number</FormLabel>
+                    <Input
+                      name="phoneNumber"
+                      value={formData.phoneNumber}
+                      onChange={handleInputChange}
+                      type="tel"
+                      placeholder="Enter company number"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>LinkedIn Profile URL</FormLabel>
+                    <Input
+                      name="linkedinProfile"
+                      value={formData.linkedinProfile}
+                      onChange={handleInputChange}
+                      type="url"
+                      placeholder="https://www.linkedin.com/in/yourprofile"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Google Maps URL</FormLabel>
+                    <Input
+                      name="googleMapsUrl"
+                      value={formData.googleMapsUrl}
+                      onChange={handleInputChange}
+                      placeholder="Enter Google Maps URL"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Google Maps Iframe</FormLabel>
+                    <Textarea
+                      name="googleMapsIframe"
+                      value={formData.googleMapsIframe}
+                      onChange={handleInputChange}
+                      placeholder="Enter Google Maps Iframe code"
+                    />
+                  </FormControl>
 
-                {/* Company Visuals */}
-                <FormControl>
-                  <FormLabel>Logo URL</FormLabel>
-                  <Input
-                    name="logo"
-                    value={formData.logo}
-                    onChange={handleInputChange}
-                    placeholder="Enter logo URL"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Banner URL</FormLabel>
-                  <Input
-                    name="banner"
-                    value={formData.banner}
-                    onChange={handleInputChange}
-                    placeholder="Enter banner URL"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Company Images (comma-separated URLs)</FormLabel>
-                  <Input
-                    name="companyImages"
-                    value={formData.companyImages}
-                    onChange={handleInputChange}
-                    placeholder="Enter comma-separated image URLs"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Company Perks (comma-separated)</FormLabel>
-                  <Input
-                    name="companyPerks"
-                    value={formData.companyPerks}
-                    onChange={handleInputChange}
-                    placeholder="Enter comma-separated perks"
-                  />
-                </FormControl>
-              </VStack>
-              <VStack w={{ base: "100%", sm: "100%" }}>
-                {/* Company Contact Information */}
-                <FormControl isRequired>
-                  <FormLabel>Company Address</FormLabel>
-                  <Input
-                    name="companyAddress"
-                    value={formData.companyAddress}
-                    onChange={handleInputChange}
-                    placeholder="Enter company address"
-                  />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Work Email</FormLabel>
-                  <Input
-                    name="workEmail"
-                    value={formData.workEmail}
-                    onChange={handleInputChange}
-                    type="email"
-                    placeholder="company@company.com"
-                  />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Phone Number</FormLabel>
-                  <Input
-                    name="phoneNumber"
-                    value={formData.phoneNumber}
-                    onChange={handleInputChange}
-                    type="tel"
-                    placeholder="Enter company number"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>LinkedIn Profile URL</FormLabel>
-                  <Input
-                    name="linkedinProfile"
-                    value={formData.linkedinProfile}
-                    onChange={handleInputChange}
-                    type="url"
-                    placeholder="https://www.linkedin.com/in/yourprofile"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Google Maps URL</FormLabel>
-                  <Input
-                    name="googleMapsUrl"
-                    value={formData.googleMapsUrl}
-                    onChange={handleInputChange}
-                    placeholder="Enter Google Maps URL"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Google Maps Iframe</FormLabel>
-                  <Textarea
-                    name="googleMapsIframe"
-                    value={formData.googleMapsIframe}
-                    onChange={handleInputChange}
-                    placeholder="Enter Google Maps Iframe code"
-                  />
-                </FormControl>
+                  {/* Legal Information */}
+                  <FormControl isRequired>
+                    <FormLabel>Business Registration Number</FormLabel>
+                    <Input
+                      name="businessRegNumber"
+                      value={formData.businessRegNumber}
+                      onChange={handleInputChange}
+                      placeholder="Enter registration number"
+                    />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Tax ID / EIN</FormLabel>
+                    <Input
+                      name="taxId"
+                      value={formData.taxId}
+                      onChange={handleInputChange}
+                      placeholder="Enter your Tax ID or EIN"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>
+                      Recruiting License Number (if applicable)
+                    </FormLabel>
+                    <Input
+                      name="recruitingLicense"
+                      value={formData.recruitingLicense}
+                      onChange={handleInputChange}
+                      placeholder="Enter your recruiting license number"
+                    />
+                  </FormControl>
 
-                {/* Legal Information */}
-                <FormControl isRequired>
-                  <FormLabel>Business Registration Number</FormLabel>
-                  <Input
-                    name="businessRegNumber"
-                    value={formData.businessRegNumber}
-                    onChange={handleInputChange}
-                    placeholder="Enter registration number"
-                  />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Tax ID / EIN</FormLabel>
-                  <Input
-                    name="taxId"
-                    value={formData.taxId}
-                    onChange={handleInputChange}
-                    placeholder="Enter your Tax ID or EIN"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>
-                    Recruiting License Number (if applicable)
-                  </FormLabel>
-                  <Input
-                    name="recruitingLicense"
-                    value={formData.recruitingLicense}
-                    onChange={handleInputChange}
-                    placeholder="Enter your recruiting license number"
-                  />
-                </FormControl>
+                  {/* Additional Information */}
+                  <FormControl>
+                    <FormLabel>Additional Information</FormLabel>
+                    <Textarea
+                      name="additionalInfo"
+                      value={formData.additionalInfo}
+                      onChange={handleInputChange}
+                      placeholder="Any additional details about your company or recruitment needs"
+                    />
+                  </FormControl>
+                </VStack>
+              </Flex>
 
-                {/* CEO Information */}
-                <FormControl isRequired>
-                  <FormLabel>CEO Full Name</FormLabel>
-                  <Input
-                    name="CEOfullName"
-                    value={formData.CEOfullName}
-                    onChange={handleInputChange}
-                    placeholder="Enter CEO full name"
-                  />
-                </FormControl>
-
-                {/* Additional Information */}
-                <FormControl>
-                  <FormLabel>Additional Information</FormLabel>
-                  <Textarea
-                    name="additionalInfo"
-                    value={formData.additionalInfo}
-                    onChange={handleInputChange}
-                    placeholder="Any additional details about your company or recruitment needs"
-                  />
-                </FormControl>
-              </VStack>
-            </Flex>
+              {/* Company Description */}
+              <FormControl isRequired w="100%">
+                <FormLabel>Company Description</FormLabel>
+                <Editor
+                  apiKey={import.meta.env.VITE_TINYMCE_API_KEY}
+                  init={{
+                    height: 400,
+                    menubar: false,
+                    plugins: [
+                      "advlist autolink lists link image charmap print preview anchor",
+                      "searchreplace visualblocks code fullscreen",
+                      "insertdatetime media table paste code help wordcount",
+                    ],
+                    toolbar:
+                      "undo redo | formatselect | " +
+                      "bold italic backcolor | alignleft aligncenter " +
+                      "alignright alignjustify | bullist numlist outdent indent | " +
+                      "removeformat | help",
+                  }}
+                  value={formData.description}
+                  onEditorChange={(content) => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      description: content,
+                    }));
+                  }}
+                />
+              </FormControl>
+            </VStack>
           </>
         );
       case 1:

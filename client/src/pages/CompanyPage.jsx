@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet";
+import DOMPurify from "dompurify";
 import { useParams, useNavigate } from "react-router-dom";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { GoGift } from "react-icons/go";
@@ -47,6 +48,10 @@ const CompanyPage = () => {
   const [offers, setOffers] = useState([]);
   const [followed, setFollowed] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const sanitizedDescription = company
+    ? DOMPurify.sanitize(company[0].description)
+    : "";
 
   useEffect(() => {
     const fetchCompanyData = async () => {
@@ -251,24 +256,10 @@ const CompanyPage = () => {
               <Text pb={3} fontSize={["1.25rem", "1.5rem"]} fontWeight={700}>
                 About {company[0].name}
               </Text>
-              <Box textAlign="justify">
-                At JobConqueror, we're dedicated to transforming career
-                aspirations into reality. Our platform stands as a dynamic hub
-                for job seekers, offering a curated selection of high-quality
-                job listings across diverse industries. With a user-friendly
-                interface, we simplify the job search process, providing
-                individuals with the tools they need to conquer their dream
-                roles. Join JobConqueror to explore exceptional opportunities
-                and embark on a journey towards professional success...{" "}
-                <Button
-                  variant="link"
-                  _hover={{ textDecoration: "none" }}
-                  color="rgb(13,110,253)"
-                  fontWeight={400}
-                >
-                  Read more
-                </Button>
-              </Box>
+              <Box
+                textAlign="justify"
+                dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+              />
             </Box>
             {/* Jobs */}
             <Box w="100%">
@@ -439,6 +430,8 @@ const CompanyPage = () => {
             gap="2rem"
             direction="column"
             mt={{ base: "2rem", md: "0" }}
+            position="sticky"
+            top="0"
           >
             {/* People also view */}
             <Box w="100%">
