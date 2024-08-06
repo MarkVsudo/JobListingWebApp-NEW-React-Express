@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
@@ -33,9 +33,13 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  InputGroup,
+  InputLeftElement,
 } from "@chakra-ui/react";
+import { SearchIcon } from "@chakra-ui/icons";
 import { AuthContext } from "../contexts/AuthContext";
 import filterOptions from "../data/filterOptions.json";
+import programmingLanguages from "../data/programmingLanguages.json";
 
 const steps = [
   {
@@ -115,6 +119,14 @@ const PostJobOfferPage = () => {
       [name]: value,
     }));
   };
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredLanguages = useMemo(() => {
+    return programmingLanguages.filter((lang) =>
+      lang.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm]);
 
   const handleFormData = (e) => {
     e.preventDefault();
@@ -230,11 +242,60 @@ const PostJobOfferPage = () => {
                 <VStack w="100%">
                   <FormControl>
                     <FormLabel>Requirements</FormLabel>
+                    <InputGroup mb={4}>
+                      <InputLeftElement pointerEvents="none">
+                        <SearchIcon color="gray.300" />
+                      </InputLeftElement>
+                      <Input
+                        type="text"
+                        placeholder="Search for languages/tools"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                      />
+                    </InputGroup>
+
+                    <Flex
+                      flexWrap="wrap"
+                      gap={2}
+                      mb={4}
+                      maxH="10rem"
+                      overflowY="scroll"
+                    >
+                      {filteredLanguages.length > 0 ? (
+                        filteredLanguages.map((lang, index) => (
+                          <Text
+                            key={index}
+                            bg="gray.100"
+                            px={2}
+                            py={1}
+                            borderRadius="md"
+                            cursor="pointer"
+                            onClick={() => {
+                              setFormData((prev) => ({
+                                ...prev,
+                                requirements: prev.requirements
+                                  ? `${prev.requirements}, ${lang}`
+                                  : lang,
+                              }));
+                              setSearchTerm("");
+                            }}
+                          >
+                            {lang}
+                          </Text>
+                        ))
+                      ) : (
+                        <Text color="gray.500">
+                          No matching languages found
+                        </Text>
+                      )}
+                    </Flex>
+
                     <Textarea
                       name="requirements"
                       value={formData.requirements}
                       onChange={handleInputChange}
-                      placeholder="Enter job requirements"
+                      readOnly
+                      placeholder="Selected languages/tools will appear here"
                     />
                   </FormControl>
                   <FormControl isRequired>
