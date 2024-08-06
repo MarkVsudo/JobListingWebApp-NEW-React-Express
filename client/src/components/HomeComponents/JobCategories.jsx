@@ -1,33 +1,41 @@
-import { Fragment, useRef, useEffect } from "react";
+import { Fragment, useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { Link as ReactRouterLink } from "react-router-dom";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Link as ChakraLink } from "@chakra-ui/react";
 import {
-  Heading,
-  Img,
   Flex,
-  Text,
   Grid,
   GridItem,
+  Heading,
+  Img,
+  Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import CategoryImgIT from "../../assets/it-category-img.svg";
-import CategoryImgRealEstate from "../../assets/house-category-img.svg";
-import CategoryImgEducation from "../../assets/book-category-img.svg";
-import CategoryImgEngineering from "../../assets/engineering-category-img.svg";
-import CategoryImgFinance from "../../assets/finance-category-img.svg";
-import CategoryImgRestaurant from "../../assets/restaurant-category-img.svg";
-import CategoryImgMarketing from "../../assets/marketing-category-img.svg";
-import CategoryImgHR from "../../assets/hr-category-img.svg";
-import EllipseCategories from "../../assets/ellipse-background-categories.svg";
 import HomeButton from "./HomeButton";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import CategoryImgIT from "../../assets/it-category-img.svg";
+import CategoryImgHR from "../../assets/hr-category-img.svg";
+import CategoryImgEducation from "../../assets/book-category-img.svg";
+import CategoryImgFinance from "../../assets/finance-category-img.svg";
+import CategoryImgRealEstate from "../../assets/house-category-img.svg";
+import CategoryImgMarketing from "../../assets/marketing-category-img.svg";
+import CategoryImgRestaurant from "../../assets/restaurant-category-img.svg";
+import CategoryImgEngineering from "../../assets/engineering-category-img.svg";
+import EllipseCategories from "../../assets/ellipse-background-categories.svg";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const encodeURIFunction = (title) => {
+  const encoded = encodeURI(title);
+  let url = `/job-listings?jobSector=${encoded}`;
+  return url;
+};
 
 const jobCategories = [
   {
     src: CategoryImgIT,
     alt: "IT Category",
-    title: "Information Technology (IT)",
+    title: "IT (Information Technology)",
     jobs: 525,
   },
   {
@@ -72,7 +80,10 @@ const jobCategories = [
     title: "Human Resources (HR)",
     jobs: 75,
   },
-];
+].map((category) => ({
+  ...category,
+  url: encodeURIFunction(category.title),
+}));
 
 const JobCategories = () => {
   const containerRef = useRef(null);
@@ -153,46 +164,52 @@ const JobCategories = () => {
         my={{ base: "1rem", md: "2rem" }}
       >
         {jobCategories.map((category, index) => (
-          <GridItem
+          <ChakraLink
             key={index}
-            bg="white"
-            p="1.25rem 2rem"
-            justifyContent="space-between"
-            alignContent="center"
-            borderRadius="12px"
-            boxShadow="var(--box-shadow)"
-            cursor="pointer"
-            transition="all 250ms ease-in-out"
-            role="group"
-            minHeight="8rem"
-            _hover={{
-              bg: "var(--dark-blue)",
-              color: "white",
-              transform: "translateY(-10px)",
-            }}
+            as={ReactRouterLink}
+            to={category.url}
+            _hover={{ textDecoration: "none" }}
           >
-            <Flex d="flex" gap="5rem" justifyContent="space-between">
-              <Img
-                src={category.src}
-                alt={category.alt}
-                transform="scale(1.2)"
-                transition="filter 250ms ease-in-out"
-                _groupHover={{
-                  filter: "invert(1)",
-                }}
-              />
-              <Text fontWeight={700}>
-                {category.title.split(" ").map((word, idx) => (
-                  <Fragment key={idx}>
-                    {word} <br />
-                  </Fragment>
-                ))}
-                <Text as="span" opacity=".8" fontWeight={500}>
-                  {category.jobs} jobs
+            <GridItem
+              bg="white"
+              p="1.25rem 2rem"
+              justifyContent="space-between"
+              alignContent="center"
+              borderRadius="12px"
+              boxShadow="var(--box-shadow)"
+              cursor="pointer"
+              transition="all 250ms ease-in-out"
+              role="group"
+              minHeight="8rem"
+              _hover={{
+                bg: "var(--dark-blue)",
+                color: "white",
+                transform: "translateY(-10px)",
+              }}
+            >
+              <Flex d="flex" gap="5rem" justifyContent="space-between">
+                <Img
+                  src={category.src}
+                  alt={category.alt}
+                  transform="scale(1.2)"
+                  transition="filter 250ms ease-in-out"
+                  _groupHover={{
+                    filter: "invert(1)",
+                  }}
+                />
+                <Text fontWeight={700}>
+                  {category.title.split(" ").map((word, idx) => (
+                    <Fragment key={idx}>
+                      {word} <br />
+                    </Fragment>
+                  ))}
+                  <Text as="span" opacity=".8" fontWeight={500}>
+                    {category.jobs} jobs
+                  </Text>
                 </Text>
-              </Text>
-            </Flex>
-          </GridItem>
+              </Flex>
+            </GridItem>
+          </ChakraLink>
         ))}
       </Grid>
       <div className="home-button-wrapper">

@@ -87,7 +87,13 @@ const LearnFromExperts = () => {
       justifyContent="center"
       alignItems="center"
       color="var(--dark-blue)"
-      m={{ base: "2rem", md: "5rem", lg: "10rem 20rem" }}
+      m={{
+        base: "2rem",
+        md: "5rem",
+        lg: "10rem",
+        xl: "10rem",
+        "2xl": "10rem 20rem",
+      }}
       gap="1rem"
     >
       <Heading
@@ -115,7 +121,7 @@ const LearnFromExperts = () => {
         gap="2rem"
         w="100%"
       >
-        <GridItem colSpan={{ base: 1, md: 2, lg: 4 }} borderRadius="12px">
+        <GridItem colSpan={{ base: 1, md: 2, xl: 4 }} borderRadius="12px">
           <Img
             className="main-image"
             src={LearnFromExpertsImg}
