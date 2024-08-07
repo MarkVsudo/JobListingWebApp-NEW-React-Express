@@ -70,7 +70,6 @@ const JobDetails = ({ currentOffer }) => {
   useEffect(() => {
     handleCountryFlags();
     handleProgramminLangIcons();
-    console.log(programmingLangIcons);
 
     const fetchUserFiles = async () => {
       try {
@@ -108,10 +107,20 @@ const JobDetails = ({ currentOffer }) => {
     setCountryFlags(newFlags);
   };
 
-  /* <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/threedsmax/threedsmax-original.svg" /> */
-
   const handleProgramminLangIcons = () => {
-    console.log(programmingLanguages);
+    let newIcons = [];
+
+    for (let requirement of jobRequirements) {
+      if (
+        programmingLanguages.includes(requirement) &&
+        !Object.keys(countryAbbreviation).includes(requirement)
+      ) {
+        let response = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${requirement}/${requirement}-original.svg`;
+        newIcons.push(response);
+      }
+    }
+
+    setProgrammingLangIcons(newIcons);
   };
 
   const [formData, setFormData] = useState({
@@ -271,10 +280,25 @@ const JobDetails = ({ currentOffer }) => {
             <Text fontSize="1.085rem" fontWeight={700} mb="0.25rem">
               Requirements
             </Text>
-            <HStack>
-              {countryFlags.length &&
-                countryFlags.map((flag) => <Img src={flag} alt="language" />)}
-            </HStack>
+            {countryFlags.length || programmingLangIcons.length ? (
+              <HStack>
+                {countryFlags.length &&
+                  countryFlags.map((flag, index) => (
+                    <Img key={index} src={flag} alt="Human language flag" />
+                  ))}
+                {programmingLangIcons.length &&
+                  programmingLangIcons.map((icon, index) => (
+                    <Img
+                      key={index}
+                      src={icon}
+                      alt="Programming language icon"
+                      h="44px"
+                    />
+                  ))}
+              </HStack>
+            ) : (
+              <Text>No requirements specified</Text>
+            )}
           </Flex>
           <Flex
             className="job-description"
