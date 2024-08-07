@@ -192,6 +192,19 @@ const PostJobOfferPage = () => {
                     />
                   </FormControl>
                   <FormControl>
+                    <FormLabel>Employment Type</FormLabel>
+                    <Select
+                      name="employment_type"
+                      value={formData.employment_type}
+                      onChange={handleInputChange}
+                    >
+                      <option value="Full-time">Full-time</option>
+                      <option value="Part-time">Part-time</option>
+                      <option value="Temporary">Temporary</option>
+                      <option value="Freelance">Freelance</option>
+                    </Select>
+                  </FormControl>
+                  <FormControl>
                     <FormLabel>Experience Level</FormLabel>
                     <Select
                       name="experience"
@@ -220,21 +233,21 @@ const PostJobOfferPage = () => {
                     </Select>
                   </FormControl>
                   <FormControl>
-                    <FormLabel>Short Description</FormLabel>
-                    <Textarea
-                      name="short_description"
-                      value={formData.short_description}
-                      onChange={handleInputChange}
-                      placeholder="Enter short job description"
-                    />
-                  </FormControl>
-                  <FormControl>
                     <FormLabel>Benefits</FormLabel>
                     <Textarea
                       name="benefits"
                       value={formData.benefits}
                       onChange={handleInputChange}
                       placeholder="Enter job benefits"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Short Description</FormLabel>
+                    <Textarea
+                      name="short_description"
+                      value={formData.short_description}
+                      onChange={handleInputChange}
+                      placeholder="Enter short job description"
                     />
                   </FormControl>
                 </VStack>
@@ -248,7 +261,7 @@ const PostJobOfferPage = () => {
                       </InputLeftElement>
                       <Input
                         type="text"
-                        placeholder="Search for languages/tools"
+                        placeholder="Search for human/programming languages & tools"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                       />
@@ -273,9 +286,18 @@ const PostJobOfferPage = () => {
                             onClick={() => {
                               setFormData((prev) => ({
                                 ...prev,
-                                requirements: prev.requirements
-                                  ? `${prev.requirements}, ${lang}`
-                                  : lang,
+                                requirements:
+                                  prev.requirements !== ""
+                                    ? prev.requirements.includes(lang)
+                                      ? prev.requirements
+                                          .split(", ")
+                                          .filter(
+                                            (requirement) =>
+                                              requirement !== lang
+                                          )
+                                          .join(", ")
+                                      : `${prev.requirements}, ${lang}`
+                                    : lang,
                               }));
                               setSearchTerm("");
                             }}
@@ -307,19 +329,7 @@ const PostJobOfferPage = () => {
                       placeholder="Enter job location"
                     />
                   </FormControl>
-                  <FormControl>
-                    <FormLabel>Employment Type</FormLabel>
-                    <Select
-                      name="employment_type"
-                      value={formData.employment_type}
-                      onChange={handleInputChange}
-                    >
-                      <option value="Full-time">Full-time</option>
-                      <option value="Part-time">Part-time</option>
-                      <option value="Temporary">Temporary</option>
-                      <option value="Freelance">Freelance</option>
-                    </Select>
-                  </FormControl>
+
                   <VStack w="100%" alignItems="baseline" my="0.25rem">
                     <RadioGroup
                       onChange={(value) => {

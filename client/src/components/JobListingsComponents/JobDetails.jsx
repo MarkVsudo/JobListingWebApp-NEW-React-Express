@@ -1,34 +1,36 @@
-import { useRef, useState, useContext, useEffect } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import axios from "axios";
 import DOMPurify from "dompurify";
+import { MdOutlinePersonOutline } from "react-icons/md";
 import {
-  Flex,
-  Img,
-  Text,
-  VStack,
+  Button,
+  Checkbox,
   Divider,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
+  Flex,
   FormControl,
   FormLabel,
+  HStack,
+  Img,
   Input,
-  Textarea,
   Menu,
   MenuButton,
-  MenuList,
   MenuItemOption,
-  Checkbox,
-  Button,
+  MenuList,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  Textarea,
   useDisclosure,
+  VStack,
 } from "@chakra-ui/react";
-import { MdOutlinePersonOutline } from "react-icons/md";
 import HomeButton from "../HomeComponents/HomeButton";
 import { AuthContext } from "../../contexts/AuthContext";
-import axios from "axios";
+import programmingLanguages from "../../data/programmingLanguages.json";
 
 const JobDetails = ({ currentOffer }) => {
   const { user } = useContext(AuthContext);
@@ -38,11 +40,41 @@ const JobDetails = ({ currentOffer }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = useRef(null);
 
+  // console.log(currentOffer.requirements.split(", "));
+
+  const countryAbbreviation = {
+    Chinese: "https://flagsapi.com/CN/flat/64.png",
+    Spanish: "https://flagsapi.com/ES/flat/64.png",
+    English: "https://flagsapi.com/GB/flat/64.png",
+    Hindi: "https://flagsapi.com/IN/flat/64.png",
+    Arabic: "https://flagsapi.com/SA/flat/64.png",
+    Portuguese: "https://flagsapi.com/PT/flat/64.png",
+    Russian: "https://flagsapi.com/RU/flat/64.png",
+    Japanese: "https://flagsapi.com/JP/flat/64.png",
+    German: "https://flagsapi.com/DE/flat/64.png",
+    Korean: "https://flagsapi.com/KR/flat/64.png",
+    French: "https://flagsapi.com/FR/flat/64.png",
+    Turkish: "https://flagsapi.com/TR/flat/64.png",
+    Greek: "https://flagsapi.com/GR/flat/64.png",
+    Serbian: "https://flagsapi.com/RS/flat/64.png",
+    Croatian: "https://flagsapi.com/HR/flat/64.png",
+    Albanian: "https://flagsapi.com/AL/flat/64.png",
+    Romanian: "https://flagsapi.com/RO/flat/64.png",
+    Bosnian: "https://flagsapi.com/BA/flat/64.png",
+    Bulgarian: "https://flagsapi.com/BG/flat/64.png",
+  };
+
+  const [countryFlags, setCountryFlags] = useState([]);
+  const [programmingLangIcons, setProgrammingLangIcons] = useState([]);
+
   useEffect(() => {
+    handleCountryFlags();
+    handleProgramminLangIcons();
+    console.log(programmingLangIcons);
+
     const fetchUserFiles = async () => {
       try {
         const response = await axios.get(`/api/user-file`);
-
         if (Array.isArray(response.data.files)) {
           setFiles(response.data.files);
         } else {
@@ -57,7 +89,30 @@ const JobDetails = ({ currentOffer }) => {
     if (user) {
       fetchUserFiles();
     }
-  }, [user]);
+  }, [user, currentOffer]);
+
+  let jobRequirements = currentOffer.requirements.split(", ");
+
+  const handleCountryFlags = () => {
+    let countryObjectKeys = Object.keys(countryAbbreviation);
+
+    let newFlags = [];
+
+    for (let requirement of jobRequirements) {
+      if (countryObjectKeys.includes(requirement)) {
+        let response = countryAbbreviation[requirement];
+        newFlags.push(response);
+      }
+    }
+
+    setCountryFlags(newFlags);
+  };
+
+  /* <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/threedsmax/threedsmax-original.svg" /> */
+
+  const handleProgramminLangIcons = () => {
+    console.log(programmingLanguages);
+  };
 
   const [formData, setFormData] = useState({
     phoneNumber: "",
@@ -211,12 +266,23 @@ const JobDetails = ({ currentOffer }) => {
           </Flex>
         </Flex>
         <Divider w="95%" alignSelf="center" mb="1rem" />
-        <Flex
-          className="job-description"
-          direction="column"
-          p={{ base: "0 1rem 1rem 1rem", sm: "0 2rem 2rem 2rem" }}
-          dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
-        />
+        <VStack>
+          <Flex w="100%" px="2rem" direction="column">
+            <Text fontSize="1.085rem" fontWeight={700} mb="0.25rem">
+              Requirements
+            </Text>
+            <HStack>
+              {countryFlags.length &&
+                countryFlags.map((flag) => <Img src={flag} alt="language" />)}
+            </HStack>
+          </Flex>
+          <Flex
+            className="job-description"
+            direction="column"
+            p={{ base: "0 1rem 1rem 1rem", sm: "0 2rem 2rem 2rem" }}
+            dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+          />
+        </VStack>
       </Flex>
     </>
   );
