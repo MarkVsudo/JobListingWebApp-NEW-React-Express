@@ -597,6 +597,9 @@ const JobListingsPage = () => {
                   {searchParams.get("experience") && (
                     <Text>Experience: {searchParams.get("experience")}</Text>
                   )}
+                  {searchParams.get("salary") && (
+                    <Text>Salary: {searchParams.get("salary")}</Text>
+                  )}
                   {searchParams.get("companySize") && (
                     <Text>Company Size: {searchParams.get("companySize")}</Text>
                   )}

@@ -145,6 +145,7 @@ router.get("/job-listings", async (req, res) => {
     let filterQuery = "WHERE job_offers.verified = 1";
     const queryParams = [];
 
+    // Handle location filtering
     if (location) {
       const locations = location.split(",");
       const locationQueries = locations.map(() => "job_offers.location LIKE ?");
@@ -152,6 +153,7 @@ router.get("/job-listings", async (req, res) => {
       locations.forEach((loc) => queryParams.push(`%${loc.trim()}%`));
     }
 
+    // Handle employment type filtering
     if (employmentType) {
       const employmentTypes = employmentType.split(",");
       filterQuery += ` AND job_offers.employment_type IN (${employmentTypes
@@ -160,6 +162,7 @@ router.get("/job-listings", async (req, res) => {
       employmentTypes.forEach((type) => queryParams.push(type.trim()));
     }
 
+    // Handle job sector filtering
     if (jobSector) {
       const jobSectors = jobSector.split(",");
       filterQuery += ` AND job_offers.job_sector IN (${jobSectors
@@ -168,6 +171,7 @@ router.get("/job-listings", async (req, res) => {
       jobSectors.forEach((ind) => queryParams.push(ind.trim()));
     }
 
+    // Handle experience filtering
     if (experience) {
       const experiences = experience.split(",");
       filterQuery += ` AND job_offers.experience IN (${experiences
@@ -176,14 +180,51 @@ router.get("/job-listings", async (req, res) => {
       experiences.forEach((exp) => queryParams.push(exp.trim()));
     }
 
+    // Handle salary filtering
     if (salary) {
       const salaries = salary.split(",");
-      filterQuery += ` AND job_offers.salary IN (${salaries
-        .map(() => "?")
-        .join(",")})`;
-      salaries.forEach((sal) => queryParams.push(sal.trim()));
+      let salaryConditions = [];
+      let salaryParams = [];
+
+      // Check for the "Specified salary" condition
+      if (salaries.includes("Specified salary")) {
+        salaryConditions.push(`job_offers.salary != 'Not Specified'`);
+      }
+
+      // Loop through each salary range
+      salaries.forEach((sal) => {
+        if (sal !== "Specified salary") {
+          // Remove any non-numeric characters and split by the range delimiter
+          const cleanSalary = sal.replace(/[^0-9 -]/g, ""); // Remove $, commas, etc.
+          const [minSalaryStr, maxSalaryStr] = cleanSalary.split(" - ");
+
+          const minSalary = Number(minSalaryStr);
+          const maxSalary = Number(maxSalaryStr);
+
+          if (minSalary && maxSalary) {
+            // Range with both min and max
+            salaryConditions.push(`
+              (CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(job_offers.salary, ' - ', 1), '$', -1) AS UNSIGNED) <= ? AND
+              CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(job_offers.salary, ' - ', -1), '$', -1) AS UNSIGNED) >= ?)
+            `);
+            salaryParams.push(maxSalary, minSalary);
+          } else if (minSalary) {
+            // Range with only min value (e.g., "+$7000")
+            salaryConditions.push(`
+              CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(job_offers.salary, ' - ', 1), '$', -1) AS UNSIGNED) > ?
+            `);
+            salaryParams.push(minSalary);
+          }
+        }
+      });
+
+      if (salaryConditions.length > 0) {
+        filterQuery += ` AND (${salaryConditions.join(" OR ")})`;
+        queryParams.push(...salaryParams);
+      }
     }
 
+    // Handle company size filtering
     if (companySize) {
       const sizes = companySize.split(",");
       filterQuery += ` AND companies.size IN (${sizes
@@ -192,6 +233,7 @@ router.get("/job-listings", async (req, res) => {
       sizes.forEach((size) => queryParams.push(size.trim()));
     }
 
+    // Handle search query filtering
     if (searchQueryExtracted) {
       filterQuery += ` AND (job_offers.title LIKE ? OR companies.name LIKE ?)`;
       queryParams.push(
