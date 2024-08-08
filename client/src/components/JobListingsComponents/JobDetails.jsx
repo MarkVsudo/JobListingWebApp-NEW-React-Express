@@ -27,6 +27,7 @@ import {
   Textarea,
   useDisclosure,
   VStack,
+  Tooltip,
 } from "@chakra-ui/react";
 import HomeButton from "../HomeComponents/HomeButton";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -40,32 +41,32 @@ const JobDetails = ({ currentOffer }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = useRef(null);
 
-  // console.log(currentOffer.requirements.split(", "));
-
   const countryAbbreviation = {
-    Chinese: "https://flagsapi.com/CN/flat/64.png",
-    Spanish: "https://flagsapi.com/ES/flat/64.png",
-    English: "https://flagsapi.com/GB/flat/64.png",
-    Hindi: "https://flagsapi.com/IN/flat/64.png",
-    Arabic: "https://flagsapi.com/SA/flat/64.png",
-    Portuguese: "https://flagsapi.com/PT/flat/64.png",
-    Russian: "https://flagsapi.com/RU/flat/64.png",
-    Japanese: "https://flagsapi.com/JP/flat/64.png",
-    German: "https://flagsapi.com/DE/flat/64.png",
-    Korean: "https://flagsapi.com/KR/flat/64.png",
-    French: "https://flagsapi.com/FR/flat/64.png",
-    Turkish: "https://flagsapi.com/TR/flat/64.png",
-    Greek: "https://flagsapi.com/GR/flat/64.png",
-    Serbian: "https://flagsapi.com/RS/flat/64.png",
-    Croatian: "https://flagsapi.com/HR/flat/64.png",
-    Albanian: "https://flagsapi.com/AL/flat/64.png",
-    Romanian: "https://flagsapi.com/RO/flat/64.png",
-    Bosnian: "https://flagsapi.com/BA/flat/64.png",
-    Bulgarian: "https://flagsapi.com/BG/flat/64.png",
+    Chinese: "CN",
+    Spanish: "ES",
+    English: "GB",
+    Hindi: "IN",
+    Arabic: "SA",
+    Portuguese: "PT",
+    Russian: "RU",
+    Japanese: "JP",
+    German: "DE",
+    Korean: "KR",
+    French: "FR",
+    Turkish: "TR",
+    Greek: "GR",
+    Serbian: "RS",
+    Croatian: "HR",
+    Albanian: "AL",
+    Romanian: "RO",
+    Bosnian: "BA",
+    Bulgarian: "BG",
   };
 
   const [countryFlags, setCountryFlags] = useState([]);
   const [programmingLangIcons, setProgrammingLangIcons] = useState([]);
+  const [requirementToFlag, setRequirementToFlag] = useState({});
+  const [requirementToIcon, setRequirementToIcon] = useState({});
 
   useEffect(() => {
     handleCountryFlags();
@@ -94,21 +95,24 @@ const JobDetails = ({ currentOffer }) => {
 
   const handleCountryFlags = () => {
     let countryObjectKeys = Object.keys(countryAbbreviation);
-
     let newFlags = [];
+    let requirementToFlag = {};
 
     for (let requirement of jobRequirements) {
       if (countryObjectKeys.includes(requirement)) {
-        let response = countryAbbreviation[requirement];
+        let response = `https://flagsapi.com/${countryAbbreviation[requirement]}/flat/64.png`;
         newFlags.push(response);
+        requirementToFlag[requirement] = response;
       }
     }
 
     setCountryFlags(newFlags);
+    setRequirementToFlag(requirementToFlag);
   };
 
   const handleProgramminLangIcons = () => {
     let newIcons = [];
+    let requirementToIcon = {};
 
     for (let requirement of jobRequirements) {
       if (
@@ -117,10 +121,12 @@ const JobDetails = ({ currentOffer }) => {
       ) {
         let response = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${requirement}/${requirement}-original.svg`;
         newIcons.push(response);
+        requirementToIcon[requirement] = response;
       }
     }
 
     setProgrammingLangIcons(newIcons);
+    setRequirementToIcon(requirementToIcon);
   };
 
   const [formData, setFormData] = useState({
@@ -284,16 +290,29 @@ const JobDetails = ({ currentOffer }) => {
               <HStack>
                 {countryFlags.length &&
                   countryFlags.map((flag, index) => (
-                    <Img key={index} src={flag} alt="Human language flag" />
+                    <Tooltip
+                      key={index}
+                      hasArrow
+                      label={Object.keys(requirementToFlag)[index]}
+                      className="requirement-tooltip"
+                    >
+                      <Img src={flag} alt="Human language flag" />
+                    </Tooltip>
                   ))}
                 {programmingLangIcons.length &&
                   programmingLangIcons.map((icon, index) => (
-                    <Img
+                    <Tooltip
                       key={index}
-                      src={icon}
-                      alt="Programming language icon"
-                      h="44px"
-                    />
+                      hasArrow
+                      label={Object.keys(requirementToIcon)[index]}
+                      className="requirement-tooltip"
+                    >
+                      <Img
+                        src={icon}
+                        alt="Programming language icon"
+                        h="44px"
+                      />
+                    </Tooltip>
                   ))}
               </HStack>
             ) : (

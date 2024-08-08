@@ -116,3 +116,8 @@ input[type="text"]::-webkit-calendar-picker-indicator {
   display: none;
   /* Chrome, Safari, and Opera */
 }
+
+/* Job details */
+.requirement-tooltip::first-letter {
+  text-transform: capitalize;
+}
