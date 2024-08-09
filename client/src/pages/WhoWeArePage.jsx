@@ -114,12 +114,14 @@ const WhoWeArePage = () => {
                   bg="gray.100"
                   borderRadius="1rem"
                   w="50%"
-                  align="start"
+                  alignItems="baseline"
                 >
                   <Heading as="h3" size="lg">
                     7
                   </Heading>
-                  <Text fontSize="md">Years of experience</Text>
+                  <Text fontSize="md" textAlign="left">
+                    Years of experience
+                  </Text>
                 </VStack>
                 <VStack
                   spacing={1}
@@ -127,7 +129,7 @@ const WhoWeArePage = () => {
                   bg="gray.100"
                   borderRadius="1rem"
                   w="50%"
-                  align="start"
+                  alignItems="baseline"
                 >
                   <Heading as="h3" size="lg">
                     24
@@ -141,7 +143,7 @@ const WhoWeArePage = () => {
                   p={3}
                   bg="gray.100"
                   borderRadius="1rem"
-                  align="start"
+                  alignItems="baseline"
                   w="50%"
                 >
                   <Heading as="h3" size="lg">
@@ -154,7 +156,7 @@ const WhoWeArePage = () => {
                   p={3}
                   bg="gray.100"
                   borderRadius="1rem"
-                  align="start"
+                  alignItems="baseline"
                   w="50%"
                 >
                   <Heading as="h3" size="lg">
@@ -203,13 +205,10 @@ const WhoWeArePage = () => {
                 bg="white"
                 borderRadius="1rem"
                 _groupHover={{
-                  base: {
-                    opacity: 1,
-                    transform: "translateY(-120px)",
-                  },
-                  md: {
-                    opacity: 1,
-                    transform: "translateY(0)",
+                  opacity: 1,
+                  transform: {
+                    base: "translateY(-120px)",
+                    md: "translateY(0px)",
                   },
                 }}
               >

@@ -275,7 +275,12 @@ const JobDetails = ({ currentOffer }) => {
           <Flex ml="2rem" gap="1rem">
             <Text display="flex" alignItems="center" gap="0.2rem">
               <MdOutlinePersonOutline fontSize="1.25rem" />
-              {currentOffer.applicants} Applicants
+              {currentOffer.applicants}
+              {currentOffer.applicants === 1 ? (
+                <Text> Applicant</Text>
+              ) : (
+                <Text> Applicants</Text>
+              )}
             </Text>
             <HomeButton title="Apply now" onClick={onOpen} />
           </Flex>
